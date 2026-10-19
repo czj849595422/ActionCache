@@ -1,0 +1,349 @@
+{
+  "name": "trade",
+  "version": "0.1.0",
+  "description": "Task-scoped trade, shop purchase, owned-container transfer, and target crafting actions.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "inspect_own_containers": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "spawn": {"type": "object"},
+          "personal_box": {"type": "object"},
+          "shop": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "container"],
+      "llm_description": "Return to your spawn area, inspect your personal box and shop, and report both complete contents plus your inventory.",
+      "preconditions": ["trade_config_available", "owned_containers_registered"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "container"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "inspect_shop": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "shop_name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Shop owner name or registered shop name, for example Bob or Bob's_shop."
+          }
+        },
+        "required": ["shop_name"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "shop_name": {"type": "string"},
+          "owner": {"type": "string"},
+          "position": {"type": "object"},
+          "sale_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "container"],
+      "llm_description": "Move to a shop selected by its owner name or registered shop name and report all sale items and quantities. Seller gold payments are hidden from the sale list.",
+      "preconditions": ["trade_config_available", "shop_registered"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "container"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "transfer_owned_items": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "container": {
+            "type": "string",
+            "minLength": 1,
+            "description": "personal_box, shop, or one of your registered container names such as Alice's_box."
+          },
+          "direction": {"type": "string", "enum": ["take", "store"]},
+          "items": {
+            "description": "One item name, one item object, or a list. Omit count to transfer all available source items with that name.",
+            "oneOf": [
+              {"type": "string", "minLength": 1},
+              {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string", "minLength": 1},
+            "count": {"type": "integer", "minimum": 1, "default": 1}
+                },
+                "required": ["name"],
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {"type": "string", "minLength": 1},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {"type": "string", "minLength": 1},
+                        "count": {"type": "integer", "minimum": 1}
+                      },
+                      "required": ["name"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["container", "direction", "items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "direction": {"type": "string"},
+          "container": {"type": "string"},
+          "moved": {"type": "array"},
+          "container_contents": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "container", "inventory"],
+      "llm_description": "Atomically precheck and transfer one or more items between your inventory and one of your own containers. Missing counts mean all available source items.",
+      "preconditions": ["trade_config_available", "owned_container_registered"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "container", "inventory"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "take_from_container": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "container": {
+            "type": "string",
+            "minLength": 1,
+            "description": "personal_box, shop, or one of your registered container names such as Alice's_box."
+          },
+          "items": {
+            "description": "One item name, one item object, or a list. Omit count to take all available source items with that name.",
+            "oneOf": [
+              {"type": "string", "minLength": 1},
+              {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string", "minLength": 1},
+                  "count": {"type": "integer", "minimum": 1}
+                },
+                "required": ["name"],
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {"type": "string", "minLength": 1},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {"type": "string", "minLength": 1},
+                        "count": {"type": "integer", "minimum": 1}
+                      },
+                      "required": ["name"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["container", "items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "direction": {"type": "string"},
+          "container": {"type": "string"},
+          "moved": {"type": "array"},
+          "container_contents": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "container", "inventory"],
+      "llm_description": "Atomically precheck and take one or more items from one of your own containers to your inventory. Missing counts mean all available source items.",
+      "preconditions": ["trade_config_available", "owned_container_registered"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "container", "inventory"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "store_to_container": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "container": {
+            "type": "string",
+            "minLength": 1,
+            "description": "personal_box, shop, or one of your registered container names such as Alice's_box."
+          },
+          "items": {
+            "description": "One item name, one item object, or a list. Omit count to store all available source items with that name.",
+            "oneOf": [
+              {"type": "string", "minLength": 1},
+              {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string", "minLength": 1},
+                  "count": {"type": "integer", "minimum": 1}
+                },
+                "required": ["name"],
+                "additionalProperties": false
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "oneOf": [
+                    {"type": "string", "minLength": 1},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {"type": "string", "minLength": 1},
+                        "count": {"type": "integer", "minimum": 1}
+                      },
+                      "required": ["name"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["container", "items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "direction": {"type": "string"},
+          "container": {"type": "string"},
+          "moved": {"type": "array"},
+          "container_contents": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "container", "inventory"],
+      "llm_description": "Atomically precheck and store one or more items from your inventory into one of your own containers, including your shop for listed goods. Missing counts mean all available source items.",
+      "preconditions": ["trade_config_available", "owned_container_registered"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "container", "inventory"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "buy_from_shop": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "shop_name": {"type": "string", "minLength": 1},
+          "item": {"type": "string", "minLength": 1},
+          "count": {"type": "integer", "minimum": 1, "default": 1}
+        },
+        "required": ["shop_name", "item"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "transaction_id": {"type": "string"},
+          "buyer": {"type": "string"},
+          "seller": {"type": "string"},
+          "shop_name": {"type": "string"},
+          "purchased": {"type": "object"},
+          "unit_price": {"type": "integer"},
+          "total_price": {"type": "integer"},
+          "buyer_currency_remaining": {"type": "integer"},
+          "shop_stock_remaining": {"type": "integer"},
+          "shop_sale_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "container", "inventory", "audit"],
+      "llm_description": "Buy one priced item from another agent's named shop. The task price is revalidated; goods are withdrawn before payment and failures are rolled back.",
+      "preconditions": ["trade_config_available", "shop_registered", "stock_available", "currency_available"],
+      "stop_conditions": ["committed", "rolled_back", "failed"],
+      "locks": ["movement", "container", "inventory"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "craft_target": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string", "minLength": 1},
+          "count": {"type": "integer", "minimum": 1, "default": 1}
+        },
+        "required": ["item"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "item": {"type": "string"},
+          "desired_count": {"type": "integer"},
+          "current_count": {"type": "integer"},
+          "completed_steps": {"type": "array"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "inventory"],
+        "llm_description": "Craft the specified item through the configured recipe topology using canonical Mineflayer recipe matching. Missing materials are reported but never purchased automatically.",
+        "preconditions": ["trade_config_available"],
+      "stop_conditions": ["completed", "missing_materials", "failed"],
+      "locks": ["movement", "inventory"],
+      "switch_group": "trade",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

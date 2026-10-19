@@ -1,0 +1,72 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "standalone",
+  "run_id": "20260908-231818-063475",
+  "episode_id": "episode-0001",
+  "request_id": "722bef25bc5d4bd9a45c1baf8f8b910b",
+  "source": {
+    "component": "standalone",
+    "operation": "stream",
+    "task_id": null,
+    "agent_id": null
+  },
+  "mode": "stream",
+  "status": "completed",
+  "started_at": 1788880698.0619423,
+  "completed_at": 1788880698.0816967,
+  "elapsed_seconds": 0.019754409790039062,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "fake-model",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hello"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": true,
+    "metadata": {}
+  },
+  "response": {
+    "request_id": "722bef25bc5d4bd9a45c1baf8f8b910b",
+    "mode": "stream",
+    "status": "completed",
+    "content": "alpha<SPLIT>beta",
+    "reasoning_content": "",
+    "model": "fake-model",
+    "finish_reason": null,
+    "stop_reason": null,
+    "keyword_events": [
+      {
+        "request_id": "722bef25bc5d4bd9a45c1baf8f8b910b",
+        "trigger_name": "split",
+        "keyword": "<SPLIT>",
+        "channel": "content",
+        "segment": "alpha<SPLIT>",
+        "accumulated_content": "alpha<SPLIT>",
+        "keyword_start": 5,
+        "keyword_end": 12,
+        "occurrence": 1,
+        "triggered_at": 1788880698.0816967,
+        "metadata": {}
+      }
+    ],
+    "metadata": {}
+  },
+  "usage": {
+    "raw": {},
+    "normalized": {
+      "input_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null
+    },
+    "usage_available": false
+  },
+  "error": null
+}

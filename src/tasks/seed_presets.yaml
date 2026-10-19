@@ -1,0 +1,195 @@
+version: 1
+tasks:
+  mining:
+    task_id: mining
+    category: mining
+    name: Dynamic Mineral Collection Quick
+    agents:
+      count: 4
+      names: [Alice, Bob, Carol, Dave]
+    environment:
+      world: base_env
+      time: noon
+      weather: clear
+      difficulty: peaceful
+      gamemode: survival
+      world_spawn: {x: 0, y: 0, z: 0}
+      gamerules:
+        doDaylightCycle: false
+        doWeatherCycle: false
+        doMobSpawning: false
+        keepInventory: true
+      init_commands:
+        - clear @a
+        - kill @e[type=item,x=-25,y=0,z=-25,dx=49,dy=2,dz=49]
+        - fill -25 0 -25 24 2 24 air replace
+    initial_state:
+      by_agent:
+        - name: Alice
+          inventory:
+            minecraft:stone_pickaxe{Unbreakable:1b}: 1
+          position: {x: -3, y: 0, z: -3}
+        - name: Bob
+          inventory:
+            minecraft:iron_pickaxe{Unbreakable:1b}: 1
+          position: {x: 3, y: 0, z: -3}
+        - name: Carol
+          inventory:
+            minecraft:iron_pickaxe{Unbreakable:1b}: 1
+          position: {x: -3, y: 0, z: 3}
+        - name: Dave
+          inventory:
+            minecraft:diamond_pickaxe{Unbreakable:1b}: 1
+          position: {x: 3, y: 0, z: 3}
+    completion:
+      timeout_seconds: 180
+      success:
+        type: item_value
+        target_value: 100
+        item_values:
+          lapis_block: 1
+          iron_block: 3
+          gold_block: 6
+          emerald_block: 8
+          diamond_block: 10
+          netherite_block: 20
+    trials:
+      count: 1
+    output:
+      dir: data
+      save_memory: true
+    params:
+      bounds:
+        min_x: -25
+        max_x: 24
+        min_y: 0
+        max_y: 0
+        min_z: -25
+        max_z: 24
+      ore_blocks:
+        minecraft:lapis_block: lapis_block
+        minecraft:iron_block: iron_block
+        minecraft:gold_block: gold_block
+        minecraft:emerald_block: emerald_block
+        minecraft:diamond_block: diamond_block
+        minecraft:netherite_block: netherite_block
+    metadata:
+      preset: seedable_mining_default
+
+  pvp:
+    task_id: pvp
+    category: pvp
+    name: Two-Team PVP Method Comparison
+    agents:
+      count: 8
+      names: [Aria, Blake, Cora, Dax, Eli, Faye, Grey, Hugo]
+      teams:
+        - id: alpha
+          agents: [Aria, Blake, Cora, Dax]
+        - id: bravo
+          agents: [Eli, Faye, Grey, Hugo]
+    environment:
+      world: base_env
+      observation_range: 20
+      time: noon
+      weather: clear
+      difficulty: normal
+      gamemode: survival
+      world_spawn: {x: 0, y: 0, z: 0}
+      gamerules:
+        doDaylightCycle: false
+        doWeatherCycle: false
+        doMobSpawning: false
+        mobGriefing: false
+        doMobLoot: false
+        keepInventory: true
+        naturalRegeneration: false
+      init_commands:
+        - clear @a
+        - kill @e[type=!player,x=-50,y=-100,z=-50,dx=100,dy=200,dz=100]
+        - fill -50 0 -50 50 2 50 air replace
+    initial_state:
+      per_agent:
+        inventory:
+          minecraft:wooden_sword: 1
+          minecraft:bow: 1
+      by_agent:
+        - name: Aria
+          position: {x: 36, y: 0, z: 8}
+        - name: Blake
+          position: {x: -45, y: 0, z: 50}
+        - name: Cora
+          position: {x: -21, y: 0, z: -1}
+        - name: Dax
+          position: {x: 49, y: 0, z: -31}
+        - name: Eli
+          position: {x: -47, y: 0, z: -49}
+        - name: Faye
+          position: {x: 14, y: 0, z: -49}
+        - name: Grey
+          position: {x: 9, y: 0, z: 48}
+        - name: Hugo
+          position: {x: 49, y: 0, z: 46}
+    completion:
+      timeout_seconds: 86400
+      success:
+        type: team_eliminated
+      failure:
+        type: all_agents_dead
+    trials:
+      count: 1
+    output:
+      dir: data
+      save_memory: true
+    params:
+      bounds:
+        min_x: -50
+        max_x: 50
+        min_y: 0
+        max_y: 0
+        min_z: -50
+        max_z: 50
+      supply_interval_seconds: 30
+      supply_tag: ac_pvp_sup
+      drops_per_wave: 5
+      min_drop_spacing: 20
+      placement_attempts_per_drop: 128
+      gear_probability_start: 0.8
+      gear_probability_end: 0.2
+      probability_decay_seconds: 300
+      food_healing_disabled_after_seconds: 300
+      ammo_share_before_disable: 0.6
+      food_share_before_disable: 0.25
+      healing_share_before_disable: 0.15
+      hunger_pressure_after_seconds: 300
+      hunger_interval_seconds: 10
+      hunger_effect_seconds: 10
+      hunger_effect_amplifier: 3
+      out_of_bounds_interval_seconds: 10
+      out_of_bounds_damage: 1
+      out_of_bounds_y_padding: 6
+      monster_cleanup_interval_seconds: 5
+      death_objective: acPvpDeath
+      alive_objective: acPvpAlive
+      death_drops_enabled: true
+      death_drop_tag: ac_pvp_death
+    metadata:
+      preset: seedable_pvp_default
+
+  debug:
+    task_id: debug
+    category: debug
+    name: Empty Task (Manual Testing)
+    agents:
+      count: 2
+      names: [Alice, Bob]
+    environment:
+      world: base_env
+    completion:
+      timeout_seconds: 86400
+      success:
+        type: survive_until
+        duration_seconds: 86400
+    metadata:
+      purpose: manual skill testing only
+      preset: seedable_debug_default

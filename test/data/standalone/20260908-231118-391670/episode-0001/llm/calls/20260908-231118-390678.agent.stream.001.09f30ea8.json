@@ -1,0 +1,58 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "standalone",
+  "run_id": "20260908-231118-391670",
+  "episode_id": "episode-0001",
+  "request_id": "09f30ea86cfd4007b3e24dbfc18eb9d0",
+  "source": {
+    "component": "standalone",
+    "operation": "stream",
+    "task_id": null,
+    "agent_id": null
+  },
+  "mode": "stream",
+  "status": "completed",
+  "started_at": 1788880278.3906777,
+  "completed_at": 1788880278.4089236,
+  "elapsed_seconds": 0.018245935440063477,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "fake-model",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hello"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": true,
+    "metadata": {}
+  },
+  "response": {
+    "request_id": "09f30ea86cfd4007b3e24dbfc18eb9d0",
+    "mode": "stream",
+    "status": "completed",
+    "content": "ok",
+    "reasoning_content": "",
+    "model": "fake-model",
+    "finish_reason": null,
+    "stop_reason": null,
+    "keyword_events": [],
+    "metadata": {}
+  },
+  "usage": {
+    "raw": {},
+    "normalized": {
+      "input_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null
+    },
+    "usage_available": false
+  },
+  "error": null
+}

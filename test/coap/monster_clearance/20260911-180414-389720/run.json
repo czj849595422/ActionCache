@@ -1,0 +1,441 @@
+{
+  "schema_version": "1",
+  "kind": "run",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "status": "failed",
+  "started_at": 1789121054.3924103,
+  "finished_at": 1789121214.8647804,
+  "metadata": {
+    "command": [
+      [
+        "task",
+        [
+          "monster_clearance"
+        ]
+      ],
+      [
+        "task_seed",
+        0
+      ],
+      [
+        "list_tasks",
+        false
+      ],
+      [
+        "server_dir",
+        "src\\minecraft"
+      ],
+      [
+        "bridge_port_start",
+        3201
+      ],
+      [
+        "planning_interval",
+        null
+      ],
+      [
+        "acting_poll_interval",
+        0.2
+      ],
+      [
+        "task_poll_interval",
+        0.2
+      ],
+      [
+        "max_run_seconds",
+        null
+      ],
+      [
+        "max_llm_calls",
+        null
+      ],
+      [
+        "max_llm_calls_per_agent",
+        null
+      ],
+      [
+        "disable_timed_planning",
+        false
+      ],
+      [
+        "disable_cache_planning",
+        false
+      ],
+      [
+        "disable_standard_verification",
+        false
+      ],
+      [
+        "disable_cache_reasoning_optimization",
+        false
+      ],
+      [
+        "disable_score_update",
+        false
+      ],
+      [
+        "cache_boot_mode",
+        null
+      ],
+      [
+        "cache_source",
+        null
+      ],
+      [
+        "enable_chat_actions",
+        false
+      ],
+      [
+        "env_file",
+        "D:\\MC\\ActionCache\\.env"
+      ],
+      [
+        "record_dir",
+        "test"
+      ],
+      [
+        "run_id",
+        null
+      ],
+      [
+        "start_episode",
+        1
+      ],
+      [
+        "episode_count",
+        3
+      ],
+      [
+        "episode_retries",
+        1
+      ],
+      [
+        "unsafe_actions",
+        false
+      ],
+      [
+        "no_broadcast_results",
+        false
+      ],
+      [
+        "enable_system_messages",
+        false
+      ],
+      [
+        "system_message_interval",
+        30.0
+      ],
+      [
+        "check",
+        false
+      ]
+    ],
+    "task_ids": [
+      "monster_clearance",
+      "monster_clearance",
+      "monster_clearance"
+    ],
+    "kind": "sequential_configs",
+    "config_count": 3,
+    "config": {
+      "language": "zh",
+      "observation_interval": 1.0,
+      "planning_interval": 5.0,
+      "cache_planning_enabled": true,
+      "timed_planning_enabled": true,
+      "standard_verification_enabled": true,
+      "cache_reasoning_optimization_enabled": true,
+      "score_update_enabled": true,
+      "acting_poll_interval": 0.2,
+      "task_poll_interval": 0.2,
+      "initial_observation_timeout": 10.0,
+      "worker_stop_timeout": 5.0,
+      "max_consecutive_errors": 3,
+      "chat_window": 20,
+      "max_run_seconds": null,
+      "max_llm_calls": null,
+      "max_llm_calls_per_agent": null,
+      "broadcast_results": true,
+      "system_messages_enabled": false,
+      "system_message_interval": 30.0,
+      "enable_chat_actions": false,
+      "action_ready_keyword": "</action>",
+      "cache_sharing": "shared",
+      "cache_boot": {
+        "mode": "llm_init",
+        "source_path": null,
+        "cold_start_mode": "llm_init",
+        "target_entry_count": 10,
+        "initialization_call_budget": 1,
+        "initialization_token_budget": 16000,
+        "filter_unknown_actions": true,
+        "normalize_loaded_scores": true
+      },
+      "cache_buffer": {
+        "buffer_size_threshold": 5,
+        "maximum_buffer_records": 1000,
+        "buffer_overflow_policy": "error",
+        "update_interval_seconds": 30.0,
+        "maximum_reasons_per_pair": 5,
+        "reason_sampling_policy": "diverse",
+        "default_uncertain_score": 0.5,
+        "deduplicate_by_decision_id": true,
+        "environment_source_preferred": true
+      },
+      "cache_retrieval": {
+        "top_k": 5,
+        "minimum_score": 0.0,
+        "tie_break_policy": "stable",
+        "require_exact_previous_action": false,
+        "allow_start_sentinel": true,
+        "start_action_name": "START"
+      },
+      "cache_score": {
+        "strategy": "bayesian_success_rate",
+        "lambda_value": 5.0,
+        "alpha": 0.3,
+        "success_reward": 0.1,
+        "failure_penalty": 0.1,
+        "idle_decay": 0.0,
+        "minimum_llm_initial_score": 0.05,
+        "maximum_llm_initial_score": 0.5,
+        "minimum_score": 0.0,
+        "maximum_score": 1.0,
+        "update_interval_seconds": 30.0,
+        "minimum_feedback_count": 5,
+        "epsilon": 1e-09,
+        "clip_scores": true,
+        "reset_interval_counts": true
+      },
+      "cache_representation": {
+        "parameter_mode": "strip"
+      },
+      "cache_action_timeout_seconds": 15.0,
+      "standard_action_timeout_seconds": 60.0,
+      "maximum_replans": 3,
+      "candidate_policy": "advisory",
+      "important_parameters": {
+        "block.inspect": [
+          "position"
+        ],
+        "block.break": [
+          "position"
+        ],
+        "block.mine": [
+          "position"
+        ],
+        "block.place": [
+          "item",
+          "position"
+        ],
+        "block.inspect_region": [
+          "from",
+          "to"
+        ],
+        "block.break_region": [
+          "from",
+          "to"
+        ],
+        "block.place_region": [
+          "item",
+          "from",
+          "to"
+        ],
+        "chat.say": [],
+        "chat.whisper": [
+          "username"
+        ],
+        "combat.patrol": [],
+        "combat.observe": [],
+        "combat.attack": [
+          "target"
+        ],
+        "combat.retreat": [
+          "target"
+        ],
+        "combat.fight_using_weapon": [
+          "target"
+        ],
+        "combat.fight_using_bow": [
+          "target"
+        ],
+        "combat.fight": [
+          "target"
+        ],
+        "combat.use_food": [
+          "food"
+        ],
+        "container.inspect_chest": [
+          "position",
+          "chest",
+          "chest_id",
+          "chest_name"
+        ],
+        "container.pick_object_from_chest": [
+          "position",
+          "chest",
+          "chest_id",
+          "chest_name"
+        ],
+        "container.place_object_to_chest": [
+          "position",
+          "chest",
+          "chest_id",
+          "chest_name"
+        ],
+        "container.register_chests": [
+          "names"
+        ],
+        "container.list_chests": [],
+        "crafting.query_recipe": [
+          "item"
+        ],
+        "crafting.craft_with_recipe": [
+          "item",
+          "recipe_index"
+        ],
+        "crafting.craft_item": [
+          "item"
+        ],
+        "demo_combat.lock_nearest_hostile": [],
+        "demo_survival.flee_nearest_hostile": [],
+        "equipment.equip_item": [
+          "item",
+          "destination"
+        ],
+        "equipment.unequip_item": [
+          "destination"
+        ],
+        "equipment.auto_equip_combat": [],
+        "equipment.equip_items": [
+          "items[].name"
+        ],
+        "equipment.unequip_items": [
+          "destinations"
+        ],
+        "farm.harvest": [
+          "crop"
+        ],
+        "furnace.find_nearby": [],
+        "furnace.open": [
+          "position"
+        ],
+        "furnace.put_fuel": [],
+        "furnace.put_input": [
+          "position",
+          "item"
+        ],
+        "furnace.take_fuel": [
+          "position"
+        ],
+        "furnace.take_input": [
+          "position"
+        ],
+        "furnace.take_output": [
+          "position"
+        ],
+        "furnace.smelt_item": [
+          "position",
+          "item"
+        ],
+        "furnace.close": [],
+        "inventory.list": [],
+        "inventory.inspect": [],
+        "inventory.count_item": [
+          "name"
+        ],
+        "inventory.has_item": [
+          "name"
+        ],
+        "inventory.equip": [
+          "name"
+        ],
+        "inventory.pick": [
+          "positions"
+        ],
+        "inventory.drop": [
+          "items[].name"
+        ],
+        "inventory.give": [
+          "target",
+          "items[].name"
+        ],
+        "mining.mine_lapis": [
+          "position"
+        ],
+        "mining.mine_iron": [
+          "position"
+        ],
+        "mining.mine_gold": [
+          "position"
+        ],
+        "mining.mine_emerald": [
+          "position"
+        ],
+        "mining.mine_diamond": [
+          "position"
+        ],
+        "mining.mine_netherite": [
+          "position"
+        ],
+        "navigation.goto_position": [
+          "position",
+          "entity_id",
+          "entity_uuid",
+          "entity_name"
+        ],
+        "navigation.follow_position": [
+          "position"
+        ],
+        "navigation.follow_entity": [
+          "entity_id",
+          "entity_uuid",
+          "entity_name"
+        ],
+        "navigation.goto_block": [
+          "block_name"
+        ],
+        "navigation.explore": [
+          "target"
+        ],
+        "survival.use_food": [
+          "food"
+        ],
+        "trade.inspect_own_containers": [],
+        "trade.inspect_shop": [
+          "shop_name"
+        ],
+        "trade.transfer_owned_items": [
+          "container",
+          "direction"
+        ],
+        "trade.take_from_container": [
+          "container"
+        ],
+        "trade.store_to_container": [
+          "container"
+        ],
+        "trade.buy_from_shop": [
+          "shop_name",
+          "item"
+        ],
+        "trade.craft_target": [
+          "item"
+        ],
+        "wait.wait": []
+      }
+    },
+    "ablation_suffix": null
+  },
+  "episodes": [
+    {
+      "episode_id": "1",
+      "status": "completed"
+    },
+    {
+      "episode_id": "2",
+      "status": "interrupted"
+    }
+  ]
+}

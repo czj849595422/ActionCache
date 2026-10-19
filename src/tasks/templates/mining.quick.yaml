@@ -1,0 +1,116 @@
+task_id_prefix: mining
+name_prefix: Dynamic Mineral Collection Quick
+
+task:
+  category: mining
+
+  agents:
+    count: 4
+    names:
+      - Alice
+      - Bob
+      - Carol
+      - Dave
+
+  environment:
+    world: base_env
+    time: noon
+    weather: clear
+    difficulty: peaceful
+    gamemode: survival
+    world_spawn: {x: 0, y: 0, z: 0}
+    gamerules:
+      doDaylightCycle: false
+      doWeatherCycle: false
+      doMobSpawning: false
+      keepInventory: true
+    init_commands:
+      - "clear @a"
+      - "kill @e[type=item,x=-25,y=0,z=-25,dx=49,dy=2,dz=49]"
+      - "fill -25 0 -25 24 2 24 air replace"
+
+  initial_state:
+    by_agent:
+      - name: Alice
+        inventory:
+          "minecraft:stone_pickaxe{Unbreakable:1b}": 1
+        position: {x: -3, y: 0, z: -3}
+      - name: Bob
+        inventory:
+          "minecraft:iron_pickaxe{Unbreakable:1b}": 1
+        position: {x: 3, y: 0, z: -3}
+      - name: Carol
+        inventory:
+          "minecraft:iron_pickaxe{Unbreakable:1b}": 1
+        position: {x: -3, y: 0, z: 3}
+      - name: Dave
+        inventory:
+          "minecraft:diamond_pickaxe{Unbreakable:1b}": 1
+        position: {x: 3, y: 0, z: 3}
+
+  completion:
+    timeout_seconds: 180
+    success:
+      type: item_value
+      target_value: 100
+
+  trials:
+    count: 1
+
+  output:
+    dir: data
+    save_memory: true
+
+  params:
+    scheduler_poll_interval: 0.1
+
+  metadata:
+    preset: quick
+
+generation:
+  bounds:
+    min_x: -25
+    max_x: 24
+    min_y: 0
+    max_y: 0
+    min_z: -25
+    max_z: 24
+  wave_interval_seconds: 15
+  groups_per_wave: 2
+  duration_seconds:
+    min: 30
+    max: 45
+  group_sizes: [3, 4]
+  min_anchor_distance: 10
+  exclusion_centers:
+    - {x: -3, z: -3}
+    - {x: 3, z: -3}
+    - {x: -3, z: 3}
+    - {x: 3, z: 3}
+  exclusion_radius: 5
+  max_placement_attempts: 5000
+  ores:
+    - block: minecraft:lapis_block
+      item: lapis_block
+      value: 1
+      weight: 30
+    - block: minecraft:iron_block
+      item: iron_block
+      value: 3
+      weight: 25
+    - block: minecraft:gold_block
+      item: gold_block
+      value: 6
+      weight: 18
+    - block: minecraft:emerald_block
+      item: emerald_block
+      value: 8
+      weight: 12
+    - block: minecraft:diamond_block
+      item: diamond_block
+      value: 10
+      weight: 10
+    - block: minecraft:netherite_block
+      item: netherite_block
+      value: 20
+      weight: 5

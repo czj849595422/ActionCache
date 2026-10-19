@@ -1,0 +1,193 @@
+{
+  "name": "navigation",
+  "version": "0.1.0",
+  "description": "Pathfinder-backed navigation skills.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "goto_position": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "range": {"type": "number", "minimum": 0},
+          "timeout": {"type": "number", "minimum": 0},
+          "entity_id": {"type": "number", "description": "感知 entities[].id，与 x/y/z 二选一"},
+          "entity_uuid": {"type": "string", "description": "感知 entities[].uuid，与 x/y/z 二选一"},
+          "entity_name": {"type": "string", "description": "实体名或 displayName，与 x/y/z 二选一"}
+        },
+        "required": []
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "reached": {"type": "boolean"},
+          "position": {"type": "object"},
+          "target": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look"],
+      "llm_description": "Interruptibly navigate to a static coordinate (x/y/z), or to the position of a target entity (entity_id/entity_uuid/entity_name, mutually exclusive with coordinates) using pathfinder. Entity mode continuously retargets until the bot is within range, then ends; it has no maximum travel-distance restriction.",
+      "preconditions": ["target_position_known", "entity_target_known"],
+      "stop_conditions": ["target_reached", "timeout", "interrupted", "entity_lost", "entity_not_found", "invalid_params"],
+      "locks": ["movement", "look"],
+      "switch_group": "navigation",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "follow_position": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "range": {"type": "number", "minimum": 0}
+        },
+        "required": ["x", "y", "z"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "moving": {"type": "boolean"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look"],
+      "llm_description": "Continuously follow a coordinate target; x, y, z, and range can be updated while running.",
+      "preconditions": ["target_position_known"],
+      "stop_conditions": ["stopped", "interrupted"],
+      "locks": ["movement", "look"],
+      "switch_group": "navigation",
+      "switchable": true,
+      "mutable_params": ["x", "y", "z", "range"],
+      "update_policy": "merge"
+    },
+    "follow_entity": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "entity_id": {"type": "number", "description": "感知 entities[].id"},
+          "entity_uuid": {"type": "string", "description": "感知 entities[].uuid"},
+          "entity_name": {"type": "string", "description": "实体名或 displayName"},
+          "follow_range": {"type": "number", "minimum": 0},
+          "range_enabled": {"type": "boolean", "description": "是否开启范围约束"},
+          "max_range": {"type": "number", "minimum": 0, "description": "range_enabled=true 时的最大允许距离"}
+        },
+        "required": []
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "moving": {"type": "boolean"},
+          "target": {"type": "object"},
+          "distance": {"type": "number"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look"],
+      "llm_description": "Continuously follow a target entity (entity_id/entity_uuid/entity_name); dynamically re-targets each tick to keep up with movement. follow_range, range_enabled and max_range can be updated while running. Auto-stops with reason entity_lost or entity_out_of_range.",
+      "preconditions": ["entity_target_known"],
+      "stop_conditions": ["entity_lost", "entity_out_of_range", "stopped", "interrupted"],
+      "locks": ["movement", "look"],
+      "switch_group": "navigation",
+      "switchable": true,
+      "mutable_params": ["follow_range", "range_enabled", "max_range"],
+      "update_policy": "merge"
+    },
+    "goto_block": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "block_name": {"type": "string", "description": "感知 blocks[].name，如 stone"},
+          "search_max_distance": {"type": "number", "minimum": 1},
+          "range": {"type": "number", "minimum": 0},
+          "timeout": {"type": "number", "minimum": 0}
+        },
+        "required": ["block_name"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "found": {"type": "boolean"},
+          "block": {"type": "object"},
+          "reached": {"type": "boolean"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look"],
+      "llm_description": "Find the nearest block by block_name within search_max_distance (default 48) and move next to it; fails with block_name_unknown or block_not_found when no match.",
+      "preconditions": ["block_name_known"],
+      "stop_conditions": ["block_reached", "block_not_found", "block_name_unknown", "timeout", "interrupted", "invalid_params"],
+      "locks": ["movement", "look"],
+      "switch_group": "navigation",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "explore": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "direction": {
+            "type": ["string", "object"],
+            "description": "探索方向：north/south/east/west/up/down 或 {x,y,z} 向量；缺省随机水平方向，地下矿物类目标默认向下"
+          },
+          "target": {
+            "type": ["string", "array"],
+            "description": "要寻找的方块名（单个或列表，如 diamond_ore）；指定为定向搜寻，不指定为通用探索"
+          },
+          "duration": {"type": "number", "minimum": 0, "default": 60, "description": "探索时限（秒），到点自动停止"},
+          "duration_ticks": {"type": "integer", "minimum": 1, "description": "探索时限（tick），提供时优先于 duration"},
+          "type": {
+            "type": "string",
+            "enum": ["first", "record"],
+            "default": "first",
+            "description": "first：初次发现目标即停止上报（默认）；record：只记录位置，到默认停止条件一并返回（去重）"
+          },
+          "scan_interval": {"type": "number", "minimum": 1, "default": 4, "description": "每移动 N 格扫描一次（调优参数）"},
+          "max_distance": {"type": "number", "minimum": 1, "default": 128, "description": "距出发点的最大探索距离，防止跑丢"}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "reason": {"type": "string"},
+          "mode": {"type": "string"},
+          "direction": {"type": "string"},
+          "duration_ms": {"type": "number"},
+          "blocks_moved": {"type": "number"},
+          "distance_traveled": {"type": "number"},
+          "visited_count": {"type": "number"},
+          "found": {"type": "array"},
+          "discoveries": {"type": "object"},
+          "stuck": {"type": "array"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look"],
+      "llm_description": "Explore by moving segment by segment along a direction (default: random horizontal, down for underground ores), scanning nearby blocks each segment. With target (single name or list) and type=first (default) it stops and reports on first discovery; type=record keeps exploring until the duration/max_distance stop condition and returns deduplicated discoveries. Auto-rotates direction when stuck and respects max_distance from the start point.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted", "target_found", "target_not_found", "max_distance_reached", "stuck"],
+      "locks": ["movement", "look"],
+      "switch_group": "navigation",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

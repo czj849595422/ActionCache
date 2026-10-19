@@ -1,0 +1,240 @@
+{
+  "schema_version": "1",
+  "kind": "run_summary",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "status": "failed",
+  "episode_count": 2,
+  "episode_status_counts": {
+    "completed": 1,
+    "interrupted": 1
+  },
+  "episodes": [
+    {
+      "episode_id": "1",
+      "status": "completed",
+      "path": "D:\\MC\\ActionCache\\test\\coap\\monster_clearance\\20260911-180414-389720\\1"
+    },
+    {
+      "episode_id": "2",
+      "status": "interrupted",
+      "path": "D:\\MC\\ActionCache\\test\\coap\\monster_clearance\\20260911-180414-389720\\2"
+    }
+  ],
+  "started_at": 1789121054.3924103,
+  "finished_at": 1789121214.8647804,
+  "aggregate_metrics": {
+    "episode_count": 2,
+    "valid_episode_count": 2,
+    "successful_episode_count": 1,
+    "success_count": 1,
+    "failure_count": 0,
+    "timeout_count": 0,
+    "interrupted_count": 1,
+    "success_rate": 0.5,
+    "success_rate_stddev": 0.5,
+    "outcome_status_counts": {
+      "missing": 1,
+      "success": 1
+    },
+    "total_wall_seconds": 160.47237014770508,
+    "totals": {
+      "planned_count": 172.0,
+      "executed_count": 75.0,
+      "llm_calls": 261.0,
+      "input_tokens": 496097.0,
+      "output_tokens": 27119.0,
+      "total_tokens": 523216.0
+    },
+    "all_episode_averages": {
+      "wall_seconds": 120.40378046035767,
+      "task_elapsed_seconds": 120.40373060001002,
+      "planned_count": 86.0,
+      "executed_count": 37.5,
+      "llm_calls": 130.5,
+      "input_tokens": 248048.5,
+      "output_tokens": 13559.5,
+      "total_tokens": 261608.0,
+      "planning_duration_seconds": 1.0629132806438288,
+      "planning_to_execution_start_seconds": 1.1721365745753458,
+      "execution_duration_seconds": 3.4420613948613
+    },
+    "successful_episode_averages": {
+      "wall_seconds": 120.40378046035767,
+      "task_elapsed_seconds": 120.40373060001002,
+      "planned_count": 172.0,
+      "executed_count": 75.0,
+      "llm_calls": 261.0,
+      "input_tokens": 496097.0,
+      "output_tokens": 27119.0,
+      "total_tokens": 523216.0,
+      "planning_duration_seconds": 1.0629132806438288,
+      "planning_to_execution_start_seconds": 1.1721365745753458,
+      "execution_duration_seconds": 3.4420613948613
+    },
+    "successful_episode_stddevs": {
+      "wall_seconds": 0.0,
+      "task_elapsed_seconds": 0.0,
+      "planned_count": 0.0,
+      "executed_count": 0.0,
+      "llm_calls": 0.0,
+      "input_tokens": 0.0,
+      "output_tokens": 0.0,
+      "total_tokens": 0.0,
+      "planning_duration_seconds": 0.24824864557874124,
+      "planning_to_execution_start_seconds": 0.27145360156491133,
+      "execution_duration_seconds": 3.7026313294581192
+    },
+    "task_metric_averages": {
+      "all_episodes": {
+        "alive_monsters": 6.0,
+        "command_errors": 0.0,
+        "commands_sent": 16.0,
+        "elapsed_seconds": 120.40373060001002,
+        "eliminated_monsters": 10.0,
+        "next_supply_drop_in_seconds": 4.59457790000306,
+        "planned_monsters": 16.0,
+        "schedule_complete": 1.0,
+        "spawn_results_verified": 1.0,
+        "spawned_monsters": 16.0,
+        "spawned_supplies": 25.0,
+        "supply_attempts": 25.0,
+        "supply_skipped_no_alive_agent": 0.0,
+        "supply_skipped_placement": 0.0,
+        "supply_thread_alive": 0.0,
+        "target_monsters": 10.0
+      },
+      "successful_episodes": {
+        "alive_monsters": 6.0,
+        "command_errors": 0.0,
+        "commands_sent": 16.0,
+        "elapsed_seconds": 120.40373060001002,
+        "eliminated_monsters": 10.0,
+        "next_supply_drop_in_seconds": 4.59457790000306,
+        "planned_monsters": 16.0,
+        "schedule_complete": 1.0,
+        "spawn_results_verified": 1.0,
+        "spawned_monsters": 16.0,
+        "spawned_supplies": 25.0,
+        "supply_attempts": 25.0,
+        "supply_skipped_no_alive_agent": 0.0,
+        "supply_skipped_placement": 0.0,
+        "supply_thread_alive": 0.0,
+        "target_monsters": 10.0
+      }
+    },
+    "llm_component_token_averages": {
+      "all_episodes": {
+        "coap_cache": {
+          "call_count": 82.0,
+          "call_share": 0.31417624521072796,
+          "input_token_share": 0.09608403195342846,
+          "input_tokens": 47667.0,
+          "output_token_share": 0.2036948265054021,
+          "output_tokens": 5524.0,
+          "total_token_share": 0.1016616464328308,
+          "total_tokens": 53191.0
+        },
+        "coap_planning": {
+          "call_count": 179.0,
+          "call_share": 0.685823754789272,
+          "input_token_share": 0.9039159680465715,
+          "input_tokens": 448430.0,
+          "output_token_share": 0.7963051734945978,
+          "output_tokens": 21595.0,
+          "total_token_share": 0.8983383535671692,
+          "total_tokens": 470025.0
+        }
+      },
+      "successful_episodes": {
+        "coap_cache": {
+          "call_count": 82.0,
+          "call_share": 0.31417624521072796,
+          "input_token_share": 0.09608403195342846,
+          "input_tokens": 47667.0,
+          "output_token_share": 0.2036948265054021,
+          "output_tokens": 5524.0,
+          "total_token_share": 0.1016616464328308,
+          "total_tokens": 53191.0
+        },
+        "coap_planning": {
+          "call_count": 179.0,
+          "call_share": 0.685823754789272,
+          "input_token_share": 0.9039159680465715,
+          "input_tokens": 448430.0,
+          "output_token_share": 0.7963051734945978,
+          "output_tokens": 21595.0,
+          "total_token_share": 0.8983383535671692,
+          "total_tokens": 470025.0
+        }
+      }
+    },
+    "llm_component_token_stddevs": {
+      "successful_episodes": {
+        "coap_cache": {
+          "call_count": 0.0,
+          "call_share": 0.0,
+          "input_token_share": 0.0,
+          "input_tokens": 0.0,
+          "output_token_share": 0.0,
+          "output_tokens": 0.0,
+          "total_token_share": 0.0,
+          "total_tokens": 0.0
+        },
+        "coap_planning": {
+          "call_count": 0.0,
+          "call_share": 0.0,
+          "input_token_share": 0.0,
+          "input_tokens": 0.0,
+          "output_token_share": 0.0,
+          "output_tokens": 0.0,
+          "total_token_share": 0.0,
+          "total_tokens": 0.0
+        }
+      }
+    },
+    "error_counts": {
+      "runner_error_count": 0,
+      "worker_error_count": 0,
+      "cleanup_error_count": 0
+    }
+  },
+  "coap_metrics": {
+    "final_entry_count": 0.0,
+    "final_hit_count": 0.0,
+    "final_attempt_count": 0.0,
+    "final_success_count": 0.0,
+    "cache_success_rate": null,
+    "cache_hit_per_episode": 108.0,
+    "final_buffer_size": 0.0,
+    "final_update_count": 0.0,
+    "all_episode_averages": {
+      "attempt_count": 32.5,
+      "budget_exhausted_count": 0.0,
+      "buffer_size": 0.0,
+      "cache_miss_count": 0.0,
+      "entry_count": 16.0,
+      "hit_count": 108.0,
+      "planning_call_count": 33.5,
+      "planning_failure_count": 0.5,
+      "planning_success_count": 33.0,
+      "retrieval_count": 33.5,
+      "success_count": 27.5,
+      "update_count": 15.5
+    },
+    "successful_episode_averages": {
+      "attempt_count": 65.0,
+      "budget_exhausted_count": 0.0,
+      "buffer_size": 0.0,
+      "cache_miss_count": 0.0,
+      "entry_count": 32.0,
+      "hit_count": 216.0,
+      "planning_call_count": 67.0,
+      "planning_failure_count": 1.0,
+      "planning_success_count": 66.0,
+      "retrieval_count": 67.0,
+      "success_count": 55.0,
+      "update_count": 31.0
+    }
+  }
+}

@@ -1,0 +1,1238 @@
+{
+  "schema_version": 1,
+  "kind": "coap_shared_cache",
+  "task_id": "monster_clearance",
+  "sharing": "shared",
+  "exported_at": 1789121212.0625892,
+  "entry_count": 32,
+  "entries": [
+    {
+      "entry_id": "048c133f322f42768511b6dc1d4cd20e",
+      "previous_action": {
+        "name": "wait.wait",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"wait.wait\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "等待一段时间后，再次观察环境，确认怪物动态或物资掉落。",
+      "reason_metadata": {},
+      "score": 0.4,
+      "source": "llm",
+      "hit_count": 0,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1880133,
+      "updated_at": 1789121094.1880133,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.4,
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4
+      }
+    },
+    {
+      "entry_id": "0bdc17538a224c0abc62ead88d6211ac",
+      "previous_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "在通过消耗品完成生命恢复后，若队伍中仍有队友存活但位置不明、且当前任务进度紧迫，应优先执行范围观察以确认周围敌对实体与队友位置，从而评估环境安全并寻找推进任务的高价值目标（如怪物），避免在恢复阶段结束后因信息缺失而陷入被动或错过机会。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121168.422237,
+      "updated_at": 1789121203.3082507,
+      "last_hit_at": 1789121185.1522577,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "0c365a5abfe745fd8ee13d0913e6884b",
+      "previous_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "reason": "当收到可拾取物资但附近存在逼近的近战敌对目标且自身生命未满时，应优先切换到战斗动作清除威胁，避免因拾取进入敌方攻击范围而损失生命；若有队友在附近可协同，应主动接近目标夹击以快速击杀并推进任务进度。",
+      "reason_metadata": {},
+      "score": 0.4166666666666667,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121154.0137522,
+      "updated_at": 1789121154.8710833,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "2dda0f99e5414814a710605990c8ff94",
+      "previous_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "reason": "当无近距离威胁、任务目标仍需推进但时间或进度允许时，若附近存在安全可获取的增益资源，应优先拾取最近且实用的物资以提升自身能力，同时持续环境观察、不放弃任务推进，兼顾效率与安全。",
+      "reason_metadata": {},
+      "score": 0.4,
+      "source": "llm",
+      "hit_count": 1,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121124.5256302,
+      "updated_at": 1789121187.4307466,
+      "last_hit_at": 1789121162.7531853,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "4578ab3a239c4795894e389097458329",
+      "previous_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "reason": "当任务进度尚未完成且时间充裕时，若自身状态安全、装备足以应对近战目标，且视野内存在可安全近战的敌对生物，应优先向较近的目标推进并主动接敌，利用近战武器格挡反击，以高效推进消灭任务目标；无需等待状态未知的队友或拾取非急需物资。",
+      "reason_metadata": {},
+      "score": 0.5714285714285714,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 2,
+      "success_count": 2,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121145.9167066,
+      "updated_at": 1789121210.7676582,
+      "last_hit_at": 1789121172.2274733,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "5b4a0abaae344ccda85bd8481c335ee4",
+      "previous_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "reason": "当生命值偏低但饥饿值尚可时，若周围暂时无敌对威胁，应优先使用背包中直接可用的治疗药水恢复生命，而非冒险争夺可能失败或不安全的食物补给；恢复后立即与队友继续执行任务，保持生存与作战效率。此类操作需确保不丢失当前武器。",
+      "reason_metadata": {},
+      "score": 0.5714285714285714,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 2,
+      "success_count": 2,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121175.9344738,
+      "updated_at": 1789121196.4683878,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "69479625a7e447f6bc6bb43b3eaf9591",
+      "previous_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "reason": "当角色生命资源不足且消耗恢复物品失败或缺乏该类物品时，应优先移动到可获取补给的位置进行拾取，同时与队友协调避免目标冲突；在补给后若仍面临无直接威胁的间歇，可继续前往下一个有利位置或目标点，以维持续航并推进任务。",
+      "reason_metadata": {},
+      "score": 0.5714285714285714,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 2,
+      "success_count": 2,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121179.878504,
+      "updated_at": 1789121210.7470994,
+      "last_hit_at": 1789121185.1522577,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "6c33e7318f1a463792cb7984643aa14a",
+      "previous_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "equipment.equip_items",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"equipment.equip_items\",\"parameters\":{}}"
+      },
+      "reason": "拾取到可穿戴或可使用的物品后，应将其装备或纳入装备序列，以增强后续战斗与生存能力，且选择同类型中有增益或优先级的物品进行替换。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 2,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.187652,
+      "updated_at": 1789121184.2591565,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "6fcf205a822a4c12b63b159e32e698da",
+      "previous_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.retreat",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.retreat\",\"parameters\":{}}"
+      },
+      "reason": "当生命值极低且敌人近身时，应优先撤退拉开距离以避免死亡，随后使用食物或药水恢复生命。",
+      "reason_metadata": {},
+      "score": 0.5833333333333334,
+      "source": "env",
+      "hit_count": 2,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.187456,
+      "updated_at": 1789121171.6976004,
+      "last_hit_at": 1789121146.473874,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "794eae22562b48bb80b7897d53c0c8b0",
+      "previous_action": {
+        "name": "equipment.equip_items",
+        "parameters": {},
+        "agent_id": "Bob",
+        "canonical_key": "{\"name\":\"equipment.equip_items\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Bob",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "reason": "当自身生命值偏低而附近存在可拾取的更优装备时，应优先在安全距离内获取该装备以提升战斗能力，之后再借助队友协同应对敌对目标，避免在状态不佳时贸然近战导致进一步损失。",
+      "reason_metadata": {},
+      "score": 0.4,
+      "source": "llm",
+      "hit_count": 1,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121102.3607965,
+      "updated_at": 1789121152.9882283,
+      "last_hit_at": 1789121103.1529288,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "8548987eb9454411afbb91f0925dd58e",
+      "previous_action": {
+        "name": "equipment.equip_items",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"equipment.equip_items\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "reason": "在完成武器或装备切换后，若当前不存在需要优先规避的远程威胁或已做好战斗准备，应主动发起攻击以推进消灭任务目标。",
+      "reason_metadata": {},
+      "score": 0.6111111111111112,
+      "source": "env",
+      "hit_count": 3,
+      "attempt_count": 4,
+      "success_count": 3,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1877117,
+      "updated_at": 1789121162.5339217,
+      "last_hit_at": 1789121103.1529288,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "8578580cc882404ea0aea54cd936292a",
+      "previous_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "当战斗动作因目标消失或中断而结束，且当前感知范围内没有可继续攻击的敌对目标时，应切换为观察动作以扩大侦察范围，从而发现新出现的敌人或可拾取的物资，进而重新锁定目标或补充资源。",
+      "reason_metadata": {},
+      "score": 0.5625,
+      "source": "env",
+      "hit_count": 2,
+      "attempt_count": 3,
+      "success_count": 3,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 2,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121115.709043,
+      "updated_at": 1789121199.7470605,
+      "last_hit_at": 1789121146.473874,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "8f26b5c0072d4842830f7a7fba09b879",
+      "previous_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "reason": "当自身生命值偏低且目标距离较远并处于不利位置时，应优先利用远程武器从安全距离输出，避免近身战斗，同时借助队友的接敌行动形成协同支援，以降低风险并推进击杀进度。",
+      "reason_metadata": {},
+      "score": 0.65,
+      "source": "env",
+      "hit_count": 3,
+      "attempt_count": 5,
+      "success_count": 4,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.187327,
+      "updated_at": 1789121200.947208,
+      "last_hit_at": 1789121162.7531853,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "94426a375c8c496788a52da601235d85",
+      "previous_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "reason": "当任务目标尚未完成、当前无可见敌对目标且剩余时间充足时，若附近存在可拾取资源，应评估资源与自身状态的匹配程度：无需替换的冗余物品可放弃，只顺路拾取确实需要的物品；若关键资源距离过远或收益不高，应以移动搜索和推进任务目标为主，并在移动中保持对敌对目标的警觉，发现目标可立即接战。",
+      "reason_metadata": {},
+      "score": 0.3,
+      "source": "llm",
+      "hit_count": 0,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121182.911407,
+      "updated_at": 1789121192.4901962,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "969a18f2d5b9486ab967e74b258ebd11",
+      "previous_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "reason": "当没有可战斗目标且附近无资源可拾取时，应主动向队友所在或前方开阔区域移动以继续搜寻目标，避免原地停留浪费任务进度，并保持与队友靠近以便获得支援。",
+      "reason_metadata": {},
+      "score": 0.4,
+      "source": "llm",
+      "hit_count": 2,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 2,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121116.686975,
+      "updated_at": 1789121146.473874,
+      "last_hit_at": 1789121146.473874,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "969a3b8674534425b5867426404e1924",
+      "previous_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "reason": "当生命值处于危险水平且附近存在可获取的恢复物品时，应优先尝试使用背包中已有的恢复物品；若使用无效或失败，需评估前往拾取外部恢复物品的路径风险，避免在移动过程中接近敌对生物；在风险较高时，可暂缓拾取，等待威胁移动造成的时机窗口，并优先确保自身生存。",
+      "reason_metadata": {},
+      "score": 0.5714285714285714,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 2,
+      "success_count": 2,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121169.5018709,
+      "updated_at": 1789121185.1522577,
+      "last_hit_at": 1789121185.1522577,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "9a8125a8ff0e4576bc08fcc1add028c7",
+      "previous_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "reason": "当自身生命值已恢复至安全范围且当前区域无即时敌对威胁时，若任务进度仍需推进，应兼顾搜索目标与拾取附近可用物资：优先前往距离最近的可拾取物资点，同时保持对战场态势的警觉，以便随时切换到战斗或继续推进任务。",
+      "reason_metadata": {},
+      "score": 0.6111111111111112,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 4,
+      "success_count": 4,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121137.7059608,
+      "updated_at": 1789121210.7470994,
+      "last_hit_at": 1789121172.2274733,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "9eaf348d64e6413093b943e43e0b03a7",
+      "previous_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "reason": "当自身生命值偏低且近战敌人在一定距离外时，应优先使用远程武器与控制手段在安全距离消耗或牵制敌人，避免主动进入近战范围导致持续受伤，同时等待队友恢复或支援；若任务进度尚可且时间充裕，则无需冒险贴近击杀，保持生存优先并利用距离优势输出。",
+      "reason_metadata": {},
+      "score": 0.5294117647058824,
+      "source": "env",
+      "hit_count": 2,
+      "attempt_count": 12,
+      "success_count": 7,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121114.5421946,
+      "updated_at": 1789121210.7676582,
+      "last_hit_at": 1789121146.473874,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "a832275cdfc04cacac6b6bdd231816f4",
+      "previous_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Alice",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "reason": "当任务目标尚未达成且当前无可攻击的敌对目标时，应主动执行资源获取或侦察类动作，以提升后续战斗效率或发现新目标；决策时需权衡资源收益与行动距离，避免原地等待或执行低收益动作。在接近可拾取物资后，应连续捡取该位置掉落的物品，以将移动成本转化为资源收益，避免因只移动不拾取而造成往返浪费。",
+      "reason_metadata": {},
+      "score": 0.3125,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 3,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121136.832375,
+      "updated_at": 1789121210.7470994,
+      "last_hit_at": 1789121172.2274733,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "b120667ba0c145c9866e0a6ae0664fb5",
+      "previous_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "reason": "生命值恢复后，重新投入战斗以继续消灭怪物。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "llm",
+      "hit_count": 1,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1875927,
+      "updated_at": 1789121185.1522577,
+      "last_hit_at": 1789121185.1522577,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "b5558aae9f804571898c3ef56ac55e65",
+      "previous_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "reason": "当自身生命值中等偏低且任务时间有限、场上存在远程攻击型敌人时，应优先拾取可补充的远程弹药或关键补给，避免单独接近强敌，待与队友汇合或状态恢复后再协同作战。",
+      "reason_metadata": {},
+      "score": 0.6111111111111112,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 4,
+      "success_count": 4,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121125.3493145,
+      "updated_at": 1789121210.7470994,
+      "last_hit_at": 1789121162.7531853,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "b744b38912764061aa6cfb383741f5ef",
+      "previous_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "equipment.equip_items",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"equipment.equip_items\",\"parameters\":{}}"
+      },
+      "reason": "当战斗动作因缺少合适武器而无法有效执行时，应先执行装备动作从背包中准备对应类型的武器，再重新尝试战斗，以避免无效的重复尝试。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121142.4661689,
+      "updated_at": 1789121154.8710833,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "bcf1a6f5c7004a61a8cfdf3b65bec1fb",
+      "previous_action": {
+        "name": "equipment.equip_items",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"equipment.equip_items\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "当已装备好武器防具且健康状况良好时，若发现的敌对目标正在被其他队友处理或距离不足以构成即时威胁，宜先通过观察进一步掌握周围态势，避免多人争抢同一目标，从而优化团队输出效率并保持整体推进节奏。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121101.1750784,
+      "updated_at": 1789121111.275063,
+      "last_hit_at": 1789121103.1529288,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "bf313285da16414cbc541f4131ec0c75",
+      "previous_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "reason": "当生命值明显偏低且附近无直接威胁、但有队友支援时，应优先使用背包中更可靠的治疗消耗品（如治疗药水）恢复生命，而非依赖执行不确定的食物；待生存能力提升后再继续推进任务。",
+      "reason_metadata": {},
+      "score": 0.4,
+      "source": "llm",
+      "hit_count": 0,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121191.3748212,
+      "updated_at": 1789121191.3748212,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "c30a8da4bf1e402ca1c3f4399f609c6d",
+      "previous_action": {
+        "name": "equipment.unequip_items",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"equipment.unequip_items\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "inventory.drop",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"inventory.drop\",\"parameters\":{}}"
+      },
+      "reason": "卸下不需要的装备后，将其丢弃以腾出背包空间。",
+      "reason_metadata": {},
+      "score": 0.4,
+      "source": "llm",
+      "hit_count": 0,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1877713,
+      "updated_at": 1789121094.1877713,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.4,
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4
+      }
+    },
+    {
+      "entry_id": "de2048d651d3469cbc17ea2e43c842fe",
+      "previous_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "reason": "当生命值偏低但已脱离危险、饥饿度尚可且背包中有基础战斗资源时，若周围无近距离敌对目标，应优先向已知怪物方向移动以缩短距离、配合队友推进击杀，而非继续争夺价值低或竞争激烈的掉落物。",
+      "reason_metadata": {},
+      "score": 0.3,
+      "source": "llm",
+      "hit_count": 0,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121206.9640262,
+      "updated_at": 1789121206.9640262,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "e4eb5ceab7564bd9838ab83ead14649d",
+      "previous_action": {
+        "name": "combat.retreat",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.retreat\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.use_food",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.use_food\",\"parameters\":{}}"
+      },
+      "reason": "撤退脱离战斗后，若生命值极低且暂无近身威胁，应优先使用可获取的食物或治疗物品恢复生命，再评估装备拾取或继续作战。",
+      "reason_metadata": {},
+      "score": 0.5833333333333334,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1875286,
+      "updated_at": 1789121171.6976004,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "e7dfc2a446c24bbda8a781398fe4a58b",
+      "previous_action": {
+        "name": "navigation.goto_position",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"navigation.goto_position\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "移动到新区域后，先原地观察扫描敌人和物资，确认安全后再行动；若生命值偏低且无恢复手段，应避免主动接敌，优先利用观察结果评估威胁与资源，再决定战斗或撤退。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 0,
+      "success_count": 0,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1879392,
+      "updated_at": 1789121194.1000617,
+      "last_hit_at": 1789121172.2274733,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "e96a219d09b04527b527f2cb227636cc",
+      "previous_action": {
+        "name": "combat.fight",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"combat.fight\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "reason": "当战斗结束或无敌对实体近身威胁且自身状态安全时，若周围有掉落物资，应优先拾取近处物资以补充生命、饥饿或弹药等资源，避免资源短缺导致后续失败；同时注意与队友保持适当距离，之后继续巡逻搜索目标。若武器状态异常，在无即时战斗需求时可先拾取物资再做检查。",
+      "reason_metadata": {},
+      "score": 0.5833333333333334,
+      "source": "env",
+      "hit_count": 2,
+      "attempt_count": 1,
+      "success_count": 1,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121094.1878324,
+      "updated_at": 1789121154.8710833,
+      "last_hit_at": 1789121146.473874,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score": 0.5,
+        "llm_initial_score_raw": 0.5,
+        "llm_initial_score_applied": 0.5,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.5
+      }
+    },
+    {
+      "entry_id": "ee83529ce23044deb094a962a4bd9cfc",
+      "previous_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "当连续执行相同感知动作时，可能陷入重复观察而无法获取新信息或取得进展，应切换动作或调整策略以推进任务目标。",
+      "reason_metadata": {},
+      "score": 0.5,
+      "source": "env",
+      "hit_count": 1,
+      "attempt_count": 2,
+      "success_count": 2,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 1,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121123.2756875,
+      "updated_at": 1789121162.7531853,
+      "last_hit_at": 1789121162.7531853,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.3,
+        "llm_initial_score_applied": 0.3,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.3,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "f296d7d46136478599c57d5a336220f1",
+      "previous_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "combat.observe",
+        "parameters": {},
+        "agent_id": "Dave",
+        "canonical_key": "{\"name\":\"combat.observe\",\"parameters\":{}}"
+      },
+      "reason": "在连续完成一系列拾取动作后，应暂停当前行动并扩大感知范围进行扫描，以便及时发现敌对实体和新增掉落物，从而避免在资源收集期间遭遇突袭或遗漏重要物资。",
+      "reason_metadata": {},
+      "score": 0.625,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 3,
+      "success_count": 3,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121190.6523347,
+      "updated_at": 1789121210.7470994,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    },
+    {
+      "entry_id": "f524f050c67642008c2f09730f617d69",
+      "previous_action": {
+        "name": "equipment.equip_items",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"equipment.equip_items\",\"parameters\":{}}"
+      },
+      "next_action": {
+        "name": "inventory.pick",
+        "parameters": {},
+        "agent_id": "Carol",
+        "canonical_key": "{\"name\":\"inventory.pick\",\"parameters\":{}}"
+      },
+      "reason": "当没有可见敌人且任务尚未完成时，应优先拾取附近的资源类物资以维持补给，同时在移动中保持环境观察，以便及时应对新出现的威胁。",
+      "reason_metadata": {},
+      "score": 0.5714285714285714,
+      "source": "env",
+      "hit_count": 0,
+      "attempt_count": 2,
+      "success_count": 2,
+      "delta_attempt_count": 0,
+      "delta_success_count": 0,
+      "delta_hit_count": 0,
+      "task_scope": "monster_clearance",
+      "owner_agent_id": null,
+      "created_at": 1789121152.2943535,
+      "updated_at": 1789121196.4683878,
+      "last_hit_at": null,
+      "seed_entry_id": null,
+      "initialization_batch_id": null,
+      "metadata": {
+        "llm_initial_score_raw": 0.4,
+        "llm_initial_score_applied": 0.4,
+        "llm_initial_score_required": true,
+        "score_prior_mean": 0.4,
+        "llm_score_model": "deepseek-flash"
+      }
+    }
+  ]
+}

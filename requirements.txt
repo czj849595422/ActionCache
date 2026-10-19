@@ -1,0 +1,16 @@
+# ActionCache Python runtime dependencies.
+# The Minecraft server, Java runtime and Mineflayer dependencies are documented
+# in README.md and are installed separately from this file.
+
+flufl.lock>=8.2
+gymnasium>=1.0
+imageio>=2.34
+minecraft-launcher-lib>=7.1
+mcrcon>=0.7
+numpy>=2.0
+openai>=1.0
+Pillow>=10.0
+psutil>=5.9
+PyYAML>=6.0
+requests>=2.31
+scikit-image>=0.22

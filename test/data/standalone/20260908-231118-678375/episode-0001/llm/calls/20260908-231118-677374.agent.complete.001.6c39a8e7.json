@@ -1,0 +1,62 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "standalone",
+  "run_id": "20260908-231118-678375",
+  "episode_id": "episode-0001",
+  "request_id": "6c39a8e721f947cb8b1aa6153fb44e4b",
+  "source": {
+    "component": "standalone",
+    "operation": "complete",
+    "task_id": null,
+    "agent_id": null
+  },
+  "mode": "complete",
+  "status": "completed",
+  "started_at": 1788880278.6773744,
+  "completed_at": 1788880278.6954267,
+  "elapsed_seconds": 0.018052339553833008,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "fake-model",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hello"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": false,
+    "metadata": {}
+  },
+  "response": {
+    "request_id": "6c39a8e721f947cb8b1aa6153fb44e4b",
+    "mode": "complete",
+    "status": "completed",
+    "content": "ok",
+    "reasoning_content": "",
+    "model": "fake-model",
+    "finish_reason": "stop",
+    "stop_reason": null,
+    "keyword_events": [],
+    "metadata": {}
+  },
+  "usage": {
+    "raw": {
+      "prompt_tokens": 2,
+      "completion_tokens": 3,
+      "total_tokens": 5
+    },
+    "normalized": {
+      "input_tokens": 2,
+      "output_tokens": 3,
+      "total_tokens": 5
+    },
+    "usage_available": true
+  },
+  "error": null
+}

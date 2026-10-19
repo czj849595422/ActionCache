@@ -1,0 +1,146 @@
+task_id_prefix: trade
+name_prefix: Multi-stage Crafting Trade Quick
+
+task:
+  category: trade
+
+  agents:
+    count: 4
+    names:
+      - Alice
+      - Bob
+      - Carol
+      - Dave
+
+  environment:
+    world: trade
+    time: noon
+    weather: clear
+    difficulty: peaceful
+    gamemode: survival
+    world_spawn: {x: 0, y: 0, z: 0}
+    gamerules:
+      doDaylightCycle: false
+      doWeatherCycle: false
+      doMobSpawning: false
+      keepInventory: true
+    init_commands:
+      - "kill @e[type=minecraft:item,x=-16,y=0,z=-16,dx=32,dy=3,dz=32]"
+
+  initial_state: {}
+  spawns: []
+
+  completion:
+    timeout_seconds: 300
+    success:
+      type: all_personal_chests_satisfied
+
+  trials:
+    count: 1
+
+  output:
+    dir: data
+    save_memory: true
+
+  params: {}
+
+  metadata:
+    preset: quick
+
+generation:
+  supply_margin: 0.25
+  value_multiplier: 1.5
+  max_attempts: 1000
+  material_count: {min: 16, max: 48}
+  base_prices:
+    minecraft:oak_log: 4
+    minecraft:cobblestone: 2
+    minecraft:iron_ingot: 8
+    minecraft:gold_ingot: 9
+    minecraft:string: 5
+    minecraft:wheat: 3
+    minecraft:pumpkin: 3
+    minecraft:egg: 2
+    minecraft:sugar: 2
+  target_pool:
+    - minecraft:wooden_pickaxe
+    - minecraft:wooden_axe
+    - minecraft:wooden_shovel
+    - minecraft:wooden_hoe
+    - minecraft:wooden_sword
+    - minecraft:bow
+    - minecraft:fishing_rod
+    - minecraft:bread
+    - minecraft:pumpkin_pie
+    - minecraft:stone_pickaxe
+    - minecraft:stone_axe
+    - minecraft:stone_shovel
+    - minecraft:stone_hoe
+    - minecraft:stone_sword
+    - minecraft:iron_pickaxe
+    - minecraft:iron_axe
+    - minecraft:iron_shovel
+    - minecraft:iron_hoe
+    - minecraft:iron_sword
+    - minecraft:shears
+    - minecraft:bucket
+    - minecraft:golden_hoe
+    - minecraft:golden_shovel
+    - minecraft:golden_pickaxe
+    - minecraft:golden_axe
+    - minecraft:golden_sword
+  professions:
+    lumberjack:
+      label: 伐木工
+      source_items: [minecraft:oak_log]
+      tool_targets:
+        - minecraft:wooden_pickaxe
+        - minecraft:wooden_axe
+        - minecraft:wooden_shovel
+        - minecraft:wooden_hoe
+        - minecraft:wooden_sword
+        - minecraft:bow
+        - minecraft:fishing_rod
+      food_targets: [minecraft:bread, minecraft:pumpkin_pie]
+    artisan:
+      label: 匠人
+      source_items: [minecraft:cobblestone, minecraft:iron_ingot, minecraft:string]
+      tool_targets:
+        - minecraft:stone_pickaxe
+        - minecraft:stone_axe
+        - minecraft:stone_shovel
+        - minecraft:stone_hoe
+        - minecraft:stone_sword
+        - minecraft:iron_pickaxe
+        - minecraft:iron_axe
+        - minecraft:iron_shovel
+        - minecraft:iron_hoe
+        - minecraft:iron_sword
+        - minecraft:shears
+        - minecraft:bucket
+      food_targets: [minecraft:bread, minecraft:pumpkin_pie]
+    farmer:
+      label: 农民
+      source_items: [minecraft:wheat, minecraft:pumpkin, minecraft:egg, minecraft:sugar]
+      tool_targets:
+        - minecraft:wooden_hoe
+        - minecraft:stone_hoe
+        - minecraft:iron_hoe
+        - minecraft:golden_hoe
+        - minecraft:wooden_shovel
+        - minecraft:stone_shovel
+        - minecraft:iron_shovel
+        - minecraft:golden_shovel
+        - minecraft:shears
+      food_targets: [minecraft:bread, minecraft:pumpkin_pie]
+    knight:
+      label: 骑士
+      source_items: [minecraft:gold_ingot]
+      tool_targets:
+        - minecraft:golden_pickaxe
+        - minecraft:golden_axe
+        - minecraft:golden_shovel
+        - minecraft:golden_hoe
+        - minecraft:golden_sword
+        - minecraft:iron_sword
+      food_targets: [minecraft:bread, minecraft:pumpkin_pie]

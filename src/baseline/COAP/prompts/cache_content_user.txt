@@ -1,0 +1,16 @@
+【任务】
+{objective}
+
+【动作转移】
+前序动作: {previous_action}
+前序动作说明: {previous_action_description}
+后继动作: {next_action}
+后继动作说明: {next_action_description}
+
+【现有推理】
+{existing_section}
+
+【新增推理】
+{reasons}
+
+请抽象出一条通用原因；仅当当前缓存对尚不存在且需要初始评分时，才在 (0,0.5] 内给出评分；已有缓存对无需重新评分。

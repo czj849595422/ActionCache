@@ -1,0 +1,305 @@
+{
+  "name": "inventory",
+  "version": "0.1.0",
+  "description": "Inventory query and equipment skill using Mineflayer native APIs.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": [],
+    "optional": []
+  },
+  "commands": {
+    "list": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "items": {"type": "array"},
+          "equipment": {"type": "object"},
+          "heldItem": {"type": ["object", "null"]}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "List inventory items, equipment, and held item.",
+      "preconditions": [],
+      "stop_conditions": ["completed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "inspect": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "inventory_items": {"type": "array"},
+          "inventory_empty_slots": {"type": "number"},
+          "occupied_slots": {"type": "number"},
+          "equipment": {"type": "object"},
+          "heldItem": {"type": ["object", "null"]}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Inspect inventory items, empty slots, equipment, and held item.",
+      "preconditions": [],
+      "stop_conditions": ["completed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "count_item": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"}
+        },
+        "required": ["name"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "count": {"type": "number"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Count inventory items matching a given item name.",
+      "preconditions": [],
+      "stop_conditions": ["completed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "has_item": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "count": {"type": "number", "minimum": 1}
+        },
+        "required": ["name"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "has": {"type": "boolean"},
+          "count": {"type": "number"},
+          "required": {"type": "number"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Check whether the inventory contains at least the requested number of an item.",
+      "preconditions": [],
+      "stop_conditions": ["completed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "equip": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "slot": {"type": "integer", "minimum": 0, "description": "背包中物品的槽位编号；与 name 二选一"},
+          "destination": {"type": "string"}
+        },
+        "oneOf": [
+          {"required": ["name"]},
+          {"required": ["slot"]}
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "equipped": {"type": "boolean"},
+          "item": {"type": "object"},
+          "destination": {"type": "string"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Equip an inventory item selected by name, combat-task equipment registry identifier, or inventory slot to a Mineflayer equipment destination such as hand. Without an identifier, enchanted same-name items take priority, then lower slots.",
+      "preconditions": ["item_available"],
+      "stop_conditions": ["completed", "item_missing"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "inventory",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "pick": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": {"type": "number"},
+                "y": {"type": "number"},
+                "z": {"type": "number"}
+              },
+              "required": ["x", "y", "z"],
+              "additionalProperties": false
+            },
+            "description": "目标掉落物位置列表 [{x,y,z}, ...]"
+          },
+          "mode": {
+            "type": "integer",
+            "enum": [1, 2],
+            "default": 1,
+            "description": "1 按列表顺序拾取（默认）；2 按最小移动距离（贪心最近邻）拾取"
+          }
+        },
+        "required": ["positions"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "status": {"type": "string"},
+          "mode": {"type": "integer"},
+          "total_positions": {"type": "integer"},
+          "completed_positions": {"type": "integer"},
+          "pending_positions": {"type": "array"},
+          "picked_items": {"type": "array"},
+          "picked_total": {"type": "integer"},
+          "position": {"type": ["object", "null"]}
+        }
+      },
+      "side_effects": ["movement", "inventory"],
+      "llm_description": "Continuously pick up dropped items at the given positions. mode 1 follows the list order; mode 2 picks the nearest position first (greedy). Stops when all positions are cleared or interrupted.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed", "interrupted"],
+      "locks": ["movement", "inventory"],
+      "switch_group": "inventory",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "drop": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "oneOf": [
+                {"type": "string"},
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string"},
+                    "count": {"type": "integer", "minimum": 1}
+                  },
+                  "required": ["name"],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "description": "要丢弃的物品列表：字符串等价 {name, count:1}；对象可省略 count（默认 1）"
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "status": {"type": "string"},
+          "position": {"type": ["object", "null"]},
+          "dropped_items": {"type": "array"},
+          "dropped_total": {"type": "integer"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Drop the given items (names, combat-task equipment registry identifiers, or {name, count}) in place onto the ground. Count defaults to 1; if the inventory has fewer than requested, drop the available maximum; if an item is entirely missing, the action fails.",
+      "llm_description_zh": "在当前位置把给定物品列表丢到地面；战斗任务中 items 可使用装备注册标识，也可使用物品名或 {name, count} 列表，count 缺省为 1。",
+      "preconditions": ["item_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory"],
+      "switch_group": "inventory",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "give": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "target": {"type": "string"},
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "oneOf": [
+                {"type": "string"},
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {"type": "string"},
+                    "count": {"type": "integer", "minimum": 1}
+                  },
+                  "required": ["name"],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "description": "要给予的物品列表：字符串等价 {name, count:1}；对象可省略 count（默认 1）"
+          }
+        },
+        "required": ["target", "items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "status": {"type": "string"},
+          "target": {"type": "string"},
+          "target_position": {"type": ["object", "null"]},
+          "position": {"type": ["object", "null"]},
+          "given_items": {"type": "array"},
+          "given_total": {"type": "integer"}
+        }
+      },
+      "side_effects": ["movement", "inventory", "item_use"],
+      "llm_description": "Walk close to the target player and drop the given items (names, combat-task equipment registry identifiers, or {name, count}) near them for the target to pick up. Delivery is NOT guaranteed; the recipient must pick up the items. Count defaults to 1; insufficient stock uses the available maximum; a fully missing item fails the action.",
+      "llm_description_zh": "靠近目标玩家并把给定物品列表丢在附近供对方拾取；战斗任务中 items 可使用装备注册标识，也可使用物品名或 {name, count} 列表，count 缺省为 1，实际交付需要对方拾取。",
+      "preconditions": ["item_available"],
+      "stop_conditions": ["completed", "failed", "interrupted"],
+      "locks": ["movement", "inventory"],
+      "switch_group": "inventory",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "name": "equipment",
+  "version": "0.1.0",
+  "description": "Equipment management helpers for weapons, shields, and armor.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": [],
+    "optional": []
+  },
+  "commands": {
+    "equip_item": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string"},
+          "name": {"type": "string"},
+          "slot": {"type": "integer", "minimum": 0, "description": "背包中物品的槽位编号；与 item/name 二选一"},
+          "destination": {
+            "type": "string",
+            "enum": ["hand", "off-hand", "head", "torso", "legs", "feet"]
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "equipped": {"type": "boolean"},
+          "already_equipped": {"type": "boolean"},
+          "destination": {"type": "string"},
+          "item": {"type": "object"},
+          "equipment": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Equip an item selected by name or inventory slot to a specified equipment destination. Combat tasks also accept an equipment registry identifier. Without an identifier, enchanted same-name items take priority, then lower inventory slots.",
+      "llm_description_zh": "将指定物品装备到指定装备槽位；可使用物品名，或使用背包 slot 槽位编号精确选择同名物品。战斗任务也可使用装备注册标识；未指定标识时，同名物品优先选择有附魔者，再按 slot 靠前选择。",
+      "preconditions": ["item_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "equipment",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "unequip_item": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "type": "string",
+            "enum": ["hand", "off-hand", "head", "torso", "legs", "feet"]
+          }
+        },
+        "required": ["destination"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "unequipped": {"type": "boolean"},
+          "destination": {"type": "string"},
+          "item": {"type": "object"},
+          "equipment": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Unequip an equipment destination and return the item to inventory after space checks.",
+      "llm_description_zh": "卸下指定装备槽位中的物品，并在检查背包空间后放回背包。",
+      "preconditions": ["slot_not_empty", "inventory_space_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "equipment",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "auto_equip_combat": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "prefer_weapon": {"type": "string", "enum": ["best", "none"], "default": "best"},
+          "equip_shield": {"type": "boolean", "default": true},
+          "equip_armor": {"type": "boolean", "default": true}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "equipped": {"type": "array"},
+          "skipped": {"type": "array"},
+          "missing_slots": {"type": "array"},
+          "equipment": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Automatically equip the best available melee weapon, shield, and armor for combat.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "equipment",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "equip_items": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "anyOf": [
+              {"type": "string", "minLength": 1},
+              {"type": "integer", "minimum": 0},
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "anyOf": [
+                    {"type": "string", "minLength": 1},
+                    {"type": "integer", "minimum": 0},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "item": {"type": "string", "minLength": 1},
+                        "name": {"type": "string", "minLength": 1},
+                        "slot": {"type": "integer", "minimum": 0, "description": "背包中物品的槽位编号；与 item/name 二选一"},
+                        "destination": {
+                          "type": "string",
+                          "enum": ["hand", "off-hand", "head", "torso", "legs", "feet"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            ],
+            "description": "单个物品名、slot 槽位编号，或物品列表（字符串按名称，或 {item/name, slot, destination}；item/name 与 slot 二选一）"
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "total": {"type": "integer"},
+          "succeeded": {"type": "array"},
+          "failed": {"type": "array"},
+          "partial": {"type": "boolean"},
+          "error_code": {"type": "string"},
+          "equipment": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Equip one item or a list of items in order; each element may be an item name, combat-task equipment registry identifier, inventory slot number, or {item/name, slot, destination}. Without an identifier, enchanted same-name items take priority, then lower slots. Destination is auto-detected when omitted. Invalid elements are skipped and reported.",
+      "llm_description_zh": "按顺序装备单个物品或物品列表；战斗任务中每项可为装备注册标识、物品名、背包 slot 槽位编号，或 {item/name, slot, destination}。未指定标识时，同名物品优先有附魔者，再按 slot 靠前；省略 destination 时自动推断。无效项会跳过并报告。",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "equipment",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "unequip_items": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "destinations": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["hand", "off-hand", "head", "torso", "legs", "feet"]
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": ["hand", "off-hand", "head", "torso", "legs", "feet"]
+                }
+              }
+            ],
+            "description": "单个槽位，或槽位列表"
+          }
+        },
+        "required": ["destinations"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "total": {"type": "integer"},
+          "succeeded": {"type": "array"},
+          "failed": {"type": "array"},
+          "partial": {"type": "boolean"},
+          "error_code": {"type": "string"},
+          "equipment": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Unequip one equipment destination or a list of destinations in order; empty slots are reported as failures without stopping. Succeeds if all succeed, fails if all fail, otherwise reports both.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "equipment",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

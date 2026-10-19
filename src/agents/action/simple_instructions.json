@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "instructions": [
+    {"alias": "break", "action": "block.break", "params": ["position"], "description": "破坏position={x, y, z}的方块。", "description_en": "Break the block at position={x, y, z}."},
+    {"alias": "break_region", "action": "block.break_region", "params": ["from", "to"], "description": "破坏从from={x, y, z}到to={x, y, z}的方块。", "description_en": "Break blocks from from={x, y, z} to to={x, y, z}."},
+    {"alias": "inspect_block", "action": "block.inspect", "params": ["position"], "description": "查看position={x, y, z}的方块。", "description_en": "Inspect the block at position={x, y, z}."},
+    {"alias": "inspect_region", "action": "block.inspect_region", "params": ["from", "to"], "description": "查看从from={x, y, z}到to={x, y, z}的方块。", "description_en": "Inspect blocks from from={x, y, z} to to={x, y, z}."},
+    {"alias": "mine", "action": "block.mine", "params": ["position"], "description": "挖掘position={x, y, z} 处及附近相邻的相同方块。", "description_en": "Mine the block at position={x, y, z} and adjacent identical blocks."},
+    {"alias": "place", "action": "block.place", "params": ["item", "position"], "description": "将item放在position={x, y, z}处。", "description_en": "Place item at position={x, y, z}."},
+    {"alias": "place_region", "action": "block.place_region", "params": ["item", "from", "to"], "description": "使用item填充从from={x, y, z}到to={x, y, z}。", "description_en": "Fill from from={x, y, z} to to={x, y, z} with item."},
+
+    {"alias": "chat", "action": "chat.say", "params": ["message"], "description": "通信发送message。", "description_en": "Send message to communicate."},
+    {"alias": "whisper", "action": "chat.whisper", "params": ["username", "message"], "description": "向username发送message。", "description_en": "Send message to username."},
+
+    {"alias": "attack", "action": "combat.attack", "params": ["target"], "description": "攻击target。", "description_en": "Attack target."},
+    {"alias": "fight", "action": "combat.fight", "params": ["target", "weapon"], "optional": ["weapon"], "description": "安全靠近target至进入攻击范围，并攻击 target（target 可写 <种类>_<id>，如 zombie_73；武器可选，缺省使用当前手持或空手；战斗任务中 weapon 可使用装备标识，如 diamond_sword_1，与当前所持武器不同时自动切换。”）。", "description_en": "Move close to target until within attack range, then attack target (target may be <kind>_<id> like zombie_73; weapon optional, defaults to held item or empty hand; combat tasks also accept an equipment registry identifier such as diamond_sword_1)."},
+    {"alias": "fight_bow", "action": "combat.fight_using_bow", "params": ["bow", "target"], "description": "装备远程武器weapon攻击target；战斗任务中weapon可使用装备注册标识。", "description_en": "Equip a ranged weapon or its combat-task registry identifier and attack target."},
+    {"alias": "fight_melee", "action": "combat.fight_using_weapon", "params": ["weapon", "target"], "description": "装备近战武器weapon攻击target；战斗任务中weapon可使用装备注册标识。", "description_en": "Equip a melee weapon or its combat-task registry identifier and attack target."},
+    {"alias": "patrol", "action": "combat.patrol", "params": [], "description": "感知范围内的敌对实体与附近箱子。", "description_en": "Hostile entities and nearby chests within perception range."},
+    {"alias": "observe", "action": "combat.observe", "params": [], "description": "观察周围，寻找是否存在敌对实体与掉落物。", "description_en": "Observe the surroundings for hostile entities and dropped items."},
+    {"alias": "retreat", "action": "combat.retreat", "params": ["target"], "description": "远离target。", "description_en": "Move away from target."},
+    {"alias": "use_food", "action": "combat.use_food", "params": ["food"], "description": "使用背包内的食物或药水。", "description_en": "Use food or a potion."},
+
+    {"alias": "inspect_chest", "action": "container.inspect_chest", "params": ["position"], "description": "查看position={x, y, z}箱子的内容。", "description_en": "Inspect the contents of the chest at position={x, y, z}."},
+    {"alias": "list_chests", "action": "container.list_chests", "params": [], "description": "列出所有已注册箱子。", "description_en": "List all registered chests."},
+    {"alias": "pick_from_chest", "action": "container.pick_object_from_chest", "params": [["position", "chest", "chest_id"]], "description": "从position={x, y, z}/chest/chest_id箱子取出num_X个item_X。", "description_en": "Take num_X of item_X from the chest at position={x, y, z}/chest/chest_id.", "variadic": {"prefix": [["position", "chest", "chest_id"]], "default_count": 1}},
+    {"alias": "put_in_chest", "action": "container.place_object_to_chest", "params": [["position", "chest", "chest_id"]], "description": "放入num_X个item_X到position={x, y, z}/chest/chest_id箱子。", "description_en": "Put num_X of item_X into the chest at position={x, y, z}/chest/chest_id.", "variadic": {"prefix": [["position", "chest", "chest_id"]], "default_count": 1}},
+
+    {"alias": "query_recipe", "action": "crafting.query_recipe", "params": ["item"], "description": "查询item的合成配方。", "description_en": "Query the crafting recipe for item."},
+    {"alias": "craft_with_recipe", "action": "crafting.craft_with_recipe", "params": ["item", "recipe_index"], "description": "按recipe_index合成num个item。", "description_en": "Craft num of item using recipe_index."},
+    {"alias": "craft", "action": "crafting.craft_item", "params": ["item"], "description": "合成num个item。", "description_en": "Craft num of item."},
+
+    {"alias": "equip", "action": "equipment.equip_items", "params": ["items"], "description": "装备item。", "description_en": "Equip item."},
+    {"alias": "unequip", "action": "equipment.unequip_items", "params": ["destinations"], "description": "卸下装备（支持单个或列表）。", "description_en": "Unequip equipment (single or list)."},
+    {"alias": "auto_equip", "action": "equipment.auto_equip_combat", "params": [], "description": "自动装备当前最佳战斗装备。", "description_en": "Automatically equip the best combat gear."},
+
+    {"alias": "harvest", "action": "farm.harvest", "params": ["crop"], "description": "收割num个crop。", "description_en": "Harvest num of crop."},
+
+    {"alias": "find_furnace", "action": "furnace.find_nearby", "params": [], "description": "寻找附近可用的熔炉。", "description_en": "Find a nearby usable furnace."},
+    {"alias": "open", "action": "furnace.open", "params": ["position"], "description": "打开position={x, y, z}的熔炉。", "description_en": "Open the furnace at position={x, y, z}."},
+    {"alias": "put_fuel", "action": "furnace.put_fuel", "params": ["position", "item"], "description": "向position={x, y, z}熔炉放入num个燃料item。", "description_en": "Put num of fuel item into the furnace at position={x, y, z}."},
+    {"alias": "put_input", "action": "furnace.put_input", "params": ["position", "item"], "description": "向position={x, y, z}熔炉放入num个原料item。", "description_en": "Put num of input item into the furnace at position={x, y, z}."},
+    {"alias": "take_fuel", "action": "furnace.take_fuel", "params": ["position"], "description": "取出position={x, y, z}熔炉燃料槽中的全部燃料。", "description_en": "Take all fuel from the fuel slot of the furnace at position={x, y, z}."},
+    {"alias": "take_input", "action": "furnace.take_input", "params": ["position"], "description": "取出position={x, y, z}熔炉原料槽中的全部原料。", "description_en": "Take all input from the input slot of the furnace at position={x, y, z}."},
+    {"alias": "take_output", "action": "furnace.take_output", "params": ["position"], "description": "从position={x, y, z}熔炉取出产物。", "description_en": "Take the output from the furnace at position={x, y, z}."},
+    {"alias": "smelt", "action": "furnace.smelt_item", "params": ["position", "item", "fuel"], "description": "使用position={x, y, z}的熔炉，放入num_item个原料item与num_fuel个fuel", "description_en": "Use the furnace at position={x, y, z} to put in num_item of input item and num_fuel of fuel."},
+    {"alias": "close", "action": "furnace.close", "params": [], "description": "关闭当前熔炉界面。", "description_en": "Close the current furnace interface."},
+
+    {"alias": "inventory", "action": "inventory.list", "params": [], "description": "列出背包中的全部物品。", "description_en": "List all items in the inventory."},
+    {"alias": "inspect_inventory", "action": "inventory.inspect", "params": [], "description": "查看背包详细内容与物品统计。", "description_en": "Inspect inventory details and item statistics."},
+    {"alias": "count_item", "action": "inventory.count_item", "params": ["name"], "description": "统计指定物品的持有数量。", "description_en": "Count how many of the specified item are held."},
+    {"alias": "has_item", "action": "inventory.has_item", "params": ["name"], "description": "判断背包中是否持有指定物品。", "description_en": "Check whether the inventory holds the specified item."},
+    {"alias": "equip_inventory", "action": "inventory.equip", "params": [["name", "slot"]], "description": "从背包中按名称、装备注册标识或slot槽位编号装备物品；同名物品无标识时优先有附魔且按slot靠前。", "description_en": "Equip an inventory item by name, combat-task registry identifier, or slot; without an identifier, enchanted matches and lower slots have priority."},
+    {"alias": "pick", "action": "inventory.pick", "params": ["positions"], "description": "按指定位置拾取掉落物。", "description_en": "Pick up dropped items at the given positions."},
+    {"alias": "drop", "action": "inventory.drop", "params": ["items"], "description": "丢弃items中的物品到当前位置地面。", "description_en": "Drop the items onto the ground at the current position."},
+    {"alias": "give", "action": "inventory.give", "params": ["target", "items"], "description": "靠近target并把items中的物品丢给对方拾取。", "description_en": "Move near target and drop the items for them to pick up."},
+
+    {"alias": "mine_diamond", "action": "mining.mine_diamond", "params": ["position"], "description": "移动到position附近并挖取该位置的钻石矿。", "description_en": "Move near position and mine the diamond ore at that position."},
+    {"alias": "mine_emerald", "action": "mining.mine_emerald", "params": ["position"], "description": "移动到position附近并挖取该位置的绿宝石矿。", "description_en": "Move near position and mine the emerald ore at that position."},
+    {"alias": "mine_gold", "action": "mining.mine_gold", "params": ["position"], "description": "移动到position附近并挖取该位置的金矿。", "description_en": "Move near position and mine the gold ore at that position."},
+    {"alias": "mine_iron", "action": "mining.mine_iron", "params": ["position"], "description": "移动到position附近并挖取该位置的铁矿。", "description_en": "Move near position and mine the iron ore at that position."},
+    {"alias": "mine_lapis", "action": "mining.mine_lapis", "params": ["position"], "description": "移动到position附近并挖取该位置的青金石矿。", "description_en": "Move near position and mine the lapis lazuli ore at that position."},
+    {"alias": "mine_netherite", "action": "mining.mine_netherite", "params": ["position"], "description": "移动到position附近并挖取该位置的下界合金矿。", "description_en": "Move near position and mine the netherite ore at that position."},
+
+    {"alias": "goto", "action": "navigation.goto_position", "params": [["position", "entity_name"]], "description": "移动到坐标 position={x,y,z}。", "description_en": "Move to coordinates position={x,y,z}."},
+    {"alias": "goto_block", "action": "navigation.goto_block", "params": ["block_name"], "description": "前往最近的方块block_name。", "description_en": "Go to the nearest block block_name."},
+    {"alias": "follow", "action": "navigation.follow_position", "params": ["position"], "description": "持续跟随目标坐标position={x,y,z}。", "description_en": "Continuously follow target coordinates position={x,y,z}."},
+    {"alias": "follow_entity", "action": "navigation.follow_entity", "params": ["entity_name"], "description": "持续跟随实体entity_name。", "description_en": "Continuously follow entity entity_name."},
+    {"alias": "explore", "action": "navigation.explore", "params": ["target"], "description": "定向探索并寻找目标（direction 可选）。", "description_en": "Explore directionally to find the target (direction is optional)."},
+
+    {"alias": "eat", "action": "survival.use_food", "params": ["food"], "description": "使用食物或药水。", "description_en": "Use food or a potion."},
+
+    {"alias": "inspect_own", "action": "trade.inspect_own_containers", "params": [], "description": "查看自己的箱子与商店状态。", "description_en": "Inspect your own chests and shop status."},
+    {"alias": "inspect_shop", "action": "trade.inspect_shop", "params": ["shop_name"], "description": "查看shop_name的库存与售价。", "description_en": "Inspect the inventory and prices of shop_name."},
+    {"alias": "transfer", "action": "trade.transfer_owned_items", "params": ["container", "direction"], "description": "在container中进行拿取/存放num_X个item_X。", "description_en": "Take/store num_X of item_X in container.", "variadic": {"prefix": ["container", "direction"], "default_count": "all"}},
+    {"alias": "buy", "action": "trade.buy_from_shop", "params": ["shop_name", "item", "count"], "description": "从shop_name购买count个item。", "description_en": "Buy count of item from shop_name."},
+    {"alias": "craft_target", "action": "trade.craft_target", "params": ["item", "count"], "description": "合成count个item。", "description_en": "Craft count of item."},
+    {"alias": "take_from", "action": "trade.take_from_container", "params": ["container"], "description": "从container中拿取num_X个item_X。", "description_en": "Take num_X of item_X from container.", "variadic": {"prefix": ["container"], "default_count": "all"}},
+    {"alias": "store_to", "action": "trade.store_to_container", "params": ["container"], "description": "将num_X个item_X存入container。", "description_en": "Store num_X of item_X into container.", "variadic": {"prefix": ["container"], "default_count": "all"}},
+
+    {"alias": "wait", "action": "wait.wait", "params": ["seconds"], "description": "等待秒数seconds。", "description_en": "Wait for seconds."}
+  ]
+}

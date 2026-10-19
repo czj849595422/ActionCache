@@ -1,0 +1,17 @@
+category: debug
+agents:
+  count: 2
+  names:
+  - Alice
+  - Bob
+environment:
+  world: base_env
+completion:
+  timeout_seconds: 86400
+  success:
+    type: survive_until
+    duration_seconds: 86400
+metadata:
+  purpose: manual skill testing only
+task_id: debug
+name: Empty Task (Manual Testing)

@@ -1,0 +1,16 @@
+【身份】
+Agent: {agent_id}
+队友: {team}
+
+【最新观测】
+{observation_text}
+
+【历史信息】
+{history_text}
+
+【上次输出错误】
+{error_text}
+{feedback_section}
+
+请直接根据当前观测、历史信息和任务目标选择下一步动作。
+不要输出推理过程，只按输出规范返回动作；如有必要可附带通信。

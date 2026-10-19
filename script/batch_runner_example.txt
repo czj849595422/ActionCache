@@ -1,0 +1,15 @@
+# 批量指令 runner 示例: 准备阶段 + 任务阶段
+
+# 准备阶段: 环境指令, 调度启动后立即按顺序执行 (不支持时间前缀)
+[prepare]
+weather clear
+time set day
+gamerule doWeatherCycle false
+
+# 任务阶段: 收到任务开始信号后开始计时, 按时间顺序执行
+[task]
+say task started
+3s time query daytime
+6s say six real seconds
+40t say forty game ticks
+120t time query gametime

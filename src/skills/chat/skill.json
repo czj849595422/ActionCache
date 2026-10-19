@@ -1,0 +1,85 @@
+{
+  "name": "chat",
+  "version": "0.1.0",
+  "description": "Chat helpers for sending public and private messages.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": [],
+    "optional": []
+  },
+  "commands": {
+    "say": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "要发送的公开聊天消息"
+          }
+        },
+        "required": ["message"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "message": {"type": "string"},
+          "sent_at": {"type": "number"},
+          "message_type": {"type": "string"}
+        }
+      },
+      "side_effects": ["chat"],
+      "llm_description": "Send a public chat message visible to all players on the server.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["chat"],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "whisper": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "description": "接收私聊的玩家名"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "description": "私聊消息内容"
+          }
+        },
+        "required": ["username", "message"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "username": {"type": "string"},
+          "message": {"type": "string"},
+          "sent_at": {"type": "number"},
+          "message_type": {"type": "string"}
+        }
+      },
+      "side_effects": ["chat"],
+      "llm_description": "Send a private whisper message to a specific player by username.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["chat"],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

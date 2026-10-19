@@ -1,0 +1,84 @@
+task_id: mining
+category: mining
+name: Dynamic Mineral Collection Quick
+
+agents:
+  count: 4
+  names: [Alice, Bob, Carol, Dave]
+
+environment:
+  world: base_env
+  time: noon
+  weather: clear
+  difficulty: peaceful
+  gamemode: survival
+  world_spawn: {x: 0, y: 0, z: 0}
+  gamerules:
+    doDaylightCycle: false
+    doWeatherCycle: false
+    doMobSpawning: false
+    keepInventory: true
+  init_commands:
+    - "clear @a"
+    - "kill @e[type=item,x=-25,y=0,z=-25,dx=49,dy=2,dz=49]"
+    - "fill -25 0 -25 24 2 24 air replace"
+
+initial_state:
+  by_agent:
+    - name: Alice
+      inventory:
+        "minecraft:stone_pickaxe{Unbreakable:1b}": 1
+      position: {x: -3, y: 0, z: -3}
+    - name: Bob
+      inventory:
+        "minecraft:iron_pickaxe{Unbreakable:1b}": 1
+      position: {x: 3, y: 0, z: -3}
+    - name: Carol
+      inventory:
+        "minecraft:iron_pickaxe{Unbreakable:1b}": 1
+      position: {x: -3, y: 0, z: 3}
+    - name: Dave
+      inventory:
+        "minecraft:diamond_pickaxe{Unbreakable:1b}": 1
+      position: {x: 3, y: 0, z: 3}
+
+completion:
+  timeout_seconds: 180
+  success:
+    type: item_value
+    target_value: 100
+    item_values:
+      lapis_block: 1
+      iron_block: 3
+      gold_block: 6
+      emerald_block: 8
+      diamond_block: 10
+      netherite_block: 20
+
+trials:
+  count: 1
+
+output:
+  dir: data
+  save_memory: true
+
+params:
+  bounds:
+    min_x: -25
+    max_x: 24
+    min_y: 0
+    max_y: 0
+    min_z: -25
+    max_z: 24
+  ore_blocks:
+    minecraft:lapis_block: lapis_block
+    minecraft:iron_block: iron_block
+    minecraft:gold_block: gold_block
+    minecraft:emerald_block: emerald_block
+    minecraft:diamond_block: diamond_block
+    minecraft:netherite_block: netherite_block
+  generation_seed: 20260809
+
+metadata:
+  preset: quick
+  generation_seed: 20260809

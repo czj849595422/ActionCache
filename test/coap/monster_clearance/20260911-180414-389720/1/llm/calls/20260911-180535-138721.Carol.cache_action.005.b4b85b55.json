@@ -1,0 +1,98 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "episode_id": "1",
+  "request_id": "b4b85b5515dd4c628b262f8d953330b7",
+  "source": {
+    "component": "coap_planning",
+    "operation": "cache_action",
+    "task_id": "monster_clearance",
+    "agent_id": "Carol"
+  },
+  "mode": "stream",
+  "status": "completed",
+  "started_at": 1789121135.138721,
+  "completed_at": 1789121136.24844,
+  "elapsed_seconds": 1.1097190380096436,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "deepseek-v4-flash",
+    "messages": [
+      {
+        "role": "system",
+        "content": "【任务】\n你处在一支负责清剿怪物的队伍中，在坐标范围从-50到50的场地内执行清剿怪物的任务。\n你需要配合你的伙伴，巡查场地上存在的怪物，任务完成目标是消灭10只怪物。\n僵尸无远程攻击能力，但会贴近玩家攻击，用剑可阻挡对方接近。\n骷髅装备弓箭，具备远程攻击能力，接近容易受到攻击。\n场上周期性掉落物资，合理使用自身资源进行战斗，时刻注意健康状况，避免自身死亡，采取合理的巡逻策略或战斗策略更快完成任务。\n\n【动作空间】\n- fight(target, weapon) : #安全靠近target至进入攻击范围，并攻击 target（target 可写 <种类>_<id>，如 zombie_73；武器可选，缺省使用当前手持或空手；战斗任务中 weapon 可使用装备标识，如 diamond_sword_1，与当前所持武器不同时自动切换。”）。\n- observe() : #观察周围，寻找是否存在敌对实体与掉落物。\n- retreat(target) : #远离target。\n- use_food(food) : #使用背包内的食物或药水。\n- equip(items) : #装备item。\n- unequip(destinations) : #卸下装备（支持单个或列表）。\n- drop(items) : #丢弃items中的物品到当前位置地面。\n- give(target, items) : #靠近target并把items中的物品丢给对方拾取。\n- pick(positions) : #按指定位置拾取掉落物。\n- goto(position/entity_name) : #移动到坐标 position={x,y,z}。\n- wait(seconds) : #等待秒数seconds。\n\n【输出】\n使用以下标签文本协议输出：<action>动作与参数</action>，如需通信在 <action> 之后追加 <chat>消息</chat>。优先从候选缓存中选择动作；若所有候选不适合当前局部观测，可以选择动作空间中的其他动作。动作参数根据当前观测填写。\n"
+      },
+      {
+        "role": "user",
+        "content": "【身份】\nAgent: Carol\n队友: 无\n\n【最新观测】\n【自身】\nCarol：生命值 12.1（减少 3.6）/20；饥饿值 20/20；位置 (-7.1,0.0,14.2)；近期受到攻击次数：2次；状态：位于地面。\n【手持与装备】\n主手: stone_sword_9 (耐久 129/131)；副手: 无；头部: 无；胸部: iron_chestplate_12 (耐久 235/240)；腿部: 无；脚部: iron_boots_11 (耐久 190/195)；快捷栏槽位 0。\n【背包】\narrow×16；bow_10×1；stone_sword_9×1；空槽 32/36。\n【其他玩家】\nDave；位置 (-9.6,0.0,9.3)；距离 5.5 格；方向：右前方；手持 stone_sword。\nBob；位置 (-7.5,0.0,4.2)；距离 10.1 格；方向：右侧；手持 stone_sword_157。\nAlice；位置 (-9.5,0.0,2.2)；距离 12.3 格；方向：右侧；手持 stone_sword_82。\n【敌对实体】\nzombie_21；位置 (-7.8,0.0,14.2)；距离 0.6 格；方向：前方。\n【附近掉落物】\nbread×2；位置 (-3.5,0.0,21.5)；距离 8.2 格。\nbread×2；位置 (11.5,0.0,13.2)；距离 18.7 格。\niron_sword×1 (耐久 250/250)；位置 (10.5,0.0,22.8)；距离 19.6 格。\n【任务进度】\n时间：42.0/180；已消灭：3；存活：Alice、Bob、Carol、Dave\n\n【历史信息】\n[队友: Dave]\n通信：我发现后方的僵尸_20距离约17.7格，正从Bob和Carol方向靠近。我先去清理它，防止它威胁队友，注意保持配合。\n动作完成结果：fight('zombie_20', 'stone_sword_13')（状态：completed）\n\n[队友: Dave]\n通信：Alice，我向前推进搜寻怪物，你跟我保持距离，发现目标及时通报。\n动作完成结果：无（状态：uncertain）\n\n[队友: Bob]\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：周围暂无威胁，我向前推进搜寻怪物，Dave跟我保持距离一起行动。\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：我去拾取附近那柄铁剑，提升输出后再配合你们清理僵尸。\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：周围暂时没有近处威胁，我先观察确认怪物和掉落物位置，再决定推进方向。Dave、Carol、Bob注意报点。\n动作完成结果：observe（状态：completed）\n\n[队友: Bob]\n通信：Carol，僵尸_20贴脸了，我先攻击它，你配合清理！\n动作完成结果：fight('zombie_20', 'stone_sword_5')（状态：failed）\n\n[队友: Alice]\n通信：僵尸_20和僵尸_21都在左后方约18格外，Bob和Carol也在那个方向，我向你们靠拢一起清理。Dave也跟上。\n动作完成结果：goto({'x': -8.5, 'y': 0, 'z': 12.0})（状态：completed）\n\n[队友: Dave]\n通信：Bob、Carol，僵尸_21正在靠近你们方向，我先顶上去攻击它，你们注意配合夹击，别被围住！\n动作完成结果：fight('zombie_21', 'stone_sword_13')（状态：completed）\n\n[队友: Bob]\n通信：Carol，僵尸_20贴脸了（2.4格），我先攻击它，你配合清理！刚才失败是武器问题，现在已确认手持stone_sword_5。\n动作完成结果：fight('zombie_20', 'stone_sword_5')（状态：completed）\n\n[自身]\n缓存规划：fight('zombie_21', 'stone_sword_9')\n普通规划：fight('zombie_21', 'stone_sword_9')\n动作选择：fight('zombie_21', 'stone_sword_9')（来源：cache）\n推理内容：当前僵尸_21距离仅0.6格，已贴身威胁极大，手中石剑且状态全满，应立即攻击最近的zombie_21，避免被持续攻击。Bob和Dave也在附近可配合清理另一只僵尸。\n通信：Alice、Bob、Dave，zombie_21距离我仅1.9格，正前方，我先攻击它，注意配合清理。\n动作完成结果：使用 stone_sword 攻击，zombie(id=21)，距离 0.64已被消灭，攻击 3 次，耗时 3.7s。（状态：interrupted）\n\n[队友: Alice]\n通信：我去拾取附近的铁剑提升输出，然后向僵尸方向推进，Dave跟我一起。\n动作完成结果：无（状态：uncertain）\n\n[队友: Bob]\n通信：Carol，僵尸_20逼近，我先攻击它，你配合清理！\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：我去拾取那柄铁剑提升输出，然后向僵尸方向推进。Dave、Bob、Carol注意清理附近僵尸，保持配合！\n动作完成结果：goto({'x': -9.4, 'y': 0, 'z': -11.7})（状态：completed）\n\n[队友: Bob]\n通信：发现zombie_21在左前方4.9格逼近，我先攻击清理，Dave、Carol注意配合！\n\n[队友: Dave]\n通信：Bob、Carol，两只僵尸贴脸了，我先打zombie_21，你们注意配合清理zombie_20！\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：我先去拾取铁剑提升输出，随后向僵尸方向支援。\n动作完成结果：无（状态：uncertain）\n\n[自身]\n普通规划：fight('zombie_21', 'stone_sword_9')\n推理内容：僵尸_21距离仅1.9格，已逼近至近战范围附近，我方生命值已下降至15.7，需优先自保并清除近距离威胁。Alice就在身边0.9格可协助。应立即攻击zombie_21，使用手中stone_sword_9，避免被继续贴脸攻击。\n通信：Alice、Dave，僵尸_21在我前方1.9格，我先攻击它，你们注意配合清理！\n动作完成结果：竞速败方，未执行（状态：uncertain）\n\n[自身]\n普通规划：fight('zombie_21', 'stone_sword_9')\n动作选择：fight('zombie_21', 'stone_sword_9')（来源：standard）\n推理内容：僵尸_21距离仅0.8格，已贴身且我正在被攻击（近期受击2次，生命12.1偏低），必须立即近战清除威胁以免继续掉血。手中已有stone_sword_9可用，无需切换武器，直接攻击最近的zombie_21。队友Bob、Dave、Alice都在附近方向，可配合后续清理其他怪物。掉落物较远暂不优先拾取。\n通信：僵尸_21贴脸了，我先打它，Bob、Dave注意配合清理！\n动作完成结果：战斗失败（unknown）：missing_weapon。（状态：failed）\n\n【上次输出错误】\n无\n\n\n\n【缓存候选】\n- 前序: fight -> 后继: observe (评分 0.56; 原因: 当视野内无敌人与可拾取资源，自身状态充足，但任务进度严重滞后、队友分散且时间紧迫时，应优先与近距离队友协同，向未探索区域主动推进并辅助短暂观察以扩大感知，而非停留原地、单独采集或盲目移动。)\n- 前序: fight -> 后继: retreat (评分 0.50; 原因: 战斗后若生命值过低或敌人过强，撤退以脱离危险，避免死亡。)\n- 前序: fight -> 后继: pick (评分 0.50; 原因: 战斗消灭怪物后，拾取怪物掉落的物资以补充资源。)\n- 前序: fight -> 后继: fight (评分 0.44; 原因: 当与目标距离极近且自身生命值偏低或被多次攻击时，应优先立即攻击当前最近的目标，无需切换武器。即使战斗动作曾失败并提示武器缺失，若当前主手已持有合适武器，也应重新确认并直接攻击，利用附近队友协同，快速清除威胁以防止继续受伤；若多个近距离目标同时逼近，应优先攻击最紧迫的目标。)\n- 前序: fight -> 后继: goto (评分 0.40; 原因: 当没有可战斗目标且附近无资源可拾取时，应主动向队友所在或前方开阔区域移动以继续搜寻目标，避免原地停留浪费任务进度，并保持与队友靠近以便获得支援。)\n\n根据所给内容，为下一步动作进行合理规划。\n请根据输出规范要求，进行输出。\n"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": true,
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Carol",
+      "operation": "cache_action"
+    }
+  },
+  "response": {
+    "request_id": "b4b85b5515dd4c628b262f8d953330b7",
+    "mode": "stream",
+    "status": "completed",
+    "content": "<action>fight('zombie_21', 'stone_sword_9')</action>\n<chat>僵尸_21还在贴脸，刚才攻击失败可能是切换问题，现在确认手持石剑，立即再打它，Bob、Dave注意配合！</chat>",
+    "reasoning_content": "",
+    "model": "deepseek-flash",
+    "finish_reason": "stop",
+    "stop_reason": null,
+    "keyword_events": [
+      {
+        "request_id": "b4b85b5515dd4c628b262f8d953330b7",
+        "trigger_name": "action_ready",
+        "keyword": "</action>",
+        "channel": "content",
+        "segment": "<action>fight('zombie_21', 'stone_sword_9')",
+        "accumulated_content": "<action>fight('zombie_21', 'stone_sword_9')",
+        "keyword_start": 43,
+        "keyword_end": 52,
+        "occurrence": 1,
+        "triggered_at": 1789121136.0216582,
+        "metadata": {}
+      }
+    ],
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Carol",
+      "operation": "cache_action"
+    }
+  },
+  "usage": {
+    "raw": {
+      "completion_tokens": 59,
+      "prompt_tokens": 2472,
+      "total_tokens": 2531,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 2216
+    },
+    "normalized": {
+      "input_tokens": 2472,
+      "output_tokens": 59,
+      "total_tokens": 2531
+    },
+    "usage_available": true
+  },
+  "error": null
+}

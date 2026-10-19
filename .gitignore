@@ -1,0 +1,50 @@
+# Local credentials and environment files
+.env
+.env.*
+
+# Experiment outputs and generated datasets
+/data/
+/_data/
+/main_result/
+/pre_exp/
+/ablation/
+/ablation_*/
+/old_ablation/
+/old_main_result/
+/old_main_result2/
+*.xlsx
+*.csv
+*.jsonl
+*.sqlite
+*.db
+env_db/
+
+# Temporary files, caches and logs
+/.tmp/
+/.backup/
+**/__pycache__/
+*.py[cod]
+*.log
+*.tmp
+*.bak
+*.swp
+script/logs/
+src/minecraft*/logs/
+src/minecraft*/crash-reports/
+
+# Local/generated documentation
+/docs/
+*.html
+
+# JavaScript dependencies and local build output
+**/node_modules/
+**/dist/
+**/build/
+
+# Keep the requested project README visible to Git.
+!README.md
+
+# Existing local environment backup name pattern
+.env.backup-*
+
+AGENTS.md

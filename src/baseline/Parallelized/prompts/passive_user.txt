@@ -1,0 +1,14 @@
+【身份】
+Agent: {agent_id}
+队友: {team}
+
+【最新观测】
+{observation_text}
+
+【历史信息】
+{history_text}
+
+【上一轮动作与结果】
+{last_action_result}
+
+请以上内容生成一条团队通信消息。

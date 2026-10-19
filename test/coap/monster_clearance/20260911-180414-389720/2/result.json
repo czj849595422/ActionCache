@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "kind": "episode_result",
+  "result": {
+    "outcome": null,
+    "final_metrics": {},
+    "interrupted": true,
+    "stop_reason": "keyboard_interrupt",
+    "runner_error": null,
+    "worker_errors": [],
+    "cleanup_errors": [],
+    "planned_count": 0,
+    "executed_count": 0,
+    "cache_stats": {
+      "entry_count": 0,
+      "hit_count": 0,
+      "attempt_count": 0,
+      "success_count": 0,
+      "buffer_size": 0,
+      "update_count": 0,
+      "retrieval_count": 0,
+      "cache_miss_count": 0,
+      "planning_call_count": 0,
+      "planning_success_count": 0,
+      "planning_failure_count": 0,
+      "budget_exhausted_count": 0
+    },
+    "started_at": null,
+    "finished_at": 1789121214.8541167
+  }
+}

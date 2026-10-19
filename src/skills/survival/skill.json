@@ -1,0 +1,42 @@
+{
+  "name": "survival",
+  "version": "0.1.0",
+  "description": "Survival utility actions such as direct food or potion use.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": [],
+    "optional": []
+  },
+  "commands": {
+    "use_food": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "food": {"type": "string"}
+        },
+        "required": ["food"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "consumed": {"type": "boolean"},
+          "before": {"type": "object"},
+          "after": {"type": "object"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Directly equip and consume a requested food or potion without checking hunger or health thresholds. Use potion[healing] for a healing potion.",
+      "preconditions": ["consumable_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "survival_item_use",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "episode_id": "1",
+  "request_id": "91c9b5e7139146b48004c3ebbff1e1d9",
+  "source": {
+    "component": "coap_planning",
+    "operation": "timed_standard_action",
+    "task_id": "monster_clearance",
+    "agent_id": "Carol"
+  },
+  "mode": "stream",
+  "status": "completed",
+  "started_at": 1789121120.773946,
+  "completed_at": 1789121122.3440673,
+  "elapsed_seconds": 1.5701212882995605,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "deepseek-v4-flash",
+    "messages": [
+      {
+        "role": "system",
+        "content": "【任务】\n你处在一支负责清剿怪物的队伍中，在坐标范围从-50到50的场地内执行清剿怪物的任务。\n你需要配合你的伙伴，巡查场地上存在的怪物，任务完成目标是消灭10只怪物。\n僵尸无远程攻击能力，但会贴近玩家攻击，用剑可阻挡对方接近。\n骷髅装备弓箭，具备远程攻击能力，接近容易受到攻击。\n场上周期性掉落物资，合理使用自身资源进行战斗，时刻注意健康状况，避免自身死亡，采取合理的巡逻策略或战斗策略更快完成任务。\n\n【动作空间】\n- fight(target, weapon) : #安全靠近target至进入攻击范围，并攻击 target（target 可写 <种类>_<id>，如 zombie_73；武器可选，缺省使用当前手持或空手；战斗任务中 weapon 可使用装备标识，如 diamond_sword_1，与当前所持武器不同时自动切换。”）。\n- observe() : #观察周围，寻找是否存在敌对实体与掉落物。\n- retreat(target) : #远离target。\n- use_food(food) : #使用背包内的食物或药水。\n- equip(items) : #装备item。\n- unequip(destinations) : #卸下装备（支持单个或列表）。\n- drop(items) : #丢弃items中的物品到当前位置地面。\n- give(target, items) : #靠近target并把items中的物品丢给对方拾取。\n- pick(positions) : #按指定位置拾取掉落物。\n- goto(position/entity_name) : #移动到坐标 position={x,y,z}。\n- wait(seconds) : #等待秒数seconds。\n\n【输出】\n高效、简洁进行快速推理，根据所给信息得出下一步动作的最优选择。当以下情形发生时可以中断：1.发生更紧急的情况；2.当前动作存在错误需要修改；当发生以下情形时不需要中断：1.新动作紧急程度不如当前动作；2.新动作与当前动作一致，不需要修改。使用以下标签文本协议输出：<reason>推理内容</reason><interrupt>true 或 false</interrupt>，<action>动作与参数</action>，如需通信在 <action> 之后追加 <chat>消息</chat>。\n"
+      },
+      {
+        "role": "user",
+        "content": "【身份】\nAgent: Carol\n队友: Alice、Bob、Dave\n\n【最新观测】\n【自身】\nCarol：生命值 20（无变化）/20；饥饿值 20/20；位置 (-8.5,0.0,12.5)；近期受到攻击次数：0次；状态：位于地面。\n【手持与装备】\n主手: stone_sword_9 (耐久 131/131)；副手: 无；头部: 无；胸部: iron_chestplate_12 (耐久 240/240)；腿部: 无；脚部: iron_boots_11 (耐久 195/195)；快捷栏槽位 0。\n【背包】\narrow×16；bow_10×1；stone_sword_9×1；空槽 33/36。\n【其他玩家】\nBob；位置 (-8.8,0.6,11.9)；距离 0.9 格；方向：右前方；手持 stone_sword_123。\nDave；位置 (-8.5,0.0,6.8)；距离 5.7 格；方向：右侧；手持 stone_sword_104。\nAlice；位置 (-1.5,0.0,-3.5)；距离 17.5 格；方向：右侧；手持 stone_sword_82。\n【敌对实体】\nzombie_20；位置 (-9.7,0.0,12.5)；距离 1.2 格；方向：前方。\nzombie_21；位置 (-10.9,0.0,14.9)；距离 3.4 格；方向：左前方。\n【附近掉落物】\n范围内未发现掉落物。\n【任务进度】\n时间：28.1/180；已消灭：2；存活：Alice、Bob、Carol、Dave\n\n【历史信息】\n[队友: Dave]\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n动作完成结果：fight('zombie_8', 'stone_sword_13')（状态：completed）\n\n[队友: Bob]\n动作完成结果：observe（状态：completed）\n\n[队友: Alice]\n通信：我发现附近有僵尸，先过去清理它，Dave注意跟进配合。\n动作完成结果：fight('zombie_8', 'stone_sword_1')（状态：completed）\n\n[自身]\n普通规划：fight('zombie_20', 'stone_sword_9')\n动作选择：fight('zombie_20', 'stone_sword_9')（来源：standard）\n推理内容：当前僵尸_20距离仅1.3格，极近，僵尸无远程攻击，适合立即用剑攻击清理，保护自己和附近Bob。生命饥饿全满，装备齐全，直接攻击最快。\n\n[队友: Alice]\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：周围暂无敌人，我先观察确认怪物和掉落物位置，避免盲目行动。\n动作完成结果：observe（状态：completed）\n\n[队友: Alice]\n通信：僵尸_8距离太近，我先解决它保护自己，Dave注意补刀配合。\n动作完成结果：fight('zombie_8', 'stone_sword_1')（状态：failed）\n\n[队友: Alice]\n通信：周围暂时无威胁，我向前方推进搜寻怪物，Dave跟我一起行动。\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：我先向前推进搜寻怪物，Alice 注意跟我保持距离，发现目标及时通报。\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：我先观察周围情况，确认怪物和物资位置，再决定推进方向。\n动作完成结果：observe（状态：completed）\n\n[队友: Bob]\n通信：发现近距离僵尸zombie_20（3.3格），我先清理它，Carol注意配合。\n动作完成结果：fight('zombie_20', 'stone_sword_5')（状态：interrupted）\n\n[队友: Alice]\n通信：周围暂时无威胁，我先观察确认怪物和掉落物位置，再决定推进方向。Dave、Carol、Bob注意报点。\n动作完成结果：observe（状态：completed）\n\n[队友: Dave]\n通信：Alice，我向前推进搜寻怪物，你跟我保持距离，发现目标及时通报。\n动作完成结果：无（状态：uncertain）\n\n[队友: Bob]\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：周围暂无威胁，我向前推进搜寻怪物，Dave跟我保持距离一起行动。\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：我去拾取附近那柄铁剑，提升输出后再配合你们清理僵尸。\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：周围暂时没有近处威胁，我先观察确认怪物和掉落物位置，再决定推进方向。Dave、Carol、Bob注意报点。\n动作完成结果：observe（状态：completed）\n\n[队友: Bob]\n通信：Carol，僵尸_20贴脸了，我先攻击它，你配合清理！\n动作完成结果：fight('zombie_20', 'stone_sword_5')（状态：failed）\n\n【上次输出错误】\n无\n\n\n\n根据所给内容，为下一步动作进行合理规划。\n请根据输出规范要求，进行输出。\n"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": true,
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Carol",
+      "operation": "timed_standard_action"
+    }
+  },
+  "response": {
+    "request_id": "91c9b5e7139146b48004c3ebbff1e1d9",
+    "mode": "stream",
+    "status": "completed",
+    "content": "<reason>僵尸20距离仅1.2格，已贴脸且无远程能力，Bob也在附近配合。生命饥饿全满，装备齐全，应立即用剑攻击清理僵尸20，防止其持续攻击。僵尸21距离3.4格暂不构成即时威胁，可先解决近处目标。</reason><interrupt>false</interrupt><action>fight('zombie_20', 'stone_sword_9')</action><chat>Bob，我攻击僵尸20，你注意补刀！</chat>",
+    "reasoning_content": "",
+    "model": "deepseek-flash",
+    "finish_reason": "stop",
+    "stop_reason": null,
+    "keyword_events": [
+      {
+        "request_id": "91c9b5e7139146b48004c3ebbff1e1d9",
+        "trigger_name": "action_ready",
+        "keyword": "</action>",
+        "channel": "content",
+        "segment": "<reason>僵尸20距离仅1.2格，已贴脸且无远程能力，Bob也在附近配合。生命饥饿全满，装备齐全，应立即用剑攻击清理僵尸20，防止其持续攻击。僵尸21距离3.4格暂不构成即时威胁，可先解决近处目标。</reason><interrupt>false</interrupt><action>fight('zombie_20', 'stone_sword_9')",
+        "accumulated_content": "<reason>僵尸20距离仅1.2格，已贴脸且无远程能力，Bob也在附近配合。生命饥饿全满，装备齐全，应立即用剑攻击清理僵尸20，防止其持续攻击。僵尸21距离3.4格暂不构成即时威胁，可先解决近处目标。</reason><interrupt>false</interrupt><action>fight('zombie_20', 'stone_sword_9')",
+        "keyword_start": 182,
+        "keyword_end": 191,
+        "occurrence": 1,
+        "triggered_at": 1789121122.2472248,
+        "metadata": {}
+      }
+    ],
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Carol",
+      "operation": "timed_standard_action"
+    }
+  },
+  "usage": {
+    "raw": {
+      "completion_tokens": 114,
+      "prompt_tokens": 1629,
+      "total_tokens": 1743,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 1245
+    },
+    "normalized": {
+      "input_tokens": 1629,
+      "output_tokens": 114,
+      "total_tokens": 1743
+    },
+    "usage_available": true
+  },
+  "error": null
+}

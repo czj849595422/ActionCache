@@ -1,0 +1,131 @@
+task_id: monster_clearance
+category: monster_clearance
+name: Dynamic Monster Clearance Quick (seed 0)
+agents:
+  count: 4
+  names:
+  - Alice
+  - Bob
+  - Carol
+  - Dave
+environment:
+  world: base_env
+  observation_range: 20
+  time: midnight
+  weather: clear
+  difficulty: normal
+  gamemode: survival
+  world_spawn:
+    x: 0
+    y: 0
+    z: 0
+  gamerules:
+    doDaylightCycle: false
+    doWeatherCycle: false
+    doMobSpawning: false
+    mobGriefing: false
+    doMobLoot: true
+    keepInventory: true
+  init_commands:
+  - clear @a
+  - kill @e[type=minecraft:zombie,x=-50,y=-100,z=-50,dx=100,dy=200,dz=100]
+  - kill @e[type=minecraft:skeleton,x=-50,y=-100,z=-50,dx=100,dy=200,dz=100]
+  - kill @e[type=minecraft:item,x=-50,y=-100,z=-50,dx=100,dy=200,dz=100]
+  - fill -50 0 -50 50 2 50 air replace
+initial_state:
+  per_agent:
+    inventory:
+      minecraft:stone_sword: 1
+      minecraft:bow: 1
+      minecraft:arrow: 16
+      minecraft:iron_boots: 1
+      minecraft:iron_chestplate: 1
+  by_agent:
+  - name: Alice
+    position:
+      x: 4.405
+      y: 0.0
+      z: -2.542
+  - name: Bob
+    position:
+      x: -0.692
+      y: 0.0
+      z: 9.298
+  - name: Carol
+    position:
+      x: -1.064
+      y: 0.0
+      z: 6.538
+  - name: Dave
+    position:
+      x: -1.495
+      y: 0.0
+      z: -2.799
+spawns: []
+completion:
+  timeout_seconds: 180
+  success:
+    type: all_task_monsters_eliminated
+  failure:
+    type: all_agents_dead
+trials:
+  count: 1
+output:
+  dir: data
+  save_memory: true
+params:
+  scheduler_poll_interval: 0.1
+  target_monster_count: 10
+  bounds:
+    min_x: -50
+    max_x: 50
+    min_y: 0
+    max_y: 0
+    min_z: -50
+    max_z: 50
+  monster_count: 16
+  initial_monster_count: 4
+  batch_size: 2
+  batch_interval_seconds: 15
+  last_spawn_deadline_seconds: 90
+  monster_min_distance: 8.0
+  initial_agent_min_distance: 30.0
+  agent_spawn_radius: 10.0
+  supply_interval_seconds: 5
+  supply_drop_min_distance: 10.0
+  supply_drop_max_distance: 30.0
+  supply_weights:
+  - resource: minecraft:iron_sword
+    amount: 1
+    weight: 20.0
+  - resource: minecraft:iron_helmet
+    amount: 1
+    weight: 10.0
+  - resource: minecraft:iron_chestplate
+    amount: 1
+    weight: 10.0
+  - resource: minecraft:iron_leggings
+    amount: 1
+    weight: 10.0
+  - resource: minecraft:iron_boots
+    amount: 1
+    weight: 10.0
+  - resource: minecraft:arrow
+    amount: 8
+    weight: 10.0
+  - resource: minecraft:potion
+    amount: 1
+    weight: 10.0
+  - resource: minecraft:bread
+    amount: 2
+    weight: 15.0
+  monster_tag: ac_mon_0
+  supply_tag: ac_sup_0
+  spawn_objective: acTaskSpawn
+  death_objective: acTaskDeath
+  generation_seed: 0
+  generation_template_file: D:\MC\ActionCache\src\tasks\monster_clearance\template.yaml
+metadata:
+  preset: quick
+  generation_seed: 0
+  runtime_seed_generation: true

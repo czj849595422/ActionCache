@@ -1,0 +1,5 @@
+根据给出的任务和动作空间，分析哪些动作可能具备前后执行关系，以及执行完前一个动作后转移到下一个动作的原因，并给这个关系的合理性与可行性进行打分。
+只输出一个 JSON 对象，且只包含 "entries" 字段。
+每个 entry 必须包含 "index"、"previous_action"、"next_action"、"reason"、"initial_score"。
+"previous_action" 与 "next_action" 必须是动作空间中的动作名字符串；不能包含参数、括号、JSON 对象或说明文字。
+"index" 必须从 1 开始连续递增；initial_score 在 (0,0.5] 范围内。

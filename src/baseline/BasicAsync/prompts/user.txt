@@ -1,0 +1,15 @@
+【身份】
+Agent: {agent_id}
+队友: {team}
+
+【最新观测】
+{observation_text}
+
+【历史信息】
+{history_text}
+
+【上次输出错误】
+{error_text}
+{feedback_section}
+
+根据所给内容，按照输出规范要求，为下一步动作进行合理规划。

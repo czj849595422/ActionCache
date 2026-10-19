@@ -1,0 +1,64 @@
+{
+  "name": "farm",
+  "version": "0.1.0",
+  "description": "Farming helpers for harvesting mature crops.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "harvest": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "crop": {
+            "type": "string",
+            "description": "作物方块名：wheat / carrots / potatoes / beetroots / nether_wart"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "要收获的数量；缺省时收获范围内全部成熟作物"
+          },
+          "range": {
+            "type": "number",
+            "minimum": 1,
+            "default": 8,
+            "description": "收获搜索范围（格）"
+          },
+          "max_duration_ms": {
+            "type": "number",
+            "minimum": 0,
+            "default": 600000
+          }
+        },
+        "required": ["crop"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "harvesting": {"type": "boolean"},
+          "crop": {"type": "string"},
+          "harvested": {"type": "number"},
+          "remaining": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Continuously harvest mature crops of the given crop name within range. count is optional (default: all mature crops in range). Only mature crops are harvested. Interruptible; stops with count_reached / all_harvested / max_duration_exceeded. Fails with invalid_params (missing crop), unknown_crop, or no_mature_crop when none are in range.",
+      "preconditions": ["crop_known", "mature_crop_in_range"],
+      "stop_conditions": ["completed", "failed", "interrupted", "count_reached", "all_harvested"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "farm",
+      "switchable": true,
+      "mutable_params": ["count", "range"],
+      "update_policy": "merge"
+    }
+  }
+}

@@ -1,0 +1,143 @@
+category: pvp
+agents:
+  count: 8
+  names:
+  - Aria
+  - Blake
+  - Cora
+  - Dax
+  - Eli
+  - Faye
+  - Grey
+  - Hugo
+  teams:
+  - id: alpha
+    agents:
+    - Aria
+    - Blake
+    - Cora
+    - Dax
+  - id: bravo
+    agents:
+    - Eli
+    - Faye
+    - Grey
+    - Hugo
+environment:
+  world: base_env
+  observation_range: 20
+  time: noon
+  weather: clear
+  difficulty: normal
+  gamemode: survival
+  world_spawn:
+    x: 0
+    y: 0
+    z: 0
+  gamerules:
+    doDaylightCycle: false
+    doWeatherCycle: false
+    doMobSpawning: false
+    mobGriefing: false
+    doMobLoot: false
+    keepInventory: true
+    naturalRegeneration: false
+  init_commands:
+  - clear @a
+  - kill @e[type=!player,x=-50,y=-100,z=-50,dx=100,dy=200,dz=100]
+  - fill -50 0 -50 50 2 50 air replace
+initial_state:
+  per_agent:
+    inventory:
+      minecraft:wooden_sword: 1
+      minecraft:bow: 1
+  by_agent:
+  - name: Aria
+    position:
+      x: 36
+      y: 0
+      z: 8
+  - name: Blake
+    position:
+      x: -45
+      y: 0
+      z: 50
+  - name: Cora
+    position:
+      x: -21
+      y: 0
+      z: -1
+  - name: Dax
+    position:
+      x: 49
+      y: 0
+      z: -31
+  - name: Eli
+    position:
+      x: -47
+      y: 0
+      z: -49
+  - name: Faye
+    position:
+      x: 14
+      y: 0
+      z: -49
+  - name: Grey
+    position:
+      x: 9
+      y: 0
+      z: 48
+  - name: Hugo
+    position:
+      x: 49
+      y: 0
+      z: 46
+completion:
+  timeout_seconds: 86400
+  success:
+    type: team_eliminated
+  failure:
+    type: all_agents_dead
+trials:
+  count: 1
+output:
+  dir: data
+  save_memory: true
+params:
+  bounds:
+    min_x: -50
+    max_x: 50
+    min_y: 0
+    max_y: 0
+    min_z: -50
+    max_z: 50
+  supply_interval_seconds: 30
+  supply_tag: ac_pvp_sup
+  drops_per_wave: 5
+  min_drop_spacing: 20
+  placement_attempts_per_drop: 128
+  gear_probability_start: 0.8
+  gear_probability_end: 0.2
+  probability_decay_seconds: 300
+  food_healing_disabled_after_seconds: 300
+  ammo_share_before_disable: 0.6
+  food_share_before_disable: 0.25
+  healing_share_before_disable: 0.15
+  hunger_pressure_after_seconds: 300
+  hunger_interval_seconds: 10
+  hunger_effect_seconds: 10
+  hunger_effect_amplifier: 3
+  out_of_bounds_interval_seconds: 10
+  out_of_bounds_damage: 1
+  out_of_bounds_y_padding: 6
+  monster_cleanup_interval_seconds: 5
+  death_objective: acPvpDeath
+  alive_objective: acPvpAlive
+  death_drops_enabled: true
+  death_drop_tag: ac_pvp_death
+  generation_seed: 0
+metadata:
+  preset: pvp_default
+  generation_seed: 0
+task_id: pvp
+name: Two-Team PVP Method Comparison

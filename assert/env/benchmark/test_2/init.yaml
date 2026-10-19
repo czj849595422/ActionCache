@@ -1,0 +1,13 @@
+# test_2 初始化配置
+# 部署完成后按顺序执行这些 Minecraft 指令来配置环境
+
+name: test_2
+description: "进阶测试环境 - 生存模式/保留怪物/开启昼夜"
+
+init_commands:
+  - "time set day"
+  - "weather clear"
+  - "gamerule doDaylightCycle true"
+  - "gamerule doWeatherCycle true"
+  - "gamerule keepInventory false"
+  - "difficulty normal"

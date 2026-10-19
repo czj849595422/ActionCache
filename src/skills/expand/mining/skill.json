@@ -1,0 +1,265 @@
+{
+  "name": "mining",
+  "version": "0.1.0",
+  "description": "Task-specific ore mining skills for the mining task. Commands map one mineral to all its block variants via MINING_ORE_BLOCKS.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "mine_lapis": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {"type": "array", "description": "候选矿石坐标数组，如 [{\"x\":8,\"y\":0,\"z\":-18}]；兼容单个 x/y/z"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "strict": {"type": "boolean", "default": false, "description": "true 时工具不足整体失败；false 只跳过该坐标"},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后自动收集掉落物；mining任务固定开启"},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "mineral": {"type": "string"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "groups_mined": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine lapis ore groups: for each candidate coordinate, skip coordinates that are not lapis-family ore, verify the held tool can collect it, then mine the connected group via block.mine. Interruptible and switchable.",
+      "preconditions": ["target_position_known", "tool_available"],
+      "stop_conditions": ["completed", "failed", "interrupted", "all_groups_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "strict"],
+      "update_policy": "merge"
+    },
+    "mine_iron": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {"type": "array", "description": "候选矿石坐标数组，兼容单个 x/y/z"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "strict": {"type": "boolean", "default": false},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后自动收集掉落物；mining任务固定开启"},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "mineral": {"type": "string"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "groups_mined": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine iron ore groups (iron_ore/deepslate_iron_ore/iron_block): skip non-iron coordinates, verify held tool, then mine the connected group via block.mine. Interruptible and switchable.",
+      "preconditions": ["target_position_known", "tool_available"],
+      "stop_conditions": ["completed", "failed", "interrupted", "all_groups_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "strict"],
+      "update_policy": "merge"
+    },
+    "mine_gold": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {"type": "array", "description": "候选矿石坐标数组，兼容单个 x/y/z"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "strict": {"type": "boolean", "default": false},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后自动收集掉落物；mining任务固定开启"},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "mineral": {"type": "string"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "groups_mined": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine gold ore groups: skip non-gold coordinates, verify held tool, then mine the connected group via block.mine. Interruptible and switchable.",
+      "preconditions": ["target_position_known", "tool_available"],
+      "stop_conditions": ["completed", "failed", "interrupted", "all_groups_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "strict"],
+      "update_policy": "merge"
+    },
+    "mine_emerald": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {"type": "array", "description": "候选矿石坐标数组，兼容单个 x/y/z"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "strict": {"type": "boolean", "default": false},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后自动收集掉落物；mining任务固定开启"},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "mineral": {"type": "string"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "groups_mined": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine emerald ore groups: skip non-emerald coordinates, verify held tool, then mine the connected group via block.mine. Interruptible and switchable.",
+      "preconditions": ["target_position_known", "tool_available"],
+      "stop_conditions": ["completed", "failed", "interrupted", "all_groups_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "strict"],
+      "update_policy": "merge"
+    },
+    "mine_diamond": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {"type": "array", "description": "候选矿石坐标数组，兼容单个 x/y/z"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "strict": {"type": "boolean", "default": false},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后自动收集掉落物；mining任务固定开启"},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "mineral": {"type": "string"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "groups_mined": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine diamond ore groups: skip non-diamond coordinates, verify held tool, then mine the connected group via block.mine. Interruptible and switchable.",
+      "preconditions": ["target_position_known", "tool_available"],
+      "stop_conditions": ["completed", "failed", "interrupted", "all_groups_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "strict"],
+      "update_policy": "merge"
+    },
+    "mine_netherite": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "positions": {"type": "array", "description": "候选矿石坐标数组，兼容单个 x/y/z"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "strict": {"type": "boolean", "default": false},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后自动收集掉落物；mining任务固定开启"},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "mineral": {"type": "string"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "groups_mined": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine netherite ore groups: skip non-netherite coordinates, verify held tool, then mine the connected group via block.mine. Interruptible and switchable.",
+      "preconditions": ["target_position_known", "tool_available"],
+      "stop_conditions": ["completed", "failed", "interrupted", "all_groups_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "strict"],
+      "update_policy": "merge"
+    }
+  }
+}

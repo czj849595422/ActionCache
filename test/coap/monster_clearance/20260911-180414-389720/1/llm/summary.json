@@ -1,0 +1,48 @@
+{
+  "schema_version": "1",
+  "kind": "llm_summary",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "episode_id": "1",
+  "total_calls": 261,
+  "finished_calls": 261,
+  "incomplete_calls": 0,
+  "status_counts": {
+    "completed": 261
+  },
+  "calls_with_usage": 261,
+  "calls_without_usage": 0,
+  "token_sums": {
+    "input_tokens": 496097,
+    "output_tokens": 27119,
+    "total_tokens": 523216
+  },
+  "token_field_coverage": {
+    "input_tokens": 261,
+    "output_tokens": 261,
+    "total_tokens": 261
+  },
+  "component_token_stats": {
+    "coap_cache": {
+      "call_count": 82.0,
+      "call_share": 0.31417624521072796,
+      "input_tokens": 47667.0,
+      "input_token_share": 0.09608403195342846,
+      "output_tokens": 5524.0,
+      "output_token_share": 0.2036948265054021,
+      "total_tokens": 53191.0,
+      "total_token_share": 0.1016616464328308
+    },
+    "coap_planning": {
+      "call_count": 179.0,
+      "call_share": 0.685823754789272,
+      "input_tokens": 448430.0,
+      "input_token_share": 0.9039159680465715,
+      "output_tokens": 21595.0,
+      "output_token_share": 0.7963051734945978,
+      "total_tokens": 470025.0,
+      "total_token_share": 0.8983383535671692
+    }
+  },
+  "updated_at": 1789121212.1577477
+}

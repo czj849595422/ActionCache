@@ -1,0 +1,252 @@
+{
+  "name": "container",
+  "version": "0.1.0",
+  "description": "Chest inspection and item transfer helpers based on Mineflayer container APIs.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "inspect_chest": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "chest": {
+            "type": "object",
+            "description": "Chest target. Recommended format: {\"position\":{\"x\":9,\"y\":8,\"z\":5}}. Compatible format: {\"x\":9,\"y\":8,\"z\":5}."
+          },
+          "chest_id": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Registered chest id from register_chests; maps to a chest position. Alternative to chest/position."
+          },
+          "chest_name": {
+            "type": "string",
+            "description": "Registered unique chest name from register_chests. Alternative to chest_id / chest / position."
+          },
+          "position": {
+            "type": "object",
+            "description": "Fallback chest block position as {\"x\":9,\"y\":8,\"z\":5}; prefer chest.position when available."
+          },
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "open_timeout_ms": {
+            "type": "number",
+            "minimum": 100,
+            "default": 5000,
+            "description": "Maximum time to wait for a readable container window after activating the chest."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "chest": {"type": "object"},
+          "chest_items": {"type": "array"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "container"],
+      "llm_description": "Move to a chest within perception range, open it, and return chest contents plus inventory contents.",
+      "preconditions": ["chest_in_range"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "look", "container", "inventory"],
+      "switch_group": "container",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "pick_object_from_chest": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "chest": {
+            "type": "object",
+            "description": "Chest target. Recommended format: {\"position\":{\"x\":9,\"y\":8,\"z\":5}}. Compatible format: {\"x\":9,\"y\":8,\"z\":5}."
+          },
+          "chest_id": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Registered chest id from register_chests; maps to a chest position. Alternative to chest/position."
+          },
+          "chest_name": {
+            "type": "string",
+            "description": "Registered unique chest name from register_chests. Alternative to chest_id / chest / position."
+          },
+          "position": {
+            "type": "object",
+            "description": "Fallback chest block position as {\"x\":9,\"y\":8,\"z\":5}; prefer chest.position when available."
+          },
+          "items": {
+            "type": "array",
+            "description": "Requested items. Recommended format: [{\"name\":\"iron_sword\",\"count\":1}].",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string", "description": "Minecraft item name, for example iron_sword."},
+                "count": {"type": "integer", "minimum": 1, "default": 1}
+              },
+              "required": ["name"],
+              "additionalProperties": false
+            }
+          },
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "open_timeout_ms": {
+            "type": "number",
+            "minimum": 100,
+            "default": 5000,
+            "description": "Maximum time to wait for a readable container window after activating the chest."
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "picked": {"type": "array"},
+          "chest_items": {"type": "array"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "container", "inventory"],
+      "llm_description": "Withdraw requested items from a chest after checking chest quantities and inventory capacity. Use items as [{\"name\":\"iron_sword\",\"count\":1}], not as a string array.",
+      "preconditions": ["chest_in_range", "items_available", "inventory_space_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "look", "container", "inventory"],
+      "switch_group": "container",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "place_object_to_chest": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "chest": {
+            "type": "object",
+            "description": "Chest target. Recommended format: {\"position\":{\"x\":9,\"y\":8,\"z\":5}}. Compatible format: {\"x\":9,\"y\":8,\"z\":5}."
+          },
+          "chest_id": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Registered chest id from register_chests; maps to a chest position. Alternative to chest/position."
+          },
+          "chest_name": {
+            "type": "string",
+            "description": "Registered unique chest name from register_chests. Alternative to chest_id / chest / position."
+          },
+          "position": {
+            "type": "object",
+            "description": "Fallback chest block position as {\"x\":9,\"y\":8,\"z\":5}; prefer chest.position when available."
+          },
+          "items": {
+            "type": "array",
+            "description": "Requested items. Recommended format: [{\"name\":\"iron_sword\",\"count\":1}].",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string", "description": "Minecraft item name, for example iron_sword."},
+                "count": {"type": "integer", "minimum": 1, "default": 1}
+              },
+              "required": ["name"],
+              "additionalProperties": false
+            }
+          },
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "open_timeout_ms": {
+            "type": "number",
+            "minimum": 100,
+            "default": 5000,
+            "description": "Maximum time to wait for a readable container window after activating the chest."
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "placed": {"type": "array"},
+          "chest_items": {"type": "array"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "container", "inventory"],
+      "llm_description": "Deposit requested inventory items into a chest after checking inventory quantities and chest capacity. Use items as [{\"name\":\"iron_sword\",\"count\":1}], not as a string array.",
+      "preconditions": ["chest_in_range", "items_available", "chest_space_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "look", "container", "inventory"],
+      "switch_group": "container",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "register_chests": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "names": {
+            "type": "object",
+            "description": "Optional unique names assigned to chests, keyed by 'x,y,z' block position, e.g. {\"9,8,5\":\"storage\"}."
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "registered": {"type": "array"},
+          "registered_count": {"type": "integer"},
+          "chests": {"type": "array"},
+          "chest_count": {"type": "integer"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Scan chest-like blocks (chest/trapped_chest/barrel) within max_distance and assign each a stable numeric chest_id (double chests are normalized to one id). Use chest_id in later container commands instead of coordinates.",
+      "preconditions": ["chest_in_range"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "list_chests": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "chests": {"type": "array"},
+          "count": {"type": "integer"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "List all registered chests with their chest_id, position, type, and whether they are still present.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

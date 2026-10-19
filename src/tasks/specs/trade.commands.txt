@@ -1,0 +1,36 @@
+# Generated trade preparation commands
+[prepare]
+data merge block 1 0 6 {Items:[]}
+data merge block 0 0 4 {Items:[]}
+data merge block 1 0 4 {Items:[]}
+data merge block -1 0 -6 {Items:[]}
+data merge block -1 0 -4 {Items:[]}
+data merge block 0 0 -4 {Items:[]}
+data merge block 6 0 -1 {Items:[]}
+data merge block 4 0 -1 {Items:[]}
+data merge block 4 0 0 {Items:[]}
+data merge block -7 0 1 {Items:[]}
+data merge block -5 0 0 {Items:[]}
+data merge block -5 0 1 {Items:[]}
+clear Alice
+tp Alice 0 0 6
+clear Bob
+tp Bob 0 0 -6
+clear Carol
+tp Carol 6 0 0
+clear Dave
+tp Dave -6 0 0
+item replace entity Alice inventory.0 with minecraft:gold_nugget 34
+item replace block 1 0 6 container.0 with minecraft:cobblestone 32
+item replace block 1 0 6 container.1 with minecraft:iron_ingot 16
+item replace block 1 0 6 container.2 with minecraft:string 16
+item replace entity Bob inventory.0 with minecraft:gold_nugget 59
+item replace block -1 0 -6 container.0 with minecraft:gold_ingot 24
+item replace entity Carol inventory.0 with minecraft:gold_nugget 28
+item replace block 6 0 -1 container.0 with minecraft:oak_log 48
+item replace entity Dave inventory.0 with minecraft:gold_nugget 41
+item replace block -7 0 1 container.0 with minecraft:egg 16
+item replace block -7 0 1 container.1 with minecraft:egg 16
+item replace block -7 0 1 container.2 with minecraft:pumpkin 48
+item replace block -7 0 1 container.3 with minecraft:sugar 40
+item replace block -7 0 1 container.4 with minecraft:wheat 32

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "episode_id": "1",
+  "request_id": "b47de20a4a63456c9105134e7294f680",
+  "source": {
+    "component": "coap_planning",
+    "operation": "timed_standard_action",
+    "task_id": "monster_clearance",
+    "agent_id": "Bob"
+  },
+  "mode": "stream",
+  "status": "completed",
+  "started_at": 1789121129.827556,
+  "completed_at": 1789121132.3351495,
+  "elapsed_seconds": 2.5075936317443848,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "deepseek-v4-flash",
+    "messages": [
+      {
+        "role": "system",
+        "content": "【任务】\n你处在一支负责清剿怪物的队伍中，在坐标范围从-50到50的场地内执行清剿怪物的任务。\n你需要配合你的伙伴，巡查场地上存在的怪物，任务完成目标是消灭10只怪物。\n僵尸无远程攻击能力，但会贴近玩家攻击，用剑可阻挡对方接近。\n骷髅装备弓箭，具备远程攻击能力，接近容易受到攻击。\n场上周期性掉落物资，合理使用自身资源进行战斗，时刻注意健康状况，避免自身死亡，采取合理的巡逻策略或战斗策略更快完成任务。\n\n【动作空间】\n- fight(target, weapon) : #安全靠近target至进入攻击范围，并攻击 target（target 可写 <种类>_<id>，如 zombie_73；武器可选，缺省使用当前手持或空手；战斗任务中 weapon 可使用装备标识，如 diamond_sword_1，与当前所持武器不同时自动切换。”）。\n- observe() : #观察周围，寻找是否存在敌对实体与掉落物。\n- retreat(target) : #远离target。\n- use_food(food) : #使用背包内的食物或药水。\n- equip(items) : #装备item。\n- unequip(destinations) : #卸下装备（支持单个或列表）。\n- drop(items) : #丢弃items中的物品到当前位置地面。\n- give(target, items) : #靠近target并把items中的物品丢给对方拾取。\n- pick(positions) : #按指定位置拾取掉落物。\n- goto(position/entity_name) : #移动到坐标 position={x,y,z}。\n- wait(seconds) : #等待秒数seconds。\n\n【输出】\n高效、简洁进行快速推理，根据所给信息得出下一步动作的最优选择。当以下情形发生时可以中断：1.发生更紧急的情况；2.当前动作存在错误需要修改；当发生以下情形时不需要中断：1.新动作紧急程度不如当前动作；2.新动作与当前动作一致，不需要修改。使用以下标签文本协议输出：<reason>推理内容</reason><interrupt>true 或 false</interrupt>，<action>动作与参数</action>，如需通信在 <action> 之后追加 <chat>消息</chat>。\n"
+      },
+      {
+        "role": "user",
+        "content": "【身份】\nAgent: Bob\n队友: Alice、Carol、Dave\n\n【最新观测】\n【自身】\nBob：生命值 20（无变化）/20；饥饿值 20/20；位置 (-7.5,0.0,3.6)；近期受到攻击次数：0次；状态：位于地面。\n【手持与装备】\n主手: stone_sword (耐久 123/131)；副手: 无；头部: 无；胸部: iron_chestplate_8 (耐久 228/240)；腿部: 无；脚部: iron_boots_7 (耐久 183/195)；快捷栏槽位 0。\n【背包】\narrow×16；bow×1；stone_sword×1；空槽 33/36。\n【其他玩家】\nDave；位置 (-9.7,0.0,8.8)；距离 5.6 格；方向：左前方；手持 stone_sword_154。\nAlice；位置 (-2.5,0.0,-1.1)；距离 6.9 格；方向：后方；手持 stone_sword_149。\nCarol；位置 (-9.3,0.0,12.5)；距离 9.1 格；方向：左前方；手持 stone_sword_151。\n【敌对实体】\nzombie_21；位置 (-9.9,0.0,11.9)；距离 8.6 格；方向：左前方。\n【附近掉落物】\niron_sword_109×1 (耐久 250/250)；位置 (-9.4,0.0,-11.7)；距离 15.4 格。\nbread×2；位置 (-3.5,0.0,21.5)；距离 18.4 格。\n【任务进度】\n时间：36.2/180；已消灭：2；存活：Alice、Bob、Carol、Dave\n\n【历史信息】\n[队友: Dave]\n通信：我先向前推进搜寻怪物，Alice 注意跟我保持距离，发现目标及时通报。\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：我先观察周围情况，确认怪物和物资位置，再决定推进方向。\n动作完成结果：observe（状态：completed）\n\n[自身]\n缓存规划：fight('zombie_20', 'stone_sword_5')\n动作选择：fight('zombie_20', 'stone_sword_5')（来源：cache）\n通信：发现近距离僵尸zombie_20（3.3格），我先清理它，Carol注意配合。\n动作完成结果：战斗已停止：zombie(id=20)，距离 0.71（stone_sword），zombie(id=20)，距离 0.71依然存活，原因 planning_interrupt。（状态：interrupted）\n\n[队友: Alice]\n通信：周围暂时无威胁，我先观察确认怪物和掉落物位置，再决定推进方向。Dave、Carol、Bob注意报点。\n动作完成结果：observe（状态：completed）\n\n[队友: Dave]\n通信：我发现后方的僵尸_20距离约17.7格，正从Bob和Carol方向靠近。我先去清理它，防止它威胁队友，注意保持配合。\n动作完成结果：fight('zombie_20', 'stone_sword_13')（状态：completed）\n\n[队友: Dave]\n通信：Alice，我向前推进搜寻怪物，你跟我保持距离，发现目标及时通报。\n动作完成结果：无（状态：uncertain）\n\n[自身]\n普通规划：fight('zombie_20', 'stone_sword_5')\n推理内容：当前僵尸_20距离仅3.3格，威胁迫近，且队友Carol就在身旁1格可协同。先发制人清理它是最优先动作，可快速推进任务进度且避免被贴近攻击。\n动作完成结果：竞速败方，未执行（状态：uncertain）\n\n[队友: Alice]\n通信：周围暂无威胁，我向前推进搜寻怪物，Dave跟我保持距离一起行动。\n动作完成结果：无（状态：uncertain）\n\n[队友: Dave]\n通信：我去拾取附近那柄铁剑，提升输出后再配合你们清理僵尸。\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：周围暂时没有近处威胁，我先观察确认怪物和掉落物位置，再决定推进方向。Dave、Carol、Bob注意报点。\n动作完成结果：observe（状态：completed）\n\n[自身]\n普通规划：fight('zombie_20', 'stone_sword_5')\n动作选择：fight('zombie_20', 'stone_sword_5')（来源：standard）\n推理内容：当前僵尸_20距离仅0.9格，已经贴近自身，威胁紧急。自身生命值11.8且近期被攻击2次，不能再拖延。Carol就在身旁1.0格，可协同处理。必须立即对最近僵尸_20发起攻击，避免继续被贴脸伤害。使用已手持的stone_sword_5攻击即可，无需切换武器。\n通信：Carol，僵尸_20贴脸了，我先攻击它，你配合清理！\n动作完成结果：战斗失败（unknown）：missing_weapon。（状态：failed）\n\n[队友: Alice]\n通信：僵尸_20和僵尸_21都在左后方约18格外，Bob和Carol也在那个方向，我向你们靠拢一起清理。Dave也跟上。\n动作完成结果：goto({'x': -8.5, 'y': 0, 'z': 12.0})（状态：completed）\n\n[自身]\n缓存规划：fight('zombie_20', 'stone_sword_5')\n动作选择：fight('zombie_20', 'stone_sword_5')（来源：cache）\n通信：Carol，僵尸_20贴脸了（2.4格），我先攻击它，你配合清理！刚才失败是武器问题，现在已确认手持stone_sword_5。\n动作完成结果：使用 stone_sword 攻击，zombie(id=20)，距离 0.73依然存活，已攻击 1 次。（状态：completed）\n\n[队友: Alice]\n通信：我去拾取附近的铁剑提升输出，然后向僵尸方向推进，Dave跟我一起。\n动作完成结果：无（状态：uncertain）\n\n[自身]\n普通规划：fight('zombie_20', 'stone_sword_5')\n推理内容：当前生命值仅7.4，且zombie_20距离2.4格已在逼近，近期已被攻击4次，健康风险高。上一步fight失败提示missing_weapon，但当前主手明确持有stone_sword_5，先重新确认并直接攻击近处zombie_20，避免被贴脸继续掉血。Carol就在0.9格，可协同处理。\n通信：Carol，僵尸_20逼近，我先攻击它，你配合清理！\n动作完成结果：竞速败方，未执行（状态：uncertain）\n\n[自身]\n普通规划：fight('zombie_21', 'stone_sword')\n动作选择：fight('zombie_21', 'stone_sword')（来源：standard）\n推理内容：当前zombie_21距离仅4.9格，正左前方逼近，自身生命值20满状态且有铁胸甲/铁靴，具备正面对抗能力。队友Dave在5.3格、Carol在9.1格方向相近，可协同清理。优先消灭最近僵尸，避免被贴身消耗。使用已手持stone_sword攻击即可。\n通信：发现zombie_21在左前方4.9格逼近，我先攻击清理，Dave、Carol注意配合！\n\n[队友: Dave]\n通信：Bob、Carol，两只僵尸贴脸了，我先打zombie_21，你们注意配合清理zombie_20！\n动作完成结果：无（状态：uncertain）\n\n[队友: Alice]\n通信：我先去拾取铁剑提升输出，随后向僵尸方向支援。\n动作完成结果：无（状态：uncertain）\n\n[队友: Carol]\n通信：Alice、Dave，僵尸_21在我前方1.9格，我先攻击它，你们注意配合清理！\n动作完成结果：无（状态：uncertain）\n\n【上次输出错误】\n无\n\n\n\n根据所给内容，为下一步动作进行合理规划。\n请根据输出规范要求，进行输出。\n"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": true,
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Bob",
+      "operation": "timed_standard_action"
+    }
+  },
+  "response": {
+    "request_id": "b47de20a4a63456c9105134e7294f680",
+    "mode": "stream",
+    "status": "completed",
+    "content": "<reason>当前僵尸_21距离8.6格在左前方，队友Dave、Carol都在附近可协同。自身满血20、有铁甲和石剑，具备战斗能力。但更优先的是拿到附近15.4格处的铁剑（250/250）提升输出，且Dave已去拾取附近铁剑，Alice也去拾铁剑，说明物资争夺激烈。不过考虑僵尸_21正在逼近且Carol已在1.9格应对它，我方暂时无贴脸威胁。为提高后续清剿效率，先去拾取铁剑是合理选择，但距离较远且方向在左后方。权衡之下，先向僵尸_21方向推进协同Carol清理，比长途取剑更稳妥，避免队友独自面对多只僵尸。选择fight zombie_21，与Carol配合。</reason><interrupt>false</interrupt><action>fight('zombie_21', 'stone_sword')</action><chat>Carol，我来支援你打zombie_21，Dave注意旁边还有zombie_20的可能威胁。</chat>",
+    "reasoning_content": "",
+    "model": "deepseek-flash",
+    "finish_reason": "stop",
+    "stop_reason": null,
+    "keyword_events": [
+      {
+        "request_id": "b47de20a4a63456c9105134e7294f680",
+        "trigger_name": "action_ready",
+        "keyword": "</action>",
+        "channel": "content",
+        "segment": "<reason>当前僵尸_21距离8.6格在左前方，队友Dave、Carol都在附近可协同。自身满血20、有铁甲和石剑，具备战斗能力。但更优先的是拿到附近15.4格处的铁剑（250/250）提升输出，且Dave已去拾取附近铁剑，Alice也去拾铁剑，说明物资争夺激烈。不过考虑僵尸_21正在逼近且Carol已在1.9格应对它，我方暂时无贴脸威胁。为提高后续清剿效率，先去拾取铁剑是合理选择，但距离较远且方向在左后方。权衡之下，先向僵尸_21方向推进协同Carol清理，比长途取剑更稳妥，避免队友独自面对多只僵尸。选择fight zombie_21，与Carol配合。</reason><interrupt>false</interrupt><action>fight('zombie_21', 'stone_sword')",
+        "accumulated_content": "<reason>当前僵尸_21距离8.6格在左前方，队友Dave、Carol都在附近可协同。自身满血20、有铁甲和石剑，具备战斗能力。但更优先的是拿到附近15.4格处的铁剑（250/250）提升输出，且Dave已去拾取附近铁剑，Alice也去拾铁剑，说明物资争夺激烈。不过考虑僵尸_21正在逼近且Carol已在1.9格应对它，我方暂时无贴脸威胁。为提高后续清剿效率，先去拾取铁剑是合理选择，但距离较远且方向在左后方。权衡之下，先向僵尸_21方向推进协同Carol清理，比长途取剑更稳妥，避免队友独自面对多只僵尸。选择fight zombie_21，与Carol配合。</reason><interrupt>false</interrupt><action>fight('zombie_21', 'stone_sword')",
+        "keyword_start": 361,
+        "keyword_end": 370,
+        "occurrence": 1,
+        "triggered_at": 1789121132.1404772,
+        "metadata": {}
+      }
+    ],
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Bob",
+      "operation": "timed_standard_action"
+    }
+  },
+  "usage": {
+    "raw": {
+      "completion_tokens": 229,
+      "prompt_tokens": 2285,
+      "total_tokens": 2514,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 1901
+    },
+    "normalized": {
+      "input_tokens": 2285,
+      "output_tokens": 229,
+      "total_tokens": 2514
+    },
+    "usage_available": true
+  },
+  "error": null
+}

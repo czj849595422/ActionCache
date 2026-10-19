@@ -1,0 +1,84 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "episode_id": "1",
+  "request_id": "13a3a6aee53e4eb6809172fb71f2268c",
+  "source": {
+    "component": "coap_cache",
+    "operation": "cache_boot",
+    "task_id": "monster_clearance",
+    "agent_id": "shared"
+  },
+  "mode": "complete",
+  "status": "completed",
+  "started_at": 1789121090.954692,
+  "completed_at": 1789121094.1848054,
+  "elapsed_seconds": 3.2301135063171387,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "deepseek-v4-flash",
+    "messages": [
+      {
+        "role": "system",
+        "content": "根据给出的任务和动作空间，分析哪些动作可能具备前后执行关系，以及执行完前一个动作后转移到下一个动作的原因，并给这个关系的合理性与可行性进行打分。\n只输出一个 JSON 对象，且只包含 \"entries\" 字段。\n每个 entry 必须包含 \"index\"、\"previous_action\"、\"next_action\"、\"reason\"、\"initial_score\"。\n\"previous_action\" 与 \"next_action\" 必须是动作空间中的动作名字符串；不能包含参数、括号、JSON 对象或说明文字。\n\"index\" 必须从 1 开始连续递增；initial_score 在 (0,0.5] 范围内。\n"
+      },
+      {
+        "role": "user",
+        "content": "【任务】\n你处在一支负责清剿怪物的队伍中，在坐标范围从-50到50的场地内执行清剿怪物的任务。\n你需要配合你的伙伴，巡查场地上存在的怪物，任务完成目标是消灭10只怪物。\n僵尸无远程攻击能力，但会贴近玩家攻击，用剑可阻挡对方接近。\n骷髅装备弓箭，具备远程攻击能力，接近容易受到攻击。\n场上周期性掉落物资，合理使用自身资源进行战斗，时刻注意健康状况，避免自身死亡，采取合理的巡逻策略或战斗策略更快完成任务。\n\n【动作空间】\n- fight\n- observe\n- retreat\n- use_food\n- equip\n- unequip\n- drop\n- give\n- pick\n- goto\n- wait\n\n【要求】\n请基于任务目标，从动作空间中选择可能出现的前序动作与后继动作组合 10 条。\n为每条动作转移提供抽象的推理，说明完成上一个动作后使用下一个动作的理由。根据抽象推理为该条动作转移合理程度评分（0~0.5 之间的小数）。\n"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": false,
+    "metadata": {
+      "operation": "cache_boot",
+      "agent_id": "shared",
+      "task_id": "monster_clearance",
+      "maximum_entries": 10
+    }
+  },
+  "response": {
+    "request_id": "13a3a6aee53e4eb6809172fb71f2268c",
+    "mode": "complete",
+    "status": "completed",
+    "content": "{\"entries\":[{\"index\":1,\"previous_action\":\"observe\",\"next_action\":\"fight\",\"reason\":\"观察到怪物位置和类型后，根据情报决定攻击，以消灭怪物推进任务。\",\"initial_score\":0.5},{\"index\":2,\"previous_action\":\"fight\",\"next_action\":\"retreat\",\"reason\":\"战斗后若生命值过低或敌人过强，撤退以脱离危险，避免死亡。\",\"initial_score\":0.5},{\"index\":3,\"previous_action\":\"retreat\",\"next_action\":\"use_food\",\"reason\":\"撤退到安全距离后，使用食物恢复生命值，为再次战斗做准备。\",\"initial_score\":0.5},{\"index\":4,\"previous_action\":\"use_food\",\"next_action\":\"fight\",\"reason\":\"生命值恢复后，重新投入战斗以继续消灭怪物。\",\"initial_score\":0.5},{\"index\":5,\"previous_action\":\"pick\",\"next_action\":\"equip\",\"reason\":\"拾取到装备后，立即装备以提升战斗能力。\",\"initial_score\":0.5},{\"index\":6,\"previous_action\":\"equip\",\"next_action\":\"fight\",\"reason\":\"装备武器后，战斗力增强，可更有效地与怪物战斗。\",\"initial_score\":0.5},{\"index\":7,\"previous_action\":\"unequip\",\"next_action\":\"drop\",\"reason\":\"卸下不需要的装备后，将其丢弃以腾出背包空间。\",\"initial_score\":0.4},{\"index\":8,\"previous_action\":\"fight\",\"next_action\":\"pick\",\"reason\":\"战斗消灭怪物后，拾取怪物掉落的物资以补充资源。\",\"initial_score\":0.5},{\"index\":9,\"previous_action\":\"goto\",\"next_action\":\"observe\",\"reason\":\"移动到新区域后，观察周围环境以发现怪物或物资。\",\"initial_score\":0.5},{\"index\":10,\"previous_action\":\"wait\",\"next_action\":\"observe\",\"reason\":\"等待一段时间后，再次观察环境，确认怪物动态或物资掉落。\",\"initial_score\":0.4}]}",
+    "reasoning_content": "",
+    "model": "deepseek-flash",
+    "finish_reason": "stop",
+    "stop_reason": null,
+    "keyword_events": [],
+    "metadata": {
+      "operation": "cache_boot",
+      "agent_id": "shared",
+      "task_id": "monster_clearance",
+      "maximum_entries": 10
+    }
+  },
+  "usage": {
+    "raw": {
+      "completion_tokens": 411,
+      "prompt_tokens": 363,
+      "total_tokens": 774,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 235
+    },
+    "normalized": {
+      "input_tokens": 363,
+      "output_tokens": 411,
+      "total_tokens": 774
+    },
+    "usage_available": true
+  },
+  "error": null
+}

@@ -1,0 +1,39 @@
+{
+  "name": "wait",
+  "version": "0.1.0",
+  "description": "Wait for a configurable duration.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": [],
+    "optional": []
+  },
+  "commands": {
+    "wait": {
+      "mode": ["oneshot", "continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "seconds": {"type": "number", "minimum": 0}
+        },
+        "required": ["seconds"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "seconds": {"type": "number"},
+          "completed": {"type": "boolean"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Wait for a specified number of seconds.",
+      "preconditions": [],
+      "stop_conditions": ["duration_elapsed", "interrupted"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": ["seconds"],
+      "update_policy": "replace"
+    }
+  }
+}

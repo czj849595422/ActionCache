@@ -1,0 +1,38 @@
+{
+  "name": "demo_combat",
+  "version": "0.1.0",
+  "description": "Demo-only locked hostile combat behavior using Mineflayer native attack and pathfinder.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "lock_nearest_hostile": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "radius": {"type": "number"},
+          "followRange": {"type": "number"},
+          "attackRange": {"type": "number"},
+          "attackCooldownMs": {"type": "number"}
+        }
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "side_effects": ["combat", "movement", "look"],
+      "llm_description": "Demo-only behavior: lock onto the nearest hostile and keep fighting that target until it dies or execution stops.",
+      "llm_description_zh": "演示用行为：锁定最近的敌对实体并持续战斗，直到目标死亡或动作停止。",
+      "preconditions": ["hostile_in_radius"],
+      "stop_conditions": ["target_dead", "target_lost", "interrupted"],
+      "locks": ["combat", "movement", "look"],
+      "switch_group": "combat",
+      "switchable": false,
+      "mutable_params": ["followRange", "attackRange", "attackCooldownMs"],
+      "update_policy": "merge"
+    }
+  }
+}

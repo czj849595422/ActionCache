@@ -1,0 +1,16 @@
+# 批量指令示例: 混合现实时间(s)与游戏时间(t)
+# 无时间前缀的指令在调度启动时立即执行
+say batch started
+time set day
+
+# 现实时间: 启动后 3 秒 / 6 秒 / 8 秒
+3s time query daytime
+6s say six real seconds
+8 say eight seconds (bare number uses default unit)
+
+# 游戏时间: 启动后 40 tick(~2秒) / 120 tick(~6秒)
+40t say forty game ticks
+120t time query gametime
+
+# 带前导斜杠亦可, 发送时自动去掉
+/weather clear

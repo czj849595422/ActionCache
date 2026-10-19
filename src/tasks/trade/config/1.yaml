@@ -1,0 +1,45 @@
+category: trade
+agents:
+  count: 4
+  names:
+  - Alice
+  - Bob
+  - Carol
+  - Dave
+environment:
+  world: trade
+  time: noon
+  weather: clear
+  difficulty: peaceful
+  gamemode: survival
+  world_spawn:
+    x: 0
+    y: 0
+    z: 0
+  gamerules:
+    doDaylightCycle: false
+    doWeatherCycle: false
+    doMobSpawning: false
+    keepInventory: true
+  init_commands:
+  - kill @e[type=minecraft:item,x=-16,y=0,z=-16,dx=32,dy=3,dz=32]
+initial_state: {}
+spawns: []
+completion:
+  timeout_seconds: 300
+  success:
+    type: all_personal_chests_satisfied
+trials:
+  count: 1
+output:
+  dir: data
+  save_memory: true
+params:
+  trade_config_file: ../../specs/resources/trade.trade_config.yaml
+  command_file: ../../specs/trade.commands.txt
+  generation_seed: 20260809
+metadata:
+  preset: quick
+  generation_seed: 20260809
+task_id: trade
+name: Multi-stage Crafting Trade Quick (seed 20260809)

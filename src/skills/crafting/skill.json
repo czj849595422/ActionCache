@@ -1,0 +1,142 @@
+{
+  "name": "crafting",
+  "version": "0.1.0",
+  "description": "Recipe query and crafting helpers built on Mineflayer's native recipe APIs.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "query_recipe": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          }
+        },
+        "required": ["item"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean" },
+          "item": { "type": "object" },
+          "recipe_count": { "type": "number" },
+          "requires_table_any": { "type": "boolean" },
+          "requires_table_all": { "type": "boolean" },
+          "craftable_without_table_count": { "type": "number" },
+          "recipes": { "type": "array" }
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Inspect all legal recipes for one item and report the ingredients needed for each recipe.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "craft_with_recipe": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "recipe_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "crafting_table_max_distance": {
+            "type": "number",
+            "minimum": 0,
+            "default": 8
+          }
+        },
+        "required": ["item", "recipe_index"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean" },
+          "item": { "type": "string" },
+          "recipe_index": { "type": "integer" },
+          "requires_table": { "type": "boolean" },
+          "craft_count": { "type": "integer" },
+          "crafted_item_count": { "type": "integer" },
+          "consumed_ingredients": { "type": "array" },
+          "missing": { "type": "array" }
+        }
+      },
+      "side_effects": ["inventory", "movement"],
+      "llm_description": "Craft a target item from a known recipe index, moving near a crafting table when needed, and report missing materials when the inventory is insufficient.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "movement"],
+      "switch_group": "crafting",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "craft_item": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "crafting_table_max_distance": {
+            "type": "number",
+            "minimum": 0,
+            "default": 8
+          }
+        },
+        "required": ["item"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean" },
+          "item": { "type": "string" },
+          "selected_recipe_index": { "type": "integer" },
+          "requires_table": { "type": "boolean" },
+          "craft_count": { "type": "integer" },
+          "crafted_item_count": { "type": "integer" },
+          "consumed_ingredients": { "type": "array" },
+          "missing": { "type": "array" },
+          "candidate_recipes": { "type": "array" }
+        }
+      },
+      "side_effects": ["inventory", "movement"],
+      "llm_description": "Select a valid recipe automatically for the target item, move near a crafting table when needed, then craft it and report missing materials when needed.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "movement"],
+      "switch_group": "crafting",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

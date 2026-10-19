@@ -1,0 +1,322 @@
+{
+  "name": "furnace",
+  "version": "0.1.0",
+  "description": "Furnace window operation helpers based on Mineflayer native furnace APIs.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "find_nearby": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "radius": {"type": "number", "minimum": 0, "default": 20},
+          "count": {"type": "integer", "minimum": 1, "default": 16}
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "radius": {"type": "number"},
+          "count": {"type": "number"},
+          "furnaces": {"type": "array"},
+          "inventory_items": {"type": "array"},
+          "inventory_empty_slots": {"type": "number"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Find furnace-like blocks within the configured perception radius and return them sorted by distance.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "open": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "furnace": {"type": "object"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 20},
+          "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+        },
+        "required": ["position"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "session_active": {"type": "boolean"},
+          "furnace": {"type": "object"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"},
+          "inventory_empty_slots": {"type": "number"}
+        }
+      },
+      "side_effects": ["movement", "look", "container"],
+      "llm_description": "Open a specified furnace-like block within range and return furnace slots, progress, fuel state, and inventory.",
+      "preconditions": ["furnace_in_range"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["movement", "look", "container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "put_fuel": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string"},
+          "count": {"type": "integer", "minimum": 1, "default": 1},
+          "furnace": {"type": "object"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 20},
+          "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+        },
+        "required": ["item", "position"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "placed": {"type": "array"},
+          "recovered": {"type": "array"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["container", "inventory"],
+      "llm_description": "Put a specified fuel item and count into the furnace, auto-opening it first if needed, and recovering existing fuel to inventory before placing.",
+      "preconditions": ["furnace_in_range", "item_available", "inventory_space_available_for_recovery"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "take_fuel": {
+        "mode": ["oneshot"],
+        "params_schema": {
+          "type": "object",
+          "properties": {
+            "furnace": {"type": "object"},
+            "position": {"type": "object"},
+            "max_distance": {"type": "number", "minimum": 0, "default": 20},
+            "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+            "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+          },
+          "required": ["position"],
+          "additionalProperties": false
+        },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "taken": {"type": "array"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["container", "inventory"],
+        "llm_description": "Take the entire contents of the furnace fuel slot, auto-opening the furnace first if needed.",
+        "preconditions": ["furnace_in_range", "inventory_space_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "put_input": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string"},
+          "count": {"type": "integer", "minimum": 1, "default": 1},
+          "furnace": {"type": "object"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 20},
+          "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+        },
+        "required": ["item", "position"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "placed": {"type": "array"},
+          "recovered": {"type": "array"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["container", "inventory"],
+      "llm_description": "Put a specified input item and count into the furnace, auto-opening it first if needed, and recovering existing input to inventory before placing.",
+      "preconditions": ["furnace_in_range", "item_available", "inventory_space_available_for_recovery"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "take_input": {
+        "mode": ["oneshot"],
+        "params_schema": {
+          "type": "object",
+          "properties": {
+            "furnace": {"type": "object"},
+            "position": {"type": "object"},
+            "max_distance": {"type": "number", "minimum": 0, "default": 20},
+            "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+            "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+          },
+          "required": ["position"],
+          "additionalProperties": false
+        },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "taken": {"type": "array"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["container", "inventory"],
+        "llm_description": "Take the entire contents of the furnace input slot, auto-opening the furnace first if needed.",
+        "preconditions": ["furnace_in_range", "inventory_space_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "take_output": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "furnace": {"type": "object"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 20},
+          "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+        },
+        "required": ["position"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "taken": {"type": "array"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["container", "inventory"],
+      "llm_description": "Take all currently available output items from the furnace output slot, auto-opening the furnace first if needed.",
+      "preconditions": ["furnace_in_range", "output_available", "inventory_space_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "smelt_item": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string", "description": "Input item to smelt, e.g. iron_ore"},
+          "fuel": {"type": "string", "description": "Fuel item name, e.g. coal"},
+          "count": {"type": "integer", "minimum": 1, "default": 1},
+          "wait": {
+            "type": "boolean",
+            "default": true,
+            "description": "true (default): wait for smelting to finish and take each output; false: only configure fuel/input then close the furnace."
+          },
+          "furnace": {"type": "object"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 20},
+          "approach_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "open_timeout_ms": {"type": "integer", "minimum": 1000, "default": 45000}
+        },
+        "required": ["item", "fuel", "position"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "item": {"type": "string"},
+          "requested_count": {"type": "integer"},
+          "smelted_count": {"type": "integer"},
+          "waited": {"type": "boolean"},
+          "placed": {"type": "array"},
+          "furnace_state": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "container", "inventory", "world"],
+      "llm_description": "Smelt count items of item using fuel (auto-opening the furnace first). wait=true (default) waits for completion and takes outputs; wait=false only configures fuel/input and closes the furnace so other actions can run.",
+      "preconditions": ["furnace_in_range", "item_available", "fuel_available"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted"],
+      "locks": ["movement", "look", "container", "inventory"],
+      "switch_group": "furnace",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "close": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "closed": {"type": "boolean"},
+          "already_closed": {"type": "boolean"},
+          "furnace": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["container"],
+      "llm_description": "Close the currently open furnace session. This action is idempotent.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["container"],
+      "switch_group": "furnace",
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

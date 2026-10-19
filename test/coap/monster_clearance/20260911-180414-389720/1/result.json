@@ -1,0 +1,171 @@
+{
+  "schema_version": "1",
+  "kind": "episode_result",
+  "result": {
+    "outcome": {
+      "status": "success",
+      "reason": "all_task_monsters_eliminated",
+      "detail": {
+        "elapsed_seconds": 120.10484140001063,
+        "planned_monsters": 16,
+        "target_monsters": 10,
+        "spawned_monsters": 16,
+        "alive_monsters": 6,
+        "eliminated_monsters": 10,
+        "monsters_by_type": {
+          "zombie": {
+            "planned": 13,
+            "spawned": 13,
+            "alive": 3
+          },
+          "skeleton": {
+            "planned": 3,
+            "spawned": 3,
+            "alive": 3
+          }
+        },
+        "monsters_by_profile": {
+          "normal": {
+            "planned": 11,
+            "spawned": 11,
+            "alive": 2
+          },
+          "default": {
+            "planned": 3,
+            "spawned": 3,
+            "alive": 3
+          },
+          "elite_iron": {
+            "planned": 2,
+            "spawned": 2,
+            "alive": 1
+          }
+        },
+        "supply_attempts": 25,
+        "spawned_supplies": 24,
+        "supply_skipped_no_alive_agent": 0,
+        "supply_skipped_placement": 0,
+        "last_supply_drop": {
+          "agent": "Dave",
+          "item": "minecraft:iron_leggings",
+          "amount": 1,
+          "position": {
+            "x": 34.049,
+            "y": 0.0,
+            "z": -22.129
+          },
+          "response": "Summoned new Iron Leggings"
+        },
+        "supply_error": null,
+        "supply_thread_alive": true,
+        "next_supply_drop_in_seconds": 0,
+        "alive_agents": [
+          "Dave"
+        ],
+        "eliminated_agents": [
+          "Alice",
+          "Bob",
+          "Carol"
+        ],
+        "pending_eliminations": [],
+        "elimination_error": null,
+        "commands_sent": 16,
+        "command_errors": 0,
+        "schedule_complete": true,
+        "spawn_results_verified": true
+      }
+    },
+    "final_metrics": {
+      "elapsed_seconds": 120.40373060001002,
+      "planned_monsters": 16,
+      "target_monsters": 10,
+      "spawned_monsters": 16,
+      "alive_monsters": 6,
+      "eliminated_monsters": 10,
+      "monsters_by_type": {
+        "zombie": {
+          "planned": 13,
+          "spawned": 13,
+          "alive": 3
+        },
+        "skeleton": {
+          "planned": 3,
+          "spawned": 3,
+          "alive": 3
+        }
+      },
+      "monsters_by_profile": {
+        "normal": {
+          "planned": 11,
+          "spawned": 11,
+          "alive": 2
+        },
+        "default": {
+          "planned": 3,
+          "spawned": 3,
+          "alive": 3
+        },
+        "elite_iron": {
+          "planned": 2,
+          "spawned": 2,
+          "alive": 1
+        }
+      },
+      "supply_attempts": 25,
+      "spawned_supplies": 25,
+      "supply_skipped_no_alive_agent": 0,
+      "supply_skipped_placement": 0,
+      "last_supply_drop": {
+        "agent": "Dave",
+        "item": "minecraft:iron_leggings",
+        "amount": 1,
+        "position": {
+          "x": -0.114,
+          "y": 0.0,
+          "z": -24.93
+        },
+        "response": "Summoned new Iron Leggings"
+      },
+      "supply_error": null,
+      "supply_thread_alive": false,
+      "next_supply_drop_in_seconds": 4.59457790000306,
+      "alive_agents": [
+        "Dave"
+      ],
+      "eliminated_agents": [
+        "Alice",
+        "Bob",
+        "Carol"
+      ],
+      "pending_eliminations": [],
+      "elimination_error": null,
+      "commands_sent": 16,
+      "command_errors": 0,
+      "schedule_complete": true,
+      "spawn_results_verified": true
+    },
+    "interrupted": false,
+    "stop_reason": "task_outcome",
+    "runner_error": null,
+    "worker_errors": [],
+    "cleanup_errors": [],
+    "planned_count": 172,
+    "executed_count": 75,
+    "cache_stats": {
+      "entry_count": 32,
+      "hit_count": 216,
+      "attempt_count": 65,
+      "success_count": 55,
+      "buffer_size": 0,
+      "update_count": 31,
+      "retrieval_count": 67,
+      "cache_miss_count": 0,
+      "planning_call_count": 67,
+      "planning_success_count": 66,
+      "planning_failure_count": 1,
+      "budget_exhausted_count": 0
+    },
+    "started_at": 1789121089.506605,
+    "finished_at": 1789121209.9103854
+  }
+}

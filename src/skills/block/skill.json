@@ -1,0 +1,327 @@
+{
+  "name": "block",
+  "version": "0.1.0",
+  "description": "Single-block inspection, breaking, and placement helpers based on Mineflayer native block APIs.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "inspect": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "distance_check_enabled": {"type": "boolean", "default": false, "description": "是否启用 max_distance 距离检测，默认关闭"}
+        },
+        "anyOf": [
+          {"required": ["x", "y", "z"]},
+          {"required": ["position"]}
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "target": {"type": "object"},
+          "block": {"type": "object"},
+          "is_air": {"type": "boolean"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Inspect the block at a target coordinate and return its name, position, distance, and whether it is air.",
+      "preconditions": ["target_position_known"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "break": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3},
+          "timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后是否收集掉落物，默认开启"},
+          "distance_check_enabled": {"type": "boolean", "default": false, "description": "是否启用 max_distance 距离检测，默认关闭"}
+        },
+        "anyOf": [
+          {"required": ["x", "y", "z"]},
+          {"required": ["position"]}
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "target": {"type": "object"},
+          "broken_block": {"type": "object"},
+          "block_after": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Move near a target coordinate and break the block there, collecting drops by default (collect_drops); returns before/after block state and inventory snapshot.",
+      "preconditions": ["target_position_known", "block_loaded", "block_diggable"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "block",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "mine": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "position": {"type": "object"},
+          "max_group_size": {"type": "integer", "minimum": 1, "default": 16},
+          "max_distance": {"type": "number", "minimum": 1, "default": 45},
+          "collect_drops": {"type": "boolean", "default": true},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "max_obstacles_per_block": {"type": "integer", "minimum": 0, "default": 8},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3}
+        },
+        "anyOf": [
+          {"required": ["x", "y", "z"]},
+          {"required": ["position"]}
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "mining": {"type": "boolean"},
+          "block_name": {"type": "string"},
+          "group_size": {"type": "number"},
+          "mined_count": {"type": "number"},
+          "skipped_count": {"type": "number"},
+          "obstacles_broken": {"type": "number"},
+          "reason": {"type": "string"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Mine all blocks connected (6-face) to the seed coordinate as one group (up to max_group_size, default 16), approaching and digging each with drop collection by default. Re-checks each member and skips it if no longer the same block; breaks covering obstacle blocks when a target cannot be dug directly; interruptible and switchable.",
+      "preconditions": ["target_position_known", "block_loaded"],
+      "stop_conditions": ["completed", "failed", "interrupted", "group_mined"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "mining",
+      "switchable": true,
+      "mutable_params": ["max_group_size", "max_distance", "collect_drops", "per_block_timeout_ms", "max_obstacles_per_block", "approach_range"],
+      "update_policy": "merge"
+    },
+    "place": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string"},
+          "x": {"type": "number"},
+          "y": {"type": "number"},
+          "z": {"type": "number"},
+          "position": {"type": "object"},
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3},
+          "timeout_ms": {"type": "integer", "minimum": 1, "default": 20000},
+          "distance_check_enabled": {"type": "boolean", "default": false, "description": "是否启用 max_distance 距离检测，默认关闭"}
+        },
+        "required": ["item"],
+        "anyOf": [
+          {"required": ["x", "y", "z"]},
+          {"required": ["position"]}
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "target": {"type": "object"},
+          "placed_item": {"type": "object"},
+          "target_block_before": {"type": "object"},
+          "target_block_after": {"type": "object"},
+          "reference_block": {"type": "object"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory", "item_use"],
+      "llm_description": "Move near a target coordinate, equip a placeable inventory item, and place it into the target air block.",
+      "preconditions": ["target_position_known", "target_air", "reference_block_available", "item_available"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted"],
+      "locks": ["movement", "look", "world", "inventory", "item_use"],
+      "switch_group": "block",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "inspect_region": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "from": {"type": "object"},
+          "to": {"type": "object"},
+          "include_air": {"type": "boolean", "default": false},
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "distance_check_enabled": {"type": "boolean", "default": false, "description": "是否启用 max_distance 距离检测，默认关闭"},
+          "max_blocks": {"type": "integer", "minimum": 1, "default": 256}
+        },
+        "required": ["from", "to"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "region": {"type": "object"},
+          "scanned_count": {"type": "integer"},
+          "block_counts": {"type": "object"},
+          "blocks": {"type": "array"},
+          "skipped": {"type": "array"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Inspect all loaded blocks in a cuboid region and return block counts plus selected block records.",
+      "preconditions": ["region_known"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "break_region": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "from": {"type": "object"},
+          "to": {"type": "object"},
+          "include_blocks": {"type": "array", "items": {"type": "string"}},
+          "exclude_blocks": {"type": "array", "items": {"type": "string"}},
+          "allow_protected": {"type": "boolean", "default": false},
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3},
+          "max_blocks": {"type": "integer", "minimum": 1, "default": 128},
+          "order": {
+            "type": "string",
+            "enum": ["nearest", "natural", "bottom_up", "top_down"],
+            "default": "nearest"
+          },
+          "strict": {"type": "boolean", "default": false},
+          "collect_drops": {"type": "boolean", "default": true, "description": "挖掘后是否收集掉落物，默认开启"},
+          "distance_check_enabled": {"type": "boolean", "default": false, "description": "是否启用 max_distance 距离检测，默认关闭"},
+          "timeout_ms": {"type": "integer", "minimum": 1, "default": 120000},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000}
+        },
+        "required": ["from", "to"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "region": {"type": "object"},
+          "planned_count": {"type": "integer"},
+          "success_count": {"type": "integer"},
+          "failed_count": {"type": "integer"},
+          "skipped_count": {"type": "integer"},
+          "succeeded": {"type": "array"},
+          "failed": {"type": "array"},
+          "skipped": {"type": "array"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory"],
+      "llm_description": "Break all matching blocks in a cuboid region, skipping air and protected blocks by default, and report successes, skips, and failures.",
+      "preconditions": ["region_known", "blocks_loaded"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted"],
+      "locks": ["movement", "look", "world", "inventory"],
+      "switch_group": "block",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "place_region": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string"},
+          "from": {"type": "object"},
+          "to": {"type": "object"},
+          "replace_policy": {
+            "type": "string",
+            "enum": ["air_only", "replace_matching", "replace_any"],
+            "default": "air_only"
+          },
+          "replace_blocks": {"type": "array", "items": {"type": "string"}},
+          "allow_protected": {"type": "boolean", "default": false},
+          "max_distance": {"type": "number", "minimum": 0, "default": 45},
+          "approach_range": {"type": "number", "minimum": 0, "default": 3},
+          "max_blocks": {"type": "integer", "minimum": 1, "default": 128},
+          "order": {
+            "type": "string",
+            "enum": ["nearest", "natural", "bottom_up", "top_down"],
+            "default": "bottom_up"
+          },
+          "strict": {"type": "boolean", "default": false},
+          "collect_drops": {"type": "boolean", "default": true, "description": "替换/破坏原方块后是否收集掉落物，默认开启"},
+          "distance_check_enabled": {"type": "boolean", "default": false, "description": "是否启用 max_distance 距离检测，默认关闭"},
+          "timeout_ms": {"type": "integer", "minimum": 1, "default": 120000},
+          "per_block_timeout_ms": {"type": "integer", "minimum": 1, "default": 20000}
+        },
+        "required": ["item", "from", "to"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "region": {"type": "object"},
+          "item": {"type": "string"},
+          "planned_count": {"type": "integer"},
+          "success_count": {"type": "integer"},
+          "failed_count": {"type": "integer"},
+          "skipped_count": {"type": "integer"},
+          "succeeded": {"type": "array"},
+          "failed": {"type": "array"},
+          "skipped": {"type": "array"},
+          "inventory_items": {"type": "array"}
+        }
+      },
+      "side_effects": ["movement", "look", "world", "inventory", "item_use"],
+      "llm_description": "Place one block item into all eligible positions in a cuboid region, optionally replacing matching blocks, and report successes, skips, failures, and missing items.",
+      "preconditions": ["region_known", "item_available", "blocks_loaded"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted"],
+      "locks": ["movement", "look", "world", "inventory", "item_use"],
+      "switch_group": "block",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

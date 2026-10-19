@@ -1,0 +1,17 @@
+# spawn_id kind x y z resource spawn_time_s amount profile
+m0001 monster 40 0 -40 minecraft:zombie 0 1 normal
+m0002 monster 38 0 23 minecraft:skeleton 0 1 default
+m0003 monster -25 0 30 minecraft:zombie 0 1 normal
+m0004 monster -14 0 37 minecraft:zombie 0 1 normal
+m0005 monster 20 0 25 minecraft:zombie 15 1 normal
+m0006 monster -14 0 6 minecraft:zombie 15 1 normal
+m0007 monster -39 0 26 minecraft:zombie 30 1 normal
+m0008 monster -1 0 -10 minecraft:zombie 30 1 normal
+m0009 monster 23 0 -20 minecraft:skeleton 45 1 default
+m0010 monster -13 0 -27 minecraft:zombie 45 1 elite_iron
+m0011 monster -26 0 -27 minecraft:zombie 60 1 normal
+m0012 monster -46 0 28 minecraft:zombie 60 1 normal
+m0013 monster 34 0 -17 minecraft:zombie 75 1 elite_iron
+m0014 monster 10 0 -42 minecraft:zombie 75 1 normal
+m0015 monster -39 0 36 minecraft:skeleton 90 1 default
+m0016 monster 46 0 -34 minecraft:zombie 90 1 normal

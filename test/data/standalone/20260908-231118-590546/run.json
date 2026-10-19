@@ -1,0 +1,39 @@
+{
+  "schema_version": "1",
+  "kind": "run",
+  "baseline": "standalone",
+  "run_id": "20260908-231118-590546",
+  "status": "started",
+  "started_at": 1788880278.5935447,
+  "finished_at": null,
+  "metadata": {
+    "llm_config": {
+      "api_url": "https://example.invalid",
+      "api_key": "***",
+      "model": "fake-model",
+      "timeout": 60.0,
+      "max_retries": 0,
+      "temperature": null,
+      "max_tokens": null,
+      "thinking_enabled": false,
+      "thinking_disabled_body": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
+      "reject_reasoning_when_disabled": true,
+      "disable_thinking_param": "",
+      "stream_include_usage": true,
+      "retain_raw_chunks": true,
+      "maximum_buffer_characters": 1000000,
+      "extra_headers": {},
+      "extra_body": {}
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "episode-0001",
+      "status": "started"
+    }
+  ]
+}

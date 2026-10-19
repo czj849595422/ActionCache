@@ -1,0 +1,13 @@
+{
+  "schema_version": "1",
+  "kind": "episode",
+  "baseline": "standalone",
+  "run_id": "20260908-231118-368973",
+  "episode_id": "episode-0001",
+  "status": "started",
+  "started_at": 1788880278.3810122,
+  "finished_at": null,
+  "metadata": {
+    "kind": "standalone_llm"
+  }
+}

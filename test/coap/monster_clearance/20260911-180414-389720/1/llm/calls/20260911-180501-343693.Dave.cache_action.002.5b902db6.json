@@ -1,0 +1,98 @@
+{
+  "schema_version": "1",
+  "kind": "llm_call",
+  "baseline": "coap",
+  "run_id": "20260911-180414-389720",
+  "episode_id": "1",
+  "request_id": "5b902db6e2814537becd7b5b93548344",
+  "source": {
+    "component": "coap_planning",
+    "operation": "cache_action",
+    "task_id": "monster_clearance",
+    "agent_id": "Dave"
+  },
+  "mode": "stream",
+  "status": "completed",
+  "started_at": 1789121101.343693,
+  "completed_at": 1789121102.7807267,
+  "elapsed_seconds": 1.4370336532592773,
+  "request": {
+    "requested_model": null,
+    "resolved_model": "deepseek-v4-flash",
+    "messages": [
+      {
+        "role": "system",
+        "content": "【任务】\n你处在一支负责清剿怪物的队伍中，在坐标范围从-50到50的场地内执行清剿怪物的任务。\n你需要配合你的伙伴，巡查场地上存在的怪物，任务完成目标是消灭10只怪物。\n僵尸无远程攻击能力，但会贴近玩家攻击，用剑可阻挡对方接近。\n骷髅装备弓箭，具备远程攻击能力，接近容易受到攻击。\n场上周期性掉落物资，合理使用自身资源进行战斗，时刻注意健康状况，避免自身死亡，采取合理的巡逻策略或战斗策略更快完成任务。\n\n【动作空间】\n- fight(target, weapon) : #安全靠近target至进入攻击范围，并攻击 target（target 可写 <种类>_<id>，如 zombie_73；武器可选，缺省使用当前手持或空手；战斗任务中 weapon 可使用装备标识，如 diamond_sword_1，与当前所持武器不同时自动切换。”）。\n- observe() : #观察周围，寻找是否存在敌对实体与掉落物。\n- retreat(target) : #远离target。\n- use_food(food) : #使用背包内的食物或药水。\n- equip(items) : #装备item。\n- unequip(destinations) : #卸下装备（支持单个或列表）。\n- drop(items) : #丢弃items中的物品到当前位置地面。\n- give(target, items) : #靠近target并把items中的物品丢给对方拾取。\n- pick(positions) : #按指定位置拾取掉落物。\n- goto(position/entity_name) : #移动到坐标 position={x,y,z}。\n- wait(seconds) : #等待秒数seconds。\n\n【输出】\n使用以下标签文本协议输出：<action>动作与参数</action>，如需通信在 <action> 之后追加 <chat>消息</chat>。优先从候选缓存中选择动作；若所有候选不适合当前局部观测，可以选择动作空间中的其他动作。动作参数根据当前观测填写。\n"
+      },
+      {
+        "role": "user",
+        "content": "【身份】\nAgent: Dave\n队友: 无\n\n【最新观测】\n【自身】\nDave：生命值 20（无变化）/20；饥饿值 20/20；位置 (-1.5,0.0,-2.8)；近期受到攻击次数：0次；状态：位于地面。\n【手持与装备】\n主手: stone_sword_13 (耐久 131/131)；副手: 无；头部: 无；胸部: iron_chestplate_16 (耐久 240/240)；腿部: 无；脚部: iron_boots_15 (耐久 195/195)；快捷栏槽位 0。\n【背包】\narrow×16；bow_14×1；stone_sword_13×1；空槽 33/36。\n【其他玩家】\nAlice；位置 (4.4,0.0,-2.5)；距离 5.9 格；方向：右侧。\nCarol；位置 (-1.1,0.0,6.5)；距离 9.3 格；方向：后方；手持 stone_sword_24。\nBob；位置 (-1.2,0.0,9.4)；距离 12.2 格；方向：后方；手持 stone_sword_30。\n【敌对实体】\nzombie_8；位置 (0.9,0.0,-11.0)；距离 8.5 格；方向：前方。\n【附近掉落物】\n范围内未发现掉落物。\n【任务进度】\n时间：10.4/180；已消灭：0；存活：Alice、Bob、Carol、Dave\n\n【历史信息】\n[队友: Bob]\n动作完成结果：equip(['iron_chestplate_8', 'iron_boots_7', 'stone_sword_5'])（状态：completed）\n\n[队友: Carol]\n动作完成结果：equip(['iron_chestplate_12', 'iron_boots_11', 'stone_sword_9'])（状态：completed）\n\n[自身]\n普通规划：equip(['iron_boots_15', 'iron_chestplate_16', 'stone_sword_13'])\n动作选择：equip(['iron_boots_15', 'iron_chestplate_16', 'stone_sword_13'])（来源：standard）\n推理内容：当前满血满饥饿，有僵尸在18.5格外且无其他敌人。应先装备护甲与武器，提升战斗安全性。僵尸无远程攻击，可主动接近并击杀。先快速装备好铁甲和石剑。\n动作完成结果：装备完成：成功装备 3 项（feet:iron_boots、torso:iron_chestplate、hand:stone_sword）。（状态：completed）\n\n[队友: Carol]\n通信：周围没有发现敌对实体和掉落物，先观察一下，寻找怪物目标。\n动作完成结果：observe（状态：completed）\n\n[队友: Bob]\n动作完成结果：无（状态：uncertain）\n\n[队友: Carol]\n通信：我向Dave方向靠拢，一起向前推进搜寻怪物。\n动作完成结果：无（状态：uncertain）\n\n[自身]\n缓存规划：fight('zombie_8', 'stone_sword_13')\n动作选择：fight('zombie_8', 'stone_sword_13')（来源：cache）\n通信：我发现前方有一只僵尸，我先去清理它，你们注意跟进。\n动作完成结果：战斗失败（unknown）：missing_weapon。（状态：failed）\n\n[队友: Carol]\n通信：我去清理最近的僵尸，你们注意远程骷髅。\n动作完成结果：无（状态：uncertain）\n\n[自身]\n普通规划：fight('zombie_8', 'stone_sword_13')\n推理内容：当前手持石剑，护甲已装备。前方11.8格处有僵尸，无远程威胁，可安全接近击杀。其他队友在附近可相互支援。目标已消灭0/10，应主动进攻加快进度。\n动作完成结果：竞速败方，未执行（状态：uncertain）\n\n【上次输出错误】\n无\n\n\n\n【缓存候选】\n- 前序: fight -> 后继: retreat (评分 0.50; 原因: 战斗后若生命值过低或敌人过强，撤退以脱离危险，避免死亡。)\n- 前序: fight -> 后继: pick (评分 0.50; 原因: 战斗消灭怪物后，拾取怪物掉落的物资以补充资源。)\n\n根据所给内容，为下一步动作进行合理规划。\n请根据输出规范要求，进行输出。\n"
+      }
+    ],
+    "temperature": null,
+    "max_tokens": null,
+    "extra_body": {},
+    "parameters": {},
+    "extra_header_names": [],
+    "stream": true,
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Dave",
+      "operation": "cache_action"
+    }
+  },
+  "response": {
+    "request_id": "5b902db6e2814537becd7b5b93548344",
+    "mode": "stream",
+    "status": "completed",
+    "content": "<action>observe()</action><chat>前方僵尸可能已被队友处理，我先观察周围，确认最近威胁与掉落物。</chat>",
+    "reasoning_content": "",
+    "model": "deepseek-flash",
+    "finish_reason": "stop",
+    "stop_reason": null,
+    "keyword_events": [
+      {
+        "request_id": "5b902db6e2814537becd7b5b93548344",
+        "trigger_name": "action_ready",
+        "keyword": "</action>",
+        "channel": "content",
+        "segment": "<action>observe()",
+        "accumulated_content": "<action>observe()",
+        "keyword_start": 17,
+        "keyword_end": 26,
+        "occurrence": 1,
+        "triggered_at": 1789121102.6518645,
+        "metadata": {}
+      }
+    ],
+    "metadata": {
+      "method": "coap",
+      "task_id": "monster_clearance",
+      "agent_id": "Dave",
+      "operation": "cache_action"
+    }
+  },
+  "usage": {
+    "raw": {
+      "completion_tokens": 31,
+      "prompt_tokens": 1398,
+      "total_tokens": 1429,
+      "completion_tokens_details": null,
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 512
+      },
+      "prompt_cache_hit_tokens": 512,
+      "prompt_cache_miss_tokens": 886
+    },
+    "normalized": {
+      "input_tokens": 1398,
+      "output_tokens": 31,
+      "total_tokens": 1429
+    },
+    "usage_available": true
+  },
+  "error": null
+}

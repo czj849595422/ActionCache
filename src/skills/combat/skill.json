@@ -1,0 +1,352 @@
+{
+  "name": "combat",
+  "version": "0.2.0",
+  "description": "Task combat helpers for hostile detection, attack, and combat item use.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "patrol": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "hostiles": {"type": "array"},
+          "chests": {"type": "array"},
+          "self": {"type": "object"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Stand still and scan the configured perception radius for hostile entities and nearby chests.",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "observe": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "base_radius": {"type": "number"},
+          "radius": {"type": "number"},
+          "agents": {"type": "array"},
+          "hostiles": {"type": "array"},
+          "items": {"type": "array"},
+          "self": {"type": "object"}
+        }
+      },
+      "side_effects": [],
+      "llm_description": "Stand still and scan twice the perception radius for hostile entities and dropped items (chests excluded).",
+      "preconditions": [],
+      "stop_conditions": ["completed", "failed"],
+      "locks": [],
+      "switch_group": null,
+      "switchable": false,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "attack": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "target": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "object"}], "description": "攻击目标实体：对象（name/entity_id/id/uuid/type）或简写 <种类>_<id>（如 zombie_73）"},
+          "follow_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "attack_range": {"type": "number", "minimum": 0, "default": 3.1},
+          "attack_cooldown_ms": {"type": "number", "minimum": 0, "default": 700},
+          "collect_drops": {
+            "type": "string",
+            "enum": ["none", "optional", "required"],
+            "default": "optional",
+            "description": "none 不拾取；optional 能拾取就拾取（默认）；required 必须拾取（动物目标强制 required）"
+          },
+          "food": {"type": "string", "minLength": 1, "description": "可选：热更新时指定的食物或药水；治疗药水统一写作 potion[healing]，提供后会先使用补给再恢复战斗"}
+        },
+        "required": ["target"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "target": {"type": "object"},
+          "attack_count": {"type": "number"},
+          "target_dead": {"type": "boolean"},
+          "collect_mode": {"type": "string"},
+          "collected_count": {"type": "number"},
+          "last_distance": {"type": "number"},
+          "food_result": {"type": "object"},
+          "last_food_result": {"type": "object"}
+        }
+      },
+      "side_effects": ["combat", "movement", "look", "inventory", "item_use"],
+      "llm_description": "Continuously attack a selected hostile entity target until it is removed, stopped, or fails. Hot updates may include food to pause briefly, eat, and then restore the previous weapon without ending combat.",
+      "preconditions": ["target_known"],
+      "stop_conditions": ["target_dead", "target_lost", "interrupted", "failed"],
+      "locks": ["combat", "movement", "look", "inventory", "item_use"],
+      "switch_group": "combat",
+      "switchable": true,
+      "mutable_params": ["target", "follow_range", "attack_range", "attack_cooldown_ms", "food"],
+      "update_policy": "merge"
+    },
+    "retreat": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "anyOf": [
+              {"type": "string", "minLength": 1},
+              {"type": "object"}
+            ],
+            "description": "要远离的目标实体；对象（entity_id/id/uuid/type/name）或简写 <种类>_<id>"
+          },
+          "distance": {
+            "type": "number",
+            "minimum": 0,
+            "default": 12,
+            "description": "与目标拉开的最小三维距离"
+          }
+        },
+        "required": ["target"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "retreating": {"type": "boolean"},
+          "retreated": {"type": "boolean"},
+          "stopped": {"type": "boolean"},
+          "reason": {"type": "string"},
+          "target": {"type": "object"},
+          "requested_distance": {"type": "number"},
+          "distance": {"type": ["number", "null"]},
+          "duration_ms": {"type": "number"},
+          "position": {"type": "object"}
+        }
+      },
+      "side_effects": ["combat", "movement", "look"],
+      "llm_description": "Continuously retreat from a target entity until their three-dimensional distance reaches distance (default 12), then complete automatically. The target uses the same entity object format as other combat actions. If the target disappears while retreating, the action completes with reason target_lost.",
+      "preconditions": ["target_known"],
+      "stop_conditions": ["distance_reached", "target_lost", "interrupted", "failed"],
+      "locks": ["combat", "movement", "look"],
+      "switch_group": "combat",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    },
+    "fight_using_weapon": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "weapon": {"type": "string", "description": "武器物品名称，如 diamond_sword、iron_axe；战斗任务中也可使用装备注册标识，如 diamond_sword_1"},
+          "target": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "object"}], "description": "攻击目标实体（来自 perception 的 entity 对象）"},
+          "follow_range": {"type": "number", "minimum": 0, "default": 2.5},
+          "attack_range": {"type": "number", "minimum": 0, "default": 3.1},
+          "attack_cooldown_ms": {"type": "number", "minimum": 0, "default": 700},
+          "max_duration_ms": {"type": "number", "minimum": 0, "default": 60000},
+          "collect_drops": {
+            "type": "string",
+            "enum": ["none", "optional", "required"],
+            "default": "optional",
+            "description": "none 不拾取；optional 能拾取就拾取（默认）；required 必须拾取（动物目标强制 required）"
+          },
+          "food": {"type": "string", "minLength": 1, "description": "可选：热更新时指定的食物或普通药水，提供后会先使用补给再恢复战斗"}
+        },
+        "required": ["weapon", "target"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "weapon": {"type": "string"},
+          "weapon_equipped": {"type": "boolean"},
+          "target": {"type": "object"},
+          "attack_count": {"type": "number"},
+          "target_dead": {"type": "boolean"},
+          "collect_mode": {"type": "string"},
+          "collected_count": {"type": "number"},
+          "last_distance": {"type": "number"},
+          "duration_ms": {"type": "number"},
+          "food_result": {"type": "object"},
+          "last_food_result": {"type": "object"}
+        }
+      },
+      "side_effects": ["combat", "movement", "look", "inventory", "item_use"],
+      "llm_description": "Equip a specified weapon from inventory and continuously attack a target entity until it dies, times out, or is stopped. Hot updates may include food to pause briefly, eat, and then restore the previous weapon without ending combat. Fails with missing_weapon if the weapon is absent, equip_failed if equipping fails, or target_not_found if the target cannot be located.",
+      "preconditions": ["item_available", "target_known"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted", "target_lost"],
+      "locks": ["combat", "movement", "look", "inventory", "item_use"],
+      "switch_group": "combat",
+      "switchable": true,
+      "mutable_params": ["target", "follow_range", "attack_range", "attack_cooldown_ms", "food"],
+      "update_policy": "merge"
+    },
+    "fight_using_bow": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "bow": {"type": "string", "description": "弓的物品名称，如 bow、crossbow；战斗任务中也可使用装备注册标识，如 bow_1"},
+          "target": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "object"}], "description": "攻击目标实体（来自 perception 的 entity 对象）"},
+          "arrow": {"type": "string", "default": "arrow", "description": "箭矢物品名称"},
+          "approach_range": {"type": "number", "minimum": 0, "default": 18},
+          "shoot_range": {"type": "number", "minimum": 0, "default": 40},
+          "charge_ms": {"type": "number", "minimum": 0, "default": 1000},
+          "max_duration_ms": {"type": "number", "minimum": 0, "default": 120000},
+          "collect_drops": {
+            "type": "string",
+            "enum": ["none", "optional", "required"],
+            "default": "optional",
+            "description": "none 不拾取；optional 能拾取就拾取（默认）；required 必须拾取（动物目标强制 required）"
+          },
+          "food": {"type": "string", "minLength": 1, "description": "可选：热更新时指定的食物或普通药水，提供后会先使用补给再恢复战斗"}
+        },
+        "required": ["bow", "target"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "bow": {"type": "string"},
+          "target": {"type": "object"},
+          "shots_fired": {"type": "number"},
+          "arrows_remaining": {"type": "number"},
+          "target_dead": {"type": "boolean"},
+          "collect_mode": {"type": "string"},
+          "collected_count": {"type": "number"},
+          "last_distance": {"type": "number"},
+          "duration_ms": {"type": "number"},
+          "food_result": {"type": "object"},
+          "last_food_result": {"type": "object"}
+        }
+      },
+      "side_effects": ["combat", "movement", "look", "inventory", "item_use"],
+      "llm_description": "Equip a bow/crossbow from inventory and shoot arrows at a target entity from range. Approaches the target, charges the bow, and releases arrows in a continuous loop until the target dies, ammo runs out, times out, or is stopped. Hot updates may include food to pause briefly, eat, and then restore the previous weapon without ending combat. Fails with missing_bow if the bow is absent, missing_ammo if no arrows are found, equip_failed if equipping fails, or target_not_found if the target cannot be located.",
+      "preconditions": ["item_available", "ammo_available", "target_known"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted", "target_lost", "out_of_ammo"],
+      "locks": ["combat", "movement", "look", "inventory", "item_use"],
+      "switch_group": "combat",
+      "switchable": true,
+      "mutable_params": ["target", "approach_range", "shoot_range", "charge_ms", "food"],
+      "update_policy": "merge"
+    },
+    "fight": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "weapon": {"type": "string", "description": "可选：武器物品名称或战斗任务中的装备注册标识，近战如 diamond_sword、远程如 bow/crossbow；缺省使用当前手持物，空手时近战攻击"},
+          "combat_type": {
+            "type": "string",
+            "enum": ["melee", "ranged", "throwable"],
+            "description": "可选：显式指定战斗类型；缺省按武器自动识别（bow/crossbow->ranged，snowball/egg/ender_pearl/splash_potion/lingering_potion->throwable，其余近战）"
+          },
+          "target": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "object"}], "description": "攻击目标实体"},
+          "arrow": {"type": "string", "default": "arrow", "description": "箭矢物品名（远程武器时生效）"},
+          "follow_range": {"type": "number", "minimum": 0, "default": 2.5, "description": "近战追踪距离"},
+          "attack_range": {"type": "number", "minimum": 0, "default": 3.1, "description": "近战挥砍距离"},
+          "attack_cooldown_ms": {"type": "number", "minimum": 0, "default": 700, "description": "近战攻击冷却"},
+          "approach_range": {"type": "number", "minimum": 0, "default": 18, "description": "远程接近距离"},
+          "shoot_range": {"type": "number", "minimum": 0, "default": 40, "description": "远程有效射程"},
+          "charge_ms": {"type": "number", "minimum": 0, "default": 1000, "description": "弓箭蓄力时长"},
+          "throw_range": {"type": "number", "minimum": 0, "default": 8, "description": "投掷物有效投掷距离"},
+          "max_duration_ms": {"type": "number", "minimum": 0, "default": 20000},
+          "collect_drops": {
+            "type": "string",
+            "enum": ["none", "optional", "required"],
+            "default": "optional",
+            "description": "none 不拾取；optional 能拾取就拾取（默认）；required 必须拾取（动物目标强制 required）"
+          },
+          "food": {"type": "string", "minLength": 1, "description": "可选：热更新时指定的食物或普通药水，提供后会先使用补给再恢复战斗"}
+        },
+        "required": ["target"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "combat_type": {"type": "string"},
+          "weapon": {"type": "string"},
+          "target": {"type": "object"},
+          "attack_count": {"type": "number"},
+          "shots_fired": {"type": "number"},
+          "arrows_remaining": {"type": "number"},
+          "ammo_remaining": {"type": "number"},
+          "target_dead": {"type": "boolean"},
+          "collect_mode": {"type": "string"},
+          "collected_count": {"type": "number"},
+          "last_distance": {"type": "number"},
+          "duration_ms": {"type": "number"},
+          "food_result": {"type": "object"},
+          "last_food_result": {"type": "object"}
+        }
+      },
+      "side_effects": ["combat", "movement", "look", "inventory", "item_use"],
+      "llm_description": "Unified combat action that auto-detects weapon type: melee for swords/axes, ranged bow shooting for bows/crossbows (stops at shoot_range, does not close into melee), and throwable projectiles (snowball/egg/ender_pearl/splash_potion/lingering_potion) within throw_range. Fights until the target dies, ammo runs out, times out, or is stopped. collect_drops controls loot pickup (none/optional/required; animal targets are forced to required).",
+      "preconditions": ["item_available", "target_known"],
+      "stop_conditions": ["completed", "failed", "timeout", "interrupted", "target_lost", "out_of_ammo"],
+      "locks": ["combat", "movement", "look", "inventory", "item_use"],
+      "switch_group": "combat",
+      "switchable": true,
+      "mutable_params": ["target", "follow_range", "attack_range", "attack_cooldown_ms", "approach_range", "shoot_range", "charge_ms", "food"],
+      "update_policy": "merge"
+    },
+    "use_food": {
+      "mode": ["oneshot"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "food": {"type": "string", "description": "食物或药水名称，如 cooked_beef、bread、potion[healing]"}
+        },
+        "required": ["food"],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {"type": "boolean"},
+          "consumed": {"type": "boolean"},
+          "food": {"type": "string"},
+          "previous_weapon": {"type": "object"},
+          "weapon_restored": {"type": "boolean"},
+          "before": {"type": "object"},
+          "after": {"type": "object"}
+        }
+      },
+      "side_effects": ["inventory", "item_use"],
+      "llm_description": "Combat-aware consumable use: saves the currently held weapon, equips and consumes the named food or potion, then restores the previous weapon. Use potion[healing] for a healing potion. Designed to be called during combat breaks without losing weapon state. Fails with missing_food if the item is not in inventory, equip_failed if equipping fails, or consume_failed if the item cannot be consumed.",
+      "preconditions": ["consumable_available"],
+      "stop_conditions": ["completed", "failed"],
+      "locks": ["inventory", "item_use"],
+      "switch_group": "combat",
+      "switchable": true,
+      "mutable_params": [],
+      "update_policy": "restart_required"
+    }
+  }
+}

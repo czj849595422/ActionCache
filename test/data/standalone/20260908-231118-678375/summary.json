@@ -1,0 +1,98 @@
+{
+  "schema_version": "1",
+  "kind": "run_summary",
+  "baseline": "standalone",
+  "run_id": "20260908-231118-678375",
+  "status": "completed",
+  "episode_count": 1,
+  "episode_status_counts": {
+    "completed": 1
+  },
+  "episodes": [
+    {
+      "episode_id": "episode-0001",
+      "status": "completed",
+      "path": "D:\\MC\\ActionCache\\test\\data\\standalone\\20260908-231118-678375\\episode-0001"
+    }
+  ],
+  "started_at": 1788880278.6803753,
+  "finished_at": 1788880278.706578,
+  "aggregate_metrics": {
+    "episode_count": 1,
+    "valid_episode_count": 0,
+    "successful_episode_count": 0,
+    "success_count": 0,
+    "failure_count": 0,
+    "timeout_count": 0,
+    "interrupted_count": 0,
+    "success_rate": null,
+    "success_rate_stddev": null,
+    "outcome_status_counts": {
+      "missing": 1
+    },
+    "total_wall_seconds": 0.026202678680419922,
+    "totals": {
+      "planned_count": 0,
+      "executed_count": 0,
+      "llm_calls": 0.0,
+      "input_tokens": 0.0,
+      "output_tokens": 0.0,
+      "total_tokens": 0.0
+    },
+    "all_episode_averages": {
+      "wall_seconds": null,
+      "task_elapsed_seconds": null,
+      "planned_count": null,
+      "executed_count": null,
+      "llm_calls": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "planning_duration_seconds": null,
+      "planning_to_execution_start_seconds": null,
+      "execution_duration_seconds": null
+    },
+    "successful_episode_averages": {
+      "wall_seconds": null,
+      "task_elapsed_seconds": null,
+      "planned_count": null,
+      "executed_count": null,
+      "llm_calls": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "planning_duration_seconds": null,
+      "planning_to_execution_start_seconds": null,
+      "execution_duration_seconds": null
+    },
+    "successful_episode_stddevs": {
+      "wall_seconds": null,
+      "task_elapsed_seconds": null,
+      "planned_count": null,
+      "executed_count": null,
+      "llm_calls": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "total_tokens": null,
+      "planning_duration_seconds": null,
+      "planning_to_execution_start_seconds": null,
+      "execution_duration_seconds": null
+    },
+    "task_metric_averages": {
+      "all_episodes": {},
+      "successful_episodes": {}
+    },
+    "llm_component_token_averages": {
+      "all_episodes": {},
+      "successful_episodes": {}
+    },
+    "llm_component_token_stddevs": {
+      "successful_episodes": {}
+    },
+    "error_counts": {
+      "runner_error_count": 0,
+      "worker_error_count": 0,
+      "cleanup_error_count": 0
+    }
+  }
+}

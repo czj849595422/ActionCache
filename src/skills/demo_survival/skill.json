@@ -1,0 +1,39 @@
+{
+  "name": "demo_survival",
+  "version": "0.1.0",
+  "description": "Demo-only fleeing behavior that keeps distance from nearby hostile entities.",
+  "runtime": "javascript",
+  "entry": "skill.js",
+  "plugins": {
+    "required": ["mineflayer-pathfinder"],
+    "optional": []
+  },
+  "commands": {
+    "flee_nearest_hostile": {
+      "mode": ["continuous"],
+      "params_schema": {
+        "type": "object",
+        "properties": {
+          "safeDistance": {"type": "number"},
+          "detectRadius": {"type": "number"},
+          "fleeDistance": {"type": "number"},
+          "minBound": {"type": "number"},
+          "maxBound": {"type": "number"}
+        }
+      },
+      "output_schema": {
+        "type": "object"
+      },
+      "side_effects": ["movement", "look"],
+      "llm_description": "Demo-only behavior: flee from nearby hostile entities until safe distance is maintained or execution stops.",
+      "llm_description_zh": "演示用行为：远离附近敌对实体，直到保持安全距离或动作停止。",
+      "preconditions": [],
+      "stop_conditions": ["safe_distance_reached", "interrupted"],
+      "locks": ["movement", "look"],
+      "switch_group": "survival_movement",
+      "switchable": true,
+      "mutable_params": ["safeDistance", "detectRadius", "fleeDistance", "minBound", "maxBound"],
+      "update_policy": "merge"
+    }
+  }
+}
